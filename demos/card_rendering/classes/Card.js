@@ -51,8 +51,10 @@ class Card {
       this.drawCardToken(context, i, BLACK, this.black);
     }
 
-    context.font = "35px Arial";
-    context.fillText(this.point, this.x+15, this.y+45);
+    if(this.pont > 0){
+      context.font = "35px Arial";
+      context.fillText(this.point, this.x+15, this.y+45);
+    }
   }
 
   drawCardToken(context, i, color, tokenNumber) {

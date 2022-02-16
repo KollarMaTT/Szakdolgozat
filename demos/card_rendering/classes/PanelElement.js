@@ -1,5 +1,5 @@
 /**
- * Syntax of the tokens
+ * Syntax of the panel elements
  */
  class PanelElement {
     constructor(x, y, color, value, fixValue){
@@ -8,6 +8,7 @@
         this.w = 210;
         this.h = 80;
         this.radius = 20;
+        this.color = color;
         this.value = value;
         this.fixValue = fixValue;
     }
@@ -27,7 +28,7 @@
         context.quadraticCurveTo(this.x, b, this.x, b - this.radius);
         context.lineTo(this.x, this.y + this.radius);
         context.quadraticCurveTo(this.x, this.y, this.x + this.radius, this.y);
-        context.fillStyle = BACKGROUND;
+        context.fillStyle = this.color;
         context.fill();
         context.stroke();
 
@@ -37,5 +38,13 @@
         context.moveTo(this.x+100, this.y+0);
         context.lineTo(this.x+100, this.y+80);
         context.stroke();
+
+        context.font = "50px Arial";
+        context.fillStyle = "black";
+        context.fillText(this.value, this.x+40, this.y+60);
+        context.font = "bold 50px Arial";
+        context.fillText(this.fixValue, this.x+140, this.y+60);
+
+        
     }
 }

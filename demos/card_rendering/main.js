@@ -48,6 +48,6 @@ function initialize() {
   canvas.addEventListener("mouseup", mouseUp, false);
   canvas.addEventListener("mousewheel", mouseWheel, false);
 
-  let card = new Card(1,WHITE,2,0,1,1,3,2,0,0);
-  card.draw(context);
+  let board = new Board();
+  board.init(context);
 }

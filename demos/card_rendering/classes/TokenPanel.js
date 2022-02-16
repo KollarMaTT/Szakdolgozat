@@ -1,5 +1,5 @@
 /**
- * Syntax of the tokens
+ * Syntax of the token panel
  */
  class TokenPanel {
     constructor(x, y, white, blue, green, red, black, fixWhite, fixBlue, fixGreen, fixRed, fixBlack) {
@@ -62,11 +62,11 @@
         this.panelElements = [];
 
         for(let i = 0; i<5; i++){
-            let x = i * 240;
-            let y = 80;
+            let x = this.x + 15 + i * 240;
+            let y = this.y+10;
             let color = colors[i];
             let value = i;
-            let fixValue = 333;
+            let fixValue = 8;
             let panelElement = new PanelElement(x,y,color,value,fixValue);
             this.panelElements.push(panelElement);
         }
