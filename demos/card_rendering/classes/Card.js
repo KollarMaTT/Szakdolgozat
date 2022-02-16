@@ -1,15 +1,15 @@
 const BLACK = "#404040";
 const WHITE = "#FFFFFF";
-const BLUE = "#0066CC";
-const GREEN = "#009900";
-const RED = "#FF0000";
+const BLUE = "#5264FF";
+const GREEN = "#3FBA3F";
+const RED = "#FD3333";
+const BACKGROUND = "#D1D1D1";
 
 /**
  * Syntax of the cards
  */
 class Card {
-  constructor(level, color, point, white, blue, green, red, black) {
-    // TODO: Set the properties of the card.
+  constructor(level, color, point, white, blue, green, red, black, x , y) {
     this.level = level;
     this.color = color;
     this.point = point;
@@ -18,81 +18,75 @@ class Card {
     this.green = green;
     this.red = red;
     this.black = black;
+    this.x = x;
+    this.y = y;
   }
+
 
   draw(context) {
-    this.drawCard(context);
-  }
-
-  drawCard(level, color, point, white, blue, green, red, black) {
     var i = 0;
 
-    //TODO: change these values to relative values
-    roundRect(10, 20, 180, 200, 20);
+    this.drawCardContour(context, this.x, this.y, 180, 200, 20);
 
-    drawCardToken(i, color, "");
+    this.drawCardToken(context, i, this.color, "");
 
-    if (white >= 1) {
+    if (this.white >= 1) {
       i++;
-      drawCardToken(i, whiteColor, white);
+      this.drawCardToken(context, i, WHITE, this.white);
     }
-    if (blue >= 1) {
+    if (this.blue >= 1) {
       i++;
-      drawCardToken(i, blueColor, blue);
+      this.drawCardToken(context, i, BLUE, this.blue);
     }
-    if (green >= 1) {
+    if (this.green >= 1) {
       i++;
-      drawCardToken(i, greenColor, green);
+      this.drawCardToken(context, i, GREEN, this.green);
     }
-    if (red >= 1) {
+    if (this.red >= 1) {
       i++;
-      drawCardToken(i, redColor, red);
+      this.drawCardToken(context, i, RED, this.red);
     }
-
-    if (black >= 1) {
+    if (this.black >= 1) {
       i++;
-      drawCardToken(i, blackColor, black);
+      this.drawCardToken(context, i, BLACK, this.black);
     }
 
-    context.font = "40px Arial";
-    context.fillText(point, 25, 65);
+    context.font = "35px Arial";
+    context.fillText(this.point, this.x+15, this.y+45);
   }
 
-  drawCardToken(i, color, tokenNumber) {
+  drawCardToken(context, i, color, tokenNumber) {
     context.fillStyle = color;
     context.beginPath();
 
     var x;
     var y;
 
-    //TODO: change these values to relative values
     if (i == 0) {
-      x = 155;
-      y = 50;
+      x = this.x+145;
+      y = this.y+30;
     } else if (i == 1) {
-      x = 40;
-      y = 190;
+      x = this.x+30;
+      y = this.y+170;
     } else if (i == 2) {
-      x = 40;
-      y = 135;
+      x = this.x+30;
+      y = this.y+115;
     } else if (i == 3) {
-      x = 100;
-      y = 190;
+      x = this.x+90;
+      y = this.y+170;
     } else {
-      x = 100;
-      y = 135;
+      x = this.x+90;
+      y = this.y+115;
     }
     context.arc(x, y, 24, 0, 2 * Math.PI);
     context.stroke();
-    context.globalAlpha = 0.7;
     context.fill();
-    context.globalAlpha = 1;
     context.fillStyle = "black";
     context.font = "30px Arial";
     context.fillText(tokenNumber, x - 8, y + 10);
   }
 
-  roundRect(x, y, w, h, radius) {
+  drawCardContour(context, x, y, w, h, radius) {
     var r = x + w;
     var b = y + h;
     context.beginPath();
@@ -109,8 +103,10 @@ class Card {
     context.quadraticCurveTo(x, y, x + radius, y);
     context.lineWidth = 3;
     context.strokeStyle = "black";
-    context.moveTo(10, 80);
-    context.lineTo(190, 80);
+    context.moveTo(this.x+0, this.y+60);
+    context.lineTo(this.x+180, this.y+60);
+    context.fillStyle = BACKGROUND;
+    context.fill();
     context.stroke();
   }
 }
