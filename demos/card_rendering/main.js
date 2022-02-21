@@ -20,8 +20,8 @@ function mouseDown(event) {
   //let token = new Token(event.x, event.y, GREEN);
   //token.draw(context);
 
-  //let panel = new TokenPanel(event.x, event.y, 3,2,4,5,0,2,1,3,5,6);
-  //panel.draw(context);
+  let panel = new TokenPanel(event.x, event.y, 3,2,4,5,0,2,1,3,5,6);
+  panel.draw(context);
 }
 
 function mouseMove(event) {
@@ -38,6 +38,10 @@ function mouseWheel(event) {
   event.preventDefault();
 }
 
+function mouseOver(event) {
+  const mouse = calcMouseEvent(event);
+}
+
 
 function initialize() {
   canvas = document.getElementById("my-canvas");
@@ -47,7 +51,7 @@ function initialize() {
   canvas.addEventListener("mousemove", mouseMove, false);
   canvas.addEventListener("mouseup", mouseUp, false);
   canvas.addEventListener("mousewheel", mouseWheel, false);
+  canvas.addEventListener("mouseover", mouseOver, false);
 
   let board = new Board();
-  board.init(context);
 }

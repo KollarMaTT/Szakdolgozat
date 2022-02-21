@@ -7,10 +7,11 @@ var context = null;
  */
  class Board {
     constructor(){
+        this.initCards();
     }
 
     
-    init(context) {
+    initCards() {
         let x = 250;
         let y = 10;
         for(let i=0;i<5;i++){

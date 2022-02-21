@@ -20,6 +20,7 @@ class Card {
     this.black = black;
     this.x = x;
     this.y = y;
+    let isUnderCursor = false;
   }
 
 
