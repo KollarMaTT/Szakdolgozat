@@ -1,15 +1,17 @@
-const BLACK = "#404040";
+const BLACK = "#686868";
 const WHITE = "#FFFFFF";
 const BLUE = "#5264FF";
 const GREEN = "#3FBA3F";
 const RED = "#FD3333";
-const BACKGROUND = "#D1D1D1";
+const BACKGROUND = "#FFB266";
 
 /**
  * Syntax of the cards
  */
 class Card {
-  constructor(level, color, point, white, blue, green, red, black, x , y) {
+  constructor(x, y, level, color, point, white, blue, green, red, black) {
+    this.x = x;
+    this.y = y;
     this.level = level;
     this.color = color;
     this.point = point;
@@ -18,11 +20,7 @@ class Card {
     this.green = green;
     this.red = red;
     this.black = black;
-    this.x = x;
-    this.y = y;
-    let isUnderCursor = false;
   }
-
 
   draw(context) {
     var i = 0;
@@ -52,9 +50,9 @@ class Card {
       this.drawCardToken(context, i, BLACK, this.black);
     }
 
-    if(this.pont > 0){
+    if (this.point > 0) {
       context.font = "35px Arial";
-      context.fillText(this.point, this.x+15, this.y+45);
+      context.fillText(this.point, this.x + 15, this.y + 45);
     }
   }
 
@@ -66,20 +64,20 @@ class Card {
     var y;
 
     if (i == 0) {
-      x = this.x+145;
-      y = this.y+30;
+      x = this.x + 145;
+      y = this.y + 30;
     } else if (i == 1) {
-      x = this.x+30;
-      y = this.y+170;
+      x = this.x + 30;
+      y = this.y + 170;
     } else if (i == 2) {
-      x = this.x+30;
-      y = this.y+115;
+      x = this.x + 30;
+      y = this.y + 115;
     } else if (i == 3) {
-      x = this.x+90;
-      y = this.y+170;
+      x = this.x + 90;
+      y = this.y + 170;
     } else {
-      x = this.x+90;
-      y = this.y+115;
+      x = this.x + 90;
+      y = this.y + 115;
     }
     context.arc(x, y, 24, 0, 2 * Math.PI);
     context.stroke();
@@ -90,24 +88,10 @@ class Card {
   }
 
   drawCardContour(context, x, y, w, h, radius) {
-    var r = x + w;
-    var b = y + h;
-    context.beginPath();
-    context.strokeStyle = "black";
-    context.lineWidth = "3";
-    context.moveTo(x + radius, y);
-    context.lineTo(r - radius, y);
-    context.quadraticCurveTo(r, y, r, y + radius);
-    context.lineTo(r, y + h - radius);
-    context.quadraticCurveTo(r, b, r - radius, b);
-    context.lineTo(x + radius, b);
-    context.quadraticCurveTo(x, b, x, b - radius);
-    context.lineTo(x, y + radius);
-    context.quadraticCurveTo(x, y, x + radius, y);
-    context.lineWidth = 3;
-    context.strokeStyle = "black";
-    context.moveTo(this.x+0, this.y+60);
-    context.lineTo(this.x+180, this.y+60);
+    roundedRectangle(x, y, w, h, radius, 3);
+
+    context.moveTo(this.x + 0, this.y + 60);
+    context.lineTo(this.x + 180, this.y + 60);
     context.fillStyle = BACKGROUND;
     context.fill();
     context.stroke();
