@@ -14,7 +14,7 @@ class Token {
     context.strokeStyle = "black";
     context.lineWidth = "7";
     context.beginPath();
-    context.arc(this.x, this.y, 60, 0, 2 * Math.PI);
+    context.arc(this.x, this.y, 50, 0, 2 * Math.PI);
     context.stroke();
     context.fill();
 

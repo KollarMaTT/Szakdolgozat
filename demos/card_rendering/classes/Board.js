@@ -14,12 +14,11 @@ class Board {
   }
 
   initCards() {
-    let x = 480;
-    let y = 30;
     let slot = 0;
 
     while (slot < 4) {
-      x = 480 + slot * 250;
+      let x = 480 + slot * 250;
+      let y = 510;
       let level1 = Math.floor(Math.random() * 40);
 
       let card = new Card(
@@ -38,8 +37,8 @@ class Board {
       slot++;
     }
     while (slot < 8) {
-      x = 480 + (slot - 4) * 250;
-      y = 270;
+      let x = 480 + (slot - 4) * 250;
+      let y = 270;
       let level2 = Math.floor(Math.random() * (70 - 40) + 40);
 
       let card = new Card(
@@ -58,8 +57,8 @@ class Board {
       slot++;
     }
     while (slot < 12) {
-      x = 480 + (slot - 8) * 250;
-      y = 510;
+      let x = 480 + (slot - 8) * 250;
+      let y = 30;
       let level3 = Math.floor(Math.random() * (90 - 70) + 70);
 
       let card = new Card(
@@ -88,7 +87,7 @@ class Board {
 
   initTokens() {
     let x = 1750;
-    let y = 100;
+    let y = 80;
     let colors = [WHITE, BLUE, GREEN, RED, BLACK];
     let randValue = Math.floor(Math.random() * 6);
 
@@ -101,11 +100,15 @@ class Board {
   }
 
   initDecks() {
-    var img = new Image();
-    img.src = "images/deck.png";
-    context.drawImage(img, 130, 30, 205, 205);
-    context.drawImage(img, 130, 270, 205, 205);
-    context.drawImage(img, 130, 510, 205, 205);
+    var level1_deck = new Image();
+    level1_deck.src = "images/level1_deck.png";
+    var level2_deck = new Image();
+    level2_deck.src = "images/level2_deck.png";
+    var level3_deck = new Image();
+    level3_deck.src = "images/level3_deck.png";
+    context.drawImage(level3_deck, 130, 30, 205, 205);
+    context.drawImage(level2_deck, 130, 270, 205, 205);
+    context.drawImage(level1_deck, 130, 510, 205, 205);
   }
 }
 
