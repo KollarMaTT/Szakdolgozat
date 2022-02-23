@@ -14,7 +14,7 @@ class PanelElement {
   }
 
   draw(context) {
-    roundedRectangle(this.x, this.y, this.w, this.h, this.radius, 3);
+    roundedRectangle(this.x, this.y, this.w, this.h, this.radius, 3, "black");
 
     context.fillStyle = this.color;
     context.fill();

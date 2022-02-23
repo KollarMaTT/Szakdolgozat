@@ -84,11 +84,11 @@ class Card {
     context.fill();
     context.fillStyle = "black";
     context.font = "30px Arial";
-    context.fillText(tokenNumber, x - 8, y + 10);
+    context.fillText(tokenNumber, x - 8 , y + 10);
   }
 
   drawCardContour(context, x, y, w, h, radius) {
-    roundedRectangle(x, y, w, h, radius, 3);
+    roundedRectangle(x, y, w, h, radius, 3, "black");
 
     context.moveTo(this.x + 0, this.y + 60);
     context.lineTo(this.x + 180, this.y + 60);

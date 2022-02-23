@@ -40,14 +40,14 @@ class TokenPanel {
   }
 
   drawPanelContour(context, x, y, w, h, radius) {
-    roundedRectangle(x, y, w, h, radius, 3);
+    roundedRectangle(x, y, w, h, radius, 3, "black");
     context.fillStyle = BACKGROUND;
     context.fill();
     context.stroke();
   }
 
   drawPanelPointBox(context, x, y, w, h, radius, value) {
-    roundedRectangle(x, y, w, h, radius, 5);
+    roundedRectangle(x, y, w, h, radius, 5, "black");
 
     context.font = "bold 70px Arial";
     context.textAlign= "center";

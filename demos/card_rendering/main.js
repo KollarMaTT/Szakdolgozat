@@ -47,4 +47,5 @@ function initialize() {
   canvas.addEventListener("mouseover", mouseOver, false);
 
   board = new Board();
+  board.draw(context);
 }
