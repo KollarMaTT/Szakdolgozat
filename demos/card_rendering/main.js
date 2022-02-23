@@ -1,6 +1,7 @@
 var canvas = null;
 var canvasPosition = null;
 var context = null;
+let borad = null;
 
 function calcMouseEvent(event) {
   return {
@@ -12,7 +13,7 @@ function calcMouseEvent(event) {
 
 function mouseDown(event) {
   const mouse = calcMouseEvent(event);
-  console.log("Click at (" + event.x + ", " + event.y + ")");
+  board.mouseDown(mouse);
 }
 
 function mouseMove(event) {
@@ -31,6 +32,7 @@ function mouseWheel(event) {
 
 function mouseOver(event) {
   const mouse = calcMouseEvent(event);
+  board.mouseOver(mouse);
 }
 
 function initialize() {
@@ -44,5 +46,5 @@ function initialize() {
   canvas.addEventListener("mousewheel", mouseWheel, false);
   canvas.addEventListener("mouseover", mouseOver, false);
 
-  let board = new Board();
+  board = new Board();
 }

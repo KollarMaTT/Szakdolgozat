@@ -6,7 +6,7 @@ class PanelElement {
     this.x = x;
     this.y = y;
     this.w = 210;
-    this.h = 80;
+    this.h = 70;
     this.radius = 20;
     this.color = color;
     this.value = value;
@@ -24,13 +24,15 @@ class PanelElement {
     context.strokeStyle = "black";
     context.lineWidth = 3;
     context.moveTo(this.x + 100, this.y + 0);
-    context.lineTo(this.x + 100, this.y + 80);
+    context.lineTo(this.x + 100, this.y + 70);
     context.stroke();
 
     context.font = "50px Arial";
+    context.textAlign= "center";
     context.fillStyle = "black";
-    context.fillText(this.value, this.x + 40, this.y + 60);
+    context.fillText(this.value, this.x + 50, this.y + 55);
+
     context.font = "bold 50px Arial";
-    context.fillText(this.fixValue, this.x + 140, this.y + 60);
+    context.fillText(this.fixValue, this.x + 150, this.y + 55);
   }
 }

@@ -9,6 +9,12 @@
       height: 100%;
       margin: 0;
     }
+    canvas#my-canvas {
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-image: url("images/background2.jpg");
+    }
+
   </style>
   <script type="text/javascript" src="data/cards.js"></script>
   <script type="text/javascript" src="classes/Card.js"></script>
@@ -17,8 +23,10 @@
   <script type="text/javascript" src="classes/TokenPanel.js"></script>
   <script type="text/javascript" src="main.js"></script>
   <script type="text/javascript" src="classes/Board.js"></script>
+  
   <body onload="initialize()">
-    <canvas id="my-canvas" width="1920" height="1080"></canvas>
+    <canvas id="my-canvas" width="1920" height="969"></canvas>
+    <div style="display:none">
     <img
       id="level1_deck"
       width="220"
@@ -37,5 +45,6 @@
       height="277"
       src="images/level3_deck.png"
     />
+    </div>
   </body>
 </html>

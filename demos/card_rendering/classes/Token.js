@@ -18,8 +18,11 @@ class Token {
     context.stroke();
     context.fill();
 
+    context.lineWidth = "8";
     context.font = "50px Arial";
-    context.fillStyle = "black";
+    context.strokeStyle = "black";
+    context.strokeText(this.value, this.x - 95, this.y + 20);
+    context.fillStyle = "white";
     context.fillText(this.value, this.x - 95, this.y + 20);
   }
 }

@@ -8,107 +8,126 @@ var context = null;
 class Board {
   constructor() {
     this.initCards();
-    this.initTokenPanel();
+    this.initTokenPanel(250,15,1,2,3,4,5,6,7,8,9,10,5);
+    this.initTokenPanel(250,870,1,2,3,4,5,6,7,8,9,10,5);
     this.initTokens();
     this.initDecks();
   }
 
   initCards() {
+
+    let level1Cards = [];
+    for(let i=0;i<40;i++){
+      level1Cards.push(CARDS[i]);
+    }
+    
+    shuffle(level1Cards);
+
+    let level2Cards = [];
+    for(let i=40;i<70;i++){
+      level2Cards.push(CARDS[i]);
+    }
+
+    shuffle(level2Cards);
+
+    let level3Cards = [];
+    for(let i=70;i<90;i++){
+      level3Cards.push(CARDS[i]);
+    }
+
+    shuffle(level3Cards);
+
+
     let slot = 0;
 
     while (slot < 4) {
       let x = 480 + slot * 250;
-      let y = 510;
-      let level1 = Math.floor(Math.random() * 40);
+      let y = 630;
 
       let card = new Card(
         x,
         y,
-        CARDS[level1].level,
-        CARDS[level1].color,
-        CARDS[level1].point,
-        CARDS[level1].white,
-        CARDS[level1].blue,
-        CARDS[level1].green,
-        CARDS[level1].red,
-        CARDS[level1].black
+        level1Cards[0].level,
+        level1Cards[0].color,
+        level1Cards[0].point,
+        level1Cards[0].white,
+        level1Cards[0].blue,
+        level1Cards[0].green,
+        level1Cards[0].red,
+        level1Cards[0].black
       );
       card.draw(context);
       slot++;
+      level1Cards.shift();
     }
     while (slot < 8) {
       let x = 480 + (slot - 4) * 250;
-      let y = 270;
-      let level2 = Math.floor(Math.random() * (70 - 40) + 40);
+      let y = 390;
 
       let card = new Card(
         x,
         y,
-        CARDS[level2].level,
-        CARDS[level2].color,
-        CARDS[level2].point,
-        CARDS[level2].white,
-        CARDS[level2].blue,
-        CARDS[level2].green,
-        CARDS[level2].red,
-        CARDS[level2].black
+        level2Cards[0].level,
+        level2Cards[0].color,
+        level2Cards[0].point,
+        level2Cards[0].white,
+        level2Cards[0].blue,
+        level2Cards[0].green,
+        level2Cards[0].red,
+        level2Cards[0].black
       );
       card.draw(context);
       slot++;
+      level2Cards.shift();
     }
     while (slot < 12) {
       let x = 480 + (slot - 8) * 250;
-      let y = 30;
-      let level3 = Math.floor(Math.random() * (90 - 70) + 70);
+      let y = 150;
 
       let card = new Card(
         x,
         y,
-        CARDS[level3].level,
-        CARDS[level3].color,
-        CARDS[level3].point,
-        CARDS[level3].white,
-        CARDS[level3].blue,
-        CARDS[level3].green,
-        CARDS[level3].red,
-        CARDS[level3].black
+        level3Cards[0].level,
+        level3Cards[0].color,
+        level3Cards[0].point,
+        level3Cards[0].white,
+        level3Cards[0].blue,
+        level3Cards[0].green,
+        level3Cards[0].red,
+        level3Cards[0].black
       );
       card.draw(context);
       slot++;
+      level3Cards.shift();
     }
   }
 
-  initTokenPanel() {
-    let x = 250;
-    let y = 800;
-    let panel = new TokenPanel(x, y, 1, 2, 3, 0, 2, 4, 2, 0, 1, 1);
+  initTokenPanel(x, y, white, blue, green, red, black, fixWhite, fixBlue, fixGreen, fixRed, fixBlack, point) {
+    let panel = new TokenPanel(x, y, white, blue, green, red, black, fixWhite, fixBlue, fixGreen, fixRed, fixBlack, point);
     panel.draw(context);
   }
 
   initTokens() {
     let x = 1750;
-    let y = 80;
+
     let colors = [WHITE, BLUE, GREEN, RED, BLACK];
     let randValue = Math.floor(Math.random() * 6);
 
     for (let i = 0; i < colors.length; i++) {
+      let y = 200 + i * 150;
       let token = new Token(x, y, colors[i], randValue);
       token.draw(context);
-      y += 150;
       randValue = Math.floor(Math.random() * 5);
     }
   }
 
   initDecks() {
-    var level1_deck = new Image();
-    level1_deck.src = "images/level1_deck.png";
-    var level2_deck = new Image();
-    level2_deck.src = "images/level2_deck.png";
-    var level3_deck = new Image();
-    level3_deck.src = "images/level3_deck.png";
-    context.drawImage(level3_deck, 130, 30, 205, 205);
-    context.drawImage(level2_deck, 130, 270, 205, 205);
-    context.drawImage(level1_deck, 130, 510, 205, 205);
+    var level1_deck = document.getElementById("level1_deck");
+    var level2_deck = document.getElementById("level2_deck");
+    var level3_deck = document.getElementById("level3_deck");
+    context.drawImage(level3_deck, 130, 150, 205, 205);
+    context.drawImage(level2_deck, 130, 390, 205, 205);
+    context.drawImage(level1_deck, 130, 630, 205, 205);
   }
 }
 
@@ -128,4 +147,49 @@ function roundedRectangle(x, y, w, h, radius, lineWidth) {
   context.lineTo(x, y + radius);
   context.quadraticCurveTo(x, y, x + radius, y);
   context.stroke();
+}
+
+function shuffle(array) {
+  let currentIndex = array.length,  randomIndex;
+
+  while (currentIndex != 0) {
+
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex--;
+
+    [array[currentIndex], array[randomIndex]] = [
+      array[randomIndex], array[currentIndex]];
+  }
+}
+
+function mouseDown(mouseEvent) {
+  console.log("Click at (" + mouseEvent.x + ", " + mouseEvent.y + ")");
+
+  for(let i=0;i<12;i++){
+    if(i<4 && Math.floor((mouseEvent.x-(480+i*250))/180) == 0 && Math.floor((mouseEvent.y-630)/200) == 0){
+      pickCard(3,i+1);
+    }else if(i<8 && Math.floor((mouseEvent.x-(480+(i-4)*250))/180) == 0 && Math.floor((mouseEvent.y-390)/200) == 0 ){
+      pickCard(2,i-3);
+    }else if(i<12 && Math.floor((mouseEvent.x-(480+(i-8)*250))/180) == 0 && Math.floor((mouseEvent.y-150)/200) == 0 ){
+      pickCard(1,i-7);
+    }
+  }
+
+  for(let i=0;i<5;i++){
+    if(Math.floor((mouseEvent.x-1695)/105) == 0 && Math.floor((mouseEvent.y-(150+i*150))/100) == 0){
+      pickToken(i+1);
+    }
+  }
+}
+
+function pickCard(row, column){
+  console.log(`Picked card from ${row}. row and ${column}. column.`);
+}
+
+function pickToken(row){
+  console.log(`Picked token from ${row}. row.`);
+}
+
+function mouseOver(){
+  
 }
