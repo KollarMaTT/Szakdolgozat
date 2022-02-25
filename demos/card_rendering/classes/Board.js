@@ -12,6 +12,7 @@ class Board {
     this.initAITokenPanel();
     this.initTokens();
     this.initDecks();
+    this.focusedCard = null;
   }
 
   draw(context){
@@ -26,9 +27,12 @@ class Board {
     this._tokenPanel.draw(context);
     this._AItokenPanel.draw(context);
 
-    context.drawImage(level3_deck, 130, 150, 205, 205);
-    context.drawImage(level2_deck, 130, 390, 205, 205);
-    context.drawImage(level1_deck, 130, 630, 205, 205);
+    if(this.focusedCard != null){
+      roundedRectangle(this.focusedCard.x, this.focusedCard.y, 180, 200, 20, 3,  "yellow");
+    }
+
+    //TODO: draw deck
+
   }
 
   initCards() {
@@ -159,11 +163,15 @@ class Board {
     var level1_deck = document.getElementById("level1_deck");
     var level2_deck = document.getElementById("level2_deck");
     var level3_deck = document.getElementById("level3_deck");
+
+    context.drawImage(level3_deck, 130, 150, 205, 205);
+    context.drawImage(level2_deck, 130, 390, 205, 205);
+    context.drawImage(level1_deck, 130, 630, 205, 205);
   }
 }
 
 
-
+//TODO: context param
 function roundedRectangle(x, y, w, h, radius, lineWidth, contourColor) {
   var r = x + w;
   var b = y + h;
@@ -258,10 +266,13 @@ function tokenPosition(mouseEvent){
 }
 
 
+function focusedCard(card){
+
+}
 
 
 function mouseOver(mouseEvent){
-  /*
+  
     let r = cardPosition(mouseEvent)[0];
     let c = cardPosition(mouseEvent)[1];
 
@@ -271,5 +282,5 @@ function mouseOver(mouseEvent){
     let y = 150 + (r-1) * 240;
 
     roundedRectangle(x, y, 180, 200, 20, 3,  "yellow");
-  }*/
+  }
 }

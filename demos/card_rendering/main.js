@@ -18,6 +18,7 @@ function mouseDown(event) {
 
 function mouseMove(event) {
   const mouse = calcMouseEvent(event);
+  board.draw(context);
 }
 
 function mouseUp(event) {
