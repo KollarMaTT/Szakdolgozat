@@ -21,6 +21,7 @@ class Token {
     context.lineWidth = "8";
     context.font = "50px Arial";
     context.strokeStyle = "black";
+    context.textAlign = "center";
     context.strokeText(this.value, this.x - 95, this.y + 20);
     context.fillStyle = "white";
     context.fillText(this.value, this.x - 95, this.y + 20);

@@ -9,7 +9,19 @@ const BACKGROUND = "#FFB266";
  * Syntax of the cards
  */
 class Card {
-  constructor(x, y, level, color, point, white, blue, green, red, black) {
+  constructor(
+    x,
+    y,
+    level,
+    color,
+    point,
+    white,
+    blue,
+    green,
+    red,
+    black,
+    isUnderCursor
+  ) {
     this.x = x;
     this.y = y;
     this.level = level;
@@ -20,12 +32,21 @@ class Card {
     this.green = green;
     this.red = red;
     this.black = black;
+    this.isUnderCursor = false;
   }
 
   draw(context) {
     var i = 0;
 
-    this.drawCardContour(context, this.x, this.y, 180, 200, 20);
+    this.drawCardContour(
+      context,
+      this.x,
+      this.y,
+      180,
+      200,
+      20,
+      this.isUnderCursor
+    );
 
     this.drawCardToken(context, i, this.color, "");
 
@@ -52,7 +73,8 @@ class Card {
 
     if (this.point > 0) {
       context.font = "35px Arial";
-      context.fillText(this.point, this.x + 15, this.y + 45);
+      context.textAlign = "center";
+      context.fillText(this.point, this.x + 25, this.y + 45);
     }
   }
 
@@ -82,13 +104,15 @@ class Card {
     context.arc(x, y, 24, 0, 2 * Math.PI);
     context.stroke();
     context.fill();
+    context.textAlign = "center";
     context.fillStyle = "black";
     context.font = "30px Arial";
-    context.fillText(tokenNumber, x - 8 , y + 10);
+    context.fillText(tokenNumber, x, y + 10);
   }
 
-  drawCardContour(context, x, y, w, h, radius) {
-    roundedRectangle(x, y, w, h, radius, 3, "black");
+  drawCardContour(context, x, y, w, h, radius, isUnderCursor) {
+    let contourColor = isUnderCursor ? "yellow" : "black";
+    roundedRectangle(context, x, y, w, h, radius, 3, contourColor);
 
     context.moveTo(this.x + 0, this.y + 60);
     context.lineTo(this.x + 180, this.y + 60);

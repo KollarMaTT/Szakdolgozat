@@ -36,21 +36,29 @@ class TokenPanel {
   draw(context) {
     this.drawPanelContour(context, this.x, this.y, 1400, 90, 20);
     this.drawPanelElements(context);
-    this.drawPanelPointBox(context, this.x + 1250, this.y + 10, 120, 70, 10, this.point);
+    this.drawPanelPointBox(
+      context,
+      this.x + 1250,
+      this.y + 10,
+      120,
+      70,
+      10,
+      this.point
+    );
   }
 
   drawPanelContour(context, x, y, w, h, radius) {
-    roundedRectangle(x, y, w, h, radius, 3, "black");
+    roundedRectangle(context, x, y, w, h, radius, 3, "black");
     context.fillStyle = BACKGROUND;
     context.fill();
     context.stroke();
   }
 
   drawPanelPointBox(context, x, y, w, h, radius, value) {
-    roundedRectangle(x, y, w, h, radius, 5, "black");
+    roundedRectangle(context, x, y, w, h, radius, 5, "black");
 
     context.font = "bold 70px Arial";
-    context.textAlign= "center";
+    context.textAlign = "center";
     context.fillStyle = "black";
     context.fillText(value, x + 60, y + 60);
   }
@@ -72,19 +80,19 @@ class TokenPanel {
       let x = this.x + 15 + i * 240;
       let y = this.y + 10;
       let color = colors[i];
-      if(color == WHITE){
+      if (color == WHITE) {
         value = this.white;
         fixValue = this.fixWhite;
-      }else if(color == BLUE){
+      } else if (color == BLUE) {
         value = this.blue;
         fixValue = this.fixBlue;
-      }else if(color == GREEN){
+      } else if (color == GREEN) {
         value = this.green;
         fixValue = this.fixGreen;
-      }else if(color == RED){
+      } else if (color == RED) {
         value = this.red;
         fixValue = this.fixRed;
-      }else if(color == BLACK){
+      } else if (color == BLACK) {
         value = this.black;
         fixValue = this.fixBlack;
       }

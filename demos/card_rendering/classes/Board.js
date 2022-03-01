@@ -12,54 +12,46 @@ class Board {
     this.initAITokenPanel();
     this.initTokens();
     this.initDecks();
-    this.focusedCard = null;
   }
 
-  draw(context){
-    for(let card of this._cards){
+  draw(context) {
+    for (let card of this._cards) {
       card.draw(context);
     }
 
-    for(let token of this._tokens){
+    for (let token of this._tokens) {
       token.draw(context);
     }
 
     this._tokenPanel.draw(context);
     this._AItokenPanel.draw(context);
 
-    if(this.focusedCard != null){
-      roundedRectangle(this.focusedCard.x, this.focusedCard.y, 180, 200, 20, 3,  "yellow");
-    }
-
     //TODO: draw deck
-
   }
 
   initCards() {
-
     this._cards = [];
 
     let level1Cards = [];
-    for(let i=0;i<40;i++){
+    for (let i = 0; i < 40; i++) {
       level1Cards.push(CARDS[i]);
     }
-    
+
     shuffle(level1Cards);
 
     let level2Cards = [];
-    for(let i=40;i<70;i++){
+    for (let i = 40; i < 70; i++) {
       level2Cards.push(CARDS[i]);
     }
 
     shuffle(level2Cards);
 
     let level3Cards = [];
-    for(let i=70;i<90;i++){
+    for (let i = 70; i < 90; i++) {
       level3Cards.push(CARDS[i]);
     }
 
     shuffle(level3Cards);
-
 
     let slot = 0;
 
@@ -128,7 +120,7 @@ class Board {
   initTokenPanel() {
     let x = 250;
     let y = 870;
-    let panel = new TokenPanel(x, y, 1, 2, 3, 4, 5,6, 7, 8, 9, 10, 5);
+    let panel = new TokenPanel(x, y, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 
     this._tokenPanel = panel;
   }
@@ -136,26 +128,22 @@ class Board {
   initAITokenPanel() {
     let x = 250;
     let y = 15;
-    let panel = new TokenPanel(x, y, 1, 2, 3, 4, 5,6, 7, 8, 9, 10, 5);
+    let panel = new TokenPanel(x, y, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 
     this._AItokenPanel = panel;
   }
 
-
   initTokens() {
-
     this._tokens = [];
 
     let x = 1750;
 
     let colors = [WHITE, BLUE, GREEN, RED, BLACK];
-    let randValue = Math.floor(Math.random() * 6);
 
     for (let i = 0; i < colors.length; i++) {
       let y = 200 + i * 150;
-      let token = new Token(x, y, colors[i], randValue);
+      let token = new Token(x, y, colors[i], 7);
       this._tokens.push(token);
-      randValue = Math.floor(Math.random() * 5);
     }
   }
 
@@ -170,9 +158,16 @@ class Board {
   }
 }
 
-
-//TODO: context param
-function roundedRectangle(x, y, w, h, radius, lineWidth, contourColor) {
+function roundedRectangle(
+  context,
+  x,
+  y,
+  w,
+  h,
+  radius,
+  lineWidth,
+  contourColor
+) {
   var r = x + w;
   var b = y + h;
   context.beginPath();
@@ -190,97 +185,96 @@ function roundedRectangle(x, y, w, h, radius, lineWidth, contourColor) {
   context.stroke();
 }
 
-
-
-
 function shuffle(array) {
-  let currentIndex = array.length,  randomIndex;
+  let currentIndex = array.length,
+    randomIndex;
 
   while (currentIndex != 0) {
-
     randomIndex = Math.floor(Math.random() * currentIndex);
     currentIndex--;
 
     [array[currentIndex], array[randomIndex]] = [
-      array[randomIndex], array[currentIndex]];
+      array[randomIndex],
+      array[currentIndex],
+    ];
   }
 }
-
-
-
 
 function mouseDown(mouseEvent) {
   console.log("Click at (" + mouseEvent.x + ", " + mouseEvent.y + ")");
 
-
   pickCard(cardPosition(mouseEvent));
   pickToken(tokenPosition(mouseEvent));
-  
 }
 
-
-
-
-function pickCard(position){
-  if(position[0] > 0 && position[1] > 0){
-    console.log(`Picked card from ${position[0]}. row and ${position[1]}. column.`);
+function pickCard(position) {
+  if (position[0] > 0 && position[1] > 0) {
+    console.log(
+      `Picked card from ${position[0]}. row and ${position[1]}. column.`
+    );
   }
 }
 
-
-
-
-function pickToken(position){
-  if(position != 0){
+function pickToken(position) {
+  if (position != 0) {
     console.log(`Picked token from ${position}. row.`);
   }
 }
 
-
-
-
-function cardPosition(mouseEvent){
-  for(let i=0;i<12;i++){
-    if(i<4 && Math.floor((mouseEvent.x-(480+i*250))/180) == 0 && Math.floor((mouseEvent.y-630)/200) == 0){
-      return([3,i+1]);
-    }else if(i<8 && Math.floor((mouseEvent.x-(480+(i-4)*250))/180) == 0 && Math.floor((mouseEvent.y-390)/200) == 0 ){
-      return([2,i-3]);
-    }else if(i<12 && Math.floor((mouseEvent.x-(480+(i-8)*250))/180) == 0 && Math.floor((mouseEvent.y-150)/200) == 0 ){
-      return([1,i-7]);
+function cardPosition(mouseEvent) {
+  for (let i = 0; i < 12; i++) {
+    if (
+      i < 4 &&
+      Math.floor((mouseEvent.x - (480 + i * 250)) / 180) == 0 &&
+      Math.floor((mouseEvent.y - 630) / 200) == 0
+    ) {
+      return [3, i + 1];
+    } else if (
+      i < 8 &&
+      Math.floor((mouseEvent.x - (480 + (i - 4) * 250)) / 180) == 0 &&
+      Math.floor((mouseEvent.y - 390) / 200) == 0
+    ) {
+      return [2, i - 3];
+    } else if (
+      i < 12 &&
+      Math.floor((mouseEvent.x - (480 + (i - 8) * 250)) / 180) == 0 &&
+      Math.floor((mouseEvent.y - 150) / 200) == 0
+    ) {
+      return [1, i - 7];
     }
   }
   return 0;
 }
 
-
-
-
-function tokenPosition(mouseEvent){
-  for(let i=0;i<5;i++){
-    if(Math.floor((mouseEvent.x-1695)/105) == 0 && Math.floor((mouseEvent.y-(150+i*150))/100) == 0){
-      return(i+1);
+function tokenPosition(mouseEvent) {
+  for (let i = 0; i < 5; i++) {
+    if (
+      Math.floor((mouseEvent.x - 1695) / 105) == 0 &&
+      Math.floor((mouseEvent.y - (150 + i * 150)) / 100) == 0
+    ) {
+      return i + 1;
     }
   }
   return 0;
-  
 }
 
+function mouseOver(mouseEvent) {
+  /*
+  let r = cardPosition(mouseEvent)[0];
+  let c = cardPosition(mouseEvent)[1];
 
-function focusedCard(card){
+  if (r != null && c != null) {
+    let x = 480 + (c - 1) * 250;
+    let y = 150 + (r - 1) * 240;
+    console.log(x);
+    console.log(y);
 
-}
-
-
-function mouseOver(mouseEvent){
-  
-    let r = cardPosition(mouseEvent)[0];
-    let c = cardPosition(mouseEvent)[1];
-
-  if(r != 0 && c != 0){
-
-    let x = 480 + (c-1) * 250;
-    let y = 150 + (r-1) * 240;
-
-    roundedRectangle(x, y, 180, 200, 20, 3,  "yellow");
+    roundedRectangle(context, x, y, 180, 200, 20, 3, "yellow");
   }
+
+  console.log(cardPosition(mouseEvent)[0]);
+  let arr = cardPosition(mouseEvent);
+  if (arr[0] == 3 && arr[1] == 1) {
+    this._cards[0].isUnderCursor = true;
+  }*/
 }

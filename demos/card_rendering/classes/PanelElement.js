@@ -14,7 +14,16 @@ class PanelElement {
   }
 
   draw(context) {
-    roundedRectangle(this.x, this.y, this.w, this.h, this.radius, 3, "black");
+    roundedRectangle(
+      context,
+      this.x,
+      this.y,
+      this.w,
+      this.h,
+      this.radius,
+      3,
+      "black"
+    );
 
     context.fillStyle = this.color;
     context.fill();
@@ -28,11 +37,22 @@ class PanelElement {
     context.stroke();
 
     context.font = "50px Arial";
-    context.textAlign= "center";
+    context.textAlign = "center";
     context.fillStyle = "black";
-    context.fillText(this.value, this.x + 50, this.y + 55);
+    context.fillText(this.value, this.x + 50, this.y + 53);
+
+    roundedRectangle(
+      context,
+      this.x + 110,
+      this.y + 5,
+      this.w - 120,
+      this.h - 10,
+      this.radius,
+      3,
+      "black"
+    );
 
     context.font = "bold 50px Arial";
-    context.fillText(this.fixValue, this.x + 150, this.y + 55);
+    context.fillText(this.fixValue, this.x + 155, this.y + 53);
   }
 }
