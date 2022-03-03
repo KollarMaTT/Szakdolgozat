@@ -5,30 +5,14 @@ class TokenPanel {
   constructor(
     x,
     y,
-    white,
-    blue,
-    green,
-    red,
-    black,
-    fixWhite,
-    fixBlue,
-    fixGreen,
-    fixRed,
-    fixBlack,
+    colors,
+    fixColors,
     point
   ) {
     this.x = x;
     this.y = y;
-    this.white = white;
-    this.blue = blue;
-    this.green = green;
-    this.red = red;
-    this.black = black;
-    this.fixWhite = fixWhite;
-    this.fixBlue = fixBlue;
-    this.fixGreen = fixGreen;
-    this.fixRed = fixRed;
-    this.fixBlack = fixBlack;
+    this.colors = colors;
+    this.fixColors = fixColors;
     this.point = point;
     this.initPanelElements();
   }
@@ -70,33 +54,34 @@ class TokenPanel {
   }
 
   initPanelElements() {
-    let colors = [WHITE, BLUE, GREEN, RED, BLACK];
+    let colors = ["white", "blue", "green", "red", "black"];
+
+    let displayColors = {
+      "white": WHITE,
+      "blue": BLUE,
+      "green": GREEN,
+      "red": RED,
+      "black": BLACK
+    }
 
     this.panelElements = [];
     let value;
     let fixValue;
 
+    //console.log(this.fixColors);
+
     for (let i = 0; i < 5; i++) {
       let x = this.x + 15 + i * 240;
       let y = this.y + 10;
       let color = colors[i];
-      if (color == WHITE) {
-        value = this.white;
-        fixValue = this.fixWhite;
-      } else if (color == BLUE) {
-        value = this.blue;
-        fixValue = this.fixBlue;
-      } else if (color == GREEN) {
-        value = this.green;
-        fixValue = this.fixGreen;
-      } else if (color == RED) {
-        value = this.red;
-        fixValue = this.fixRed;
-      } else if (color == BLACK) {
-        value = this.black;
-        fixValue = this.fixBlack;
-      }
-      let panelElement = new PanelElement(x, y, color, value, fixValue);
+
+      //console.log(color);
+
+
+      value = this.colors[color];
+      fixValue = this.fixColors[color];
+
+      let panelElement = new PanelElement(x, y, displayColors[color], value, fixValue);
       this.panelElements.push(panelElement);
     }
   }

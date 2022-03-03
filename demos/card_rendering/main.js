@@ -14,10 +14,14 @@ function calcMouseEvent(event) {
 function mouseDown(event) {
   const mouse = calcMouseEvent(event);
   board.mouseDown(mouse);
+  context.clearRect(0, 0, canvas.width, canvas.height);
+  board.draw(context);
 }
 
 function mouseMove(event) {
   const mouse = calcMouseEvent(event);
+  board.mouseMove(mouse);
+  context.clearRect(0, 0, canvas.width, canvas.height);
   board.draw(context);
 }
 
@@ -31,10 +35,6 @@ function mouseWheel(event) {
   event.preventDefault();
 }
 
-function mouseOver(event) {
-  const mouse = calcMouseEvent(event);
-  board.mouseOver(mouse);
-}
 
 function initialize() {
   canvas = document.getElementById("my-canvas");
@@ -45,7 +45,6 @@ function initialize() {
   canvas.addEventListener("mousemove", mouseMove, false);
   canvas.addEventListener("mouseup", mouseUp, false);
   canvas.addEventListener("mousewheel", mouseWheel, false);
-  canvas.addEventListener("mouseover", mouseOver, false);
 
   board = new Board();
   board.draw(context);

@@ -11,7 +11,8 @@ class Board {
     this.initTokenPanel();
     this.initAITokenPanel();
     this.initTokens();
-    this.initDecks();
+    this._focusedCard = null;
+    this._focusedToken = null;
   }
 
   draw(context) {
@@ -26,7 +27,25 @@ class Board {
     this._tokenPanel.draw(context);
     this._AItokenPanel.draw(context);
 
-    //TODO: draw deck
+
+    var level1_deck = document.getElementById("level1_deck");
+    var level2_deck = document.getElementById("level2_deck");
+    var level3_deck = document.getElementById("level3_deck");
+    context.drawImage(level3_deck, 130, 150, 205, 205);
+    context.drawImage(level2_deck, 130, 390, 205, 205);
+    context.drawImage(level1_deck, 130, 630, 205, 205);
+
+    if(this._focusedCard != null){
+      roundedRectangle(context, this._focusedCard.x, this._focusedCard.y, 180, 200, 20, 3, "#F3E45F");
+    }
+
+    if(this._focusedToken != null){
+      context.strokeStyle = "#F3E45F";
+      context.lineWidth = "3";
+      context.beginPath();
+      context.arc(this._focusedToken.x, this._focusedToken.y, 50, 0, 2 * Math.PI);
+      context.stroke();
+    }
   }
 
   initCards() {
@@ -120,7 +139,25 @@ class Board {
   initTokenPanel() {
     let x = 250;
     let y = 870;
-    let panel = new TokenPanel(x, y, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+    //ugyanígy megcsinálni a kártya inicializálást
+    let colors = {
+      "white": 0,
+      "blue": 0,
+      "green": 0,
+      "red": 0,
+      "black": 0
+    }
+
+    let fixColors = {
+      "white": 0,
+      "blue": 0,
+      "green": 0,
+      "red": 0,
+      "black": 0
+    }
+    let panel = new TokenPanel(x, y, colors, fixColors, 0);
+
+    console.log(panel);
 
     this._tokenPanel = panel;
   }
@@ -142,22 +179,97 @@ class Board {
 
     for (let i = 0; i < colors.length; i++) {
       let y = 200 + i * 150;
-      let token = new Token(x, y, colors[i], 7);
+      let token = new Token(x, y, colors[i], 4);
       this._tokens.push(token);
     }
   }
+  
 
-  initDecks() {
-    var level1_deck = document.getElementById("level1_deck");
-    var level2_deck = document.getElementById("level2_deck");
-    var level3_deck = document.getElementById("level3_deck");
-
-    context.drawImage(level3_deck, 130, 150, 205, 205);
-    context.drawImage(level2_deck, 130, 390, 205, 205);
-    context.drawImage(level1_deck, 130, 630, 205, 205);
+  findCardAtCursor(mouseEvent) {
+    for (let i = 0; i < 12; i++) {
+      if (
+        i < 4 &&
+        Math.floor((mouseEvent.x - (480 + i * 250)) / 180) == 0 &&
+        Math.floor((mouseEvent.y - 630) / 200) == 0
+      ) {
+        return this._cards[i];
+      } else if (
+        i < 8 && i >= 4 &&
+        Math.floor((mouseEvent.x - (480 + (i - 4) * 250)) / 180) == 0 &&
+        Math.floor((mouseEvent.y - 390) / 200) == 0
+      ) {
+        return this._cards[i];
+      } else if (
+        i < 12 && i >= 8 &&
+        Math.floor((mouseEvent.x - (480 + (i - 8) * 250)) / 180) == 0 &&
+        Math.floor((mouseEvent.y - 150) / 200) == 0
+      ) {
+        return this._cards[i];
+      }
+    }
+    return null;
   }
+
+  findTokenAtCursor(mouseEvent) {
+    for (let i = 0; i < 5; i++) {
+      if (
+        Math.floor((mouseEvent.x - 1695) / 105) == 0 &&
+        Math.floor((mouseEvent.y - (150 + i * 150)) / 100) == 0
+      ) {
+        return this._tokens[i];
+      }
+    }
+    return null;
+  }
+
+  handleTokenExchange(mouseEvent){
+    let i = 0;
+    for(let token of this._tokens){
+      if(token == this.findTokenAtCursor(mouseEvent)){
+        this._tokens[i].value--;
+        this.increaseTokenPanel(this._tokens[i]);
+      }
+      i++;
+    }
+  }
+
+  increaseTokenPanel(token){
+    if(token.color == WHITE){
+      this._tokenPanel.white++;
+      console.log(this._tokenPanel);
+    }else if(token.color == BLUE){
+      this._tokenPanel.blue++;
+    }else if(token.color == GREEN){
+      this._tokenPanel.green++;
+    }else if(token.color == RED){
+      this._tokenPanel.red++;
+    }else if(token.color == BLACK){
+      this._tokenPanel.black++;
+    }
+  }
+
+  mouseDown(mouseEvent) {
+    console.log("Click at (" + mouseEvent.x + ", " + mouseEvent.y + ")");
+    this.handleTokenExchange(mouseEvent);
+  }
+
+
+  mouseMove(mouseEvent) {
+    this._focusedCard = this.findCardAtCursor(mouseEvent);
+    this._focusedToken = this.findTokenAtCursor(mouseEvent);
+
+    if(this._focusedCard == null && this._focusedToken == null){
+      canvas.style = "cursor : auto;";
+    }else{
+      canvas.style = "cursor : pointer;";
+    }
+  }
+
 }
 
+
+
+//ezeket külön osztályba megcsinálni
 function roundedRectangle(
   context,
   x,
@@ -200,81 +312,17 @@ function shuffle(array) {
   }
 }
 
-function mouseDown(mouseEvent) {
-  console.log("Click at (" + mouseEvent.x + ", " + mouseEvent.y + ")");
 
-  pickCard(cardPosition(mouseEvent));
-  pickToken(tokenPosition(mouseEvent));
-}
 
-function pickCard(position) {
-  if (position[0] > 0 && position[1] > 0) {
-    console.log(
-      `Picked card from ${position[0]}. row and ${position[1]}. column.`
-    );
-  }
-}
 
-function pickToken(position) {
-  if (position != 0) {
-    console.log(`Picked token from ${position}. row.`);
-  }
-}
-
-function cardPosition(mouseEvent) {
-  for (let i = 0; i < 12; i++) {
-    if (
-      i < 4 &&
-      Math.floor((mouseEvent.x - (480 + i * 250)) / 180) == 0 &&
-      Math.floor((mouseEvent.y - 630) / 200) == 0
-    ) {
-      return [3, i + 1];
-    } else if (
-      i < 8 &&
-      Math.floor((mouseEvent.x - (480 + (i - 4) * 250)) / 180) == 0 &&
-      Math.floor((mouseEvent.y - 390) / 200) == 0
-    ) {
-      return [2, i - 3];
-    } else if (
-      i < 12 &&
-      Math.floor((mouseEvent.x - (480 + (i - 8) * 250)) / 180) == 0 &&
-      Math.floor((mouseEvent.y - 150) / 200) == 0
-    ) {
-      return [1, i - 7];
+/* // ez a card osztályba valósul meg, így dönti el hogy a kurzor alatt van e az adott kártya
+function findCardAtCursor(mouseEvent) {
+  for(let card of cards){
+    if(card.isUnderCursor(mouseEvent)){
+      return card;
     }
   }
-  return 0;
+  return null;
 }
+*/
 
-function tokenPosition(mouseEvent) {
-  for (let i = 0; i < 5; i++) {
-    if (
-      Math.floor((mouseEvent.x - 1695) / 105) == 0 &&
-      Math.floor((mouseEvent.y - (150 + i * 150)) / 100) == 0
-    ) {
-      return i + 1;
-    }
-  }
-  return 0;
-}
-
-function mouseOver(mouseEvent) {
-  /*
-  let r = cardPosition(mouseEvent)[0];
-  let c = cardPosition(mouseEvent)[1];
-
-  if (r != null && c != null) {
-    let x = 480 + (c - 1) * 250;
-    let y = 150 + (r - 1) * 240;
-    console.log(x);
-    console.log(y);
-
-    roundedRectangle(context, x, y, 180, 200, 20, 3, "yellow");
-  }
-
-  console.log(cardPosition(mouseEvent)[0]);
-  let arr = cardPosition(mouseEvent);
-  if (arr[0] == 3 && arr[1] == 1) {
-    this._cards[0].isUnderCursor = true;
-  }*/
-}

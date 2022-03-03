@@ -20,7 +20,6 @@ class Card {
     green,
     red,
     black,
-    isUnderCursor
   ) {
     this.x = x;
     this.y = y;
@@ -32,7 +31,6 @@ class Card {
     this.green = green;
     this.red = red;
     this.black = black;
-    this.isUnderCursor = false;
   }
 
   draw(context) {
@@ -45,7 +43,6 @@ class Card {
       180,
       200,
       20,
-      this.isUnderCursor
     );
 
     this.drawCardToken(context, i, this.color, "");
@@ -110,9 +107,8 @@ class Card {
     context.fillText(tokenNumber, x, y + 10);
   }
 
-  drawCardContour(context, x, y, w, h, radius, isUnderCursor) {
-    let contourColor = isUnderCursor ? "yellow" : "black";
-    roundedRectangle(context, x, y, w, h, radius, 3, contourColor);
+  drawCardContour(context, x, y, w, h, radius) {
+    roundedRectangle(context, x, y, w, h, radius, 3, "black");
 
     context.moveTo(this.x + 0, this.y + 60);
     context.lineTo(this.x + 180, this.y + 60);
