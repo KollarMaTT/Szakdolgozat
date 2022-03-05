@@ -2,13 +2,7 @@
  * Syntax of the token panel
  */
 class TokenPanel {
-  constructor(
-    x,
-    y,
-    colors,
-    fixColors,
-    point
-  ) {
+  constructor(x, y, colors, fixColors, point) {
     this.x = x;
     this.y = y;
     this.colors = colors;
@@ -57,31 +51,32 @@ class TokenPanel {
     let colors = ["white", "blue", "green", "red", "black"];
 
     let displayColors = {
-      "white": WHITE,
-      "blue": BLUE,
-      "green": GREEN,
-      "red": RED,
-      "black": BLACK
-    }
+      white: WHITE,
+      blue: BLUE,
+      green: GREEN,
+      red: RED,
+      black: BLACK,
+    };
 
     this.panelElements = [];
     let value;
     let fixValue;
-
-    //console.log(this.fixColors);
 
     for (let i = 0; i < 5; i++) {
       let x = this.x + 15 + i * 240;
       let y = this.y + 10;
       let color = colors[i];
 
-      //console.log(color);
-
-
       value = this.colors[color];
       fixValue = this.fixColors[color];
 
-      let panelElement = new PanelElement(x, y, displayColors[color], value, fixValue);
+      let panelElement = new PanelElement(
+        x,
+        y,
+        displayColors[color],
+        value,
+        fixValue
+      );
       this.panelElements.push(panelElement);
     }
   }

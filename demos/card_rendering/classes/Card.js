@@ -9,18 +9,7 @@ const BACKGROUND = "#FFB266";
  * Syntax of the cards
  */
 class Card {
-  constructor(
-    x,
-    y,
-    level,
-    color,
-    point,
-    white,
-    blue,
-    green,
-    red,
-    black,
-  ) {
+  constructor(x, y, level, color, point, white, blue, green, red, black) {
     this.x = x;
     this.y = y;
     this.level = level;
@@ -36,14 +25,7 @@ class Card {
   draw(context) {
     var i = 0;
 
-    this.drawCardContour(
-      context,
-      this.x,
-      this.y,
-      180,
-      200,
-      20,
-    );
+    this.drawCardContour(context, this.x, this.y, 180, 200, 20);
 
     this.drawCardToken(context, i, this.color, "");
 
@@ -115,5 +97,14 @@ class Card {
     context.fillStyle = BACKGROUND;
     context.fill();
     context.stroke();
+  }
+
+  isUnderCursor(mouseEvent) {
+    if (
+      Math.floor((mouseEvent.x - this.x) / 180) == 0 &&
+      Math.floor((mouseEvent.y - this.y) / 200) == 0
+    ) {
+      return true;
+    } else return false;
   }
 }

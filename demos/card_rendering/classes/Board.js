@@ -27,7 +27,6 @@ class Board {
     this._tokenPanel.draw(context);
     this._AItokenPanel.draw(context);
 
-
     var level1_deck = document.getElementById("level1_deck");
     var level2_deck = document.getElementById("level2_deck");
     var level3_deck = document.getElementById("level3_deck");
@@ -35,15 +34,30 @@ class Board {
     context.drawImage(level2_deck, 130, 390, 205, 205);
     context.drawImage(level1_deck, 130, 630, 205, 205);
 
-    if(this._focusedCard != null){
-      roundedRectangle(context, this._focusedCard.x, this._focusedCard.y, 180, 200, 20, 3, "#F3E45F");
+    if (this._focusedCard != null) {
+      roundedRectangle(
+        context,
+        this._focusedCard.x,
+        this._focusedCard.y,
+        180,
+        200,
+        20,
+        3,
+        "#F3E45F"
+      );
     }
 
-    if(this._focusedToken != null){
+    if (this._focusedToken != null) {
       context.strokeStyle = "#F3E45F";
       context.lineWidth = "3";
       context.beginPath();
-      context.arc(this._focusedToken.x, this._focusedToken.y, 50, 0, 2 * Math.PI);
+      context.arc(
+        this._focusedToken.x,
+        this._focusedToken.y,
+        50,
+        0,
+        2 * Math.PI
+      );
       context.stroke();
     }
   }
@@ -77,6 +91,17 @@ class Board {
     while (slot < 4) {
       let x = 480 + slot * 250;
       let y = 630;
+      /*
+      let level1CardData = {
+        level: level1Cards[0].level,
+        color: level1Cards[0].color,
+        point: level1Cards[0].point,
+        white: level1Cards[0].white,
+        blue: level1Cards[0].blue,
+        green: level1Cards[0].green,
+        red: level1Cards[0].red,
+        black: level1Cards[0].black,
+      };*/
 
       let card = new Card(
         x,
@@ -139,25 +164,23 @@ class Board {
   initTokenPanel() {
     let x = 250;
     let y = 870;
-    //ugyanígy megcsinálni a kártya inicializálást
+    //TODO: ugyanígy megcsinálni a kártya inicializálást
     let colors = {
-      "white": 0,
-      "blue": 0,
-      "green": 0,
-      "red": 0,
-      "black": 0
-    }
+      white: 0,
+      blue: 0,
+      green: 0,
+      red: 0,
+      black: 0,
+    };
 
     let fixColors = {
-      "white": 0,
-      "blue": 0,
-      "green": 0,
-      "red": 0,
-      "black": 0
-    }
+      white: 0,
+      blue: 0,
+      green: 0,
+      red: 0,
+      black: 0,
+    };
     let panel = new TokenPanel(x, y, colors, fixColors, 0);
-
-    console.log(panel);
 
     this._tokenPanel = panel;
   }
@@ -165,7 +188,23 @@ class Board {
   initAITokenPanel() {
     let x = 250;
     let y = 15;
-    let panel = new TokenPanel(x, y, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+
+    let colors = {
+      white: 0,
+      blue: 0,
+      green: 0,
+      red: 0,
+      black: 0,
+    };
+
+    let fixColors = {
+      white: 0,
+      blue: 0,
+      green: 0,
+      red: 0,
+      black: 0,
+    };
+    let panel = new TokenPanel(x, y, colors, fixColors, 0);
 
     this._AItokenPanel = panel;
   }
@@ -183,28 +222,11 @@ class Board {
       this._tokens.push(token);
     }
   }
-  
 
   findCardAtCursor(mouseEvent) {
-    for (let i = 0; i < 12; i++) {
-      if (
-        i < 4 &&
-        Math.floor((mouseEvent.x - (480 + i * 250)) / 180) == 0 &&
-        Math.floor((mouseEvent.y - 630) / 200) == 0
-      ) {
-        return this._cards[i];
-      } else if (
-        i < 8 && i >= 4 &&
-        Math.floor((mouseEvent.x - (480 + (i - 4) * 250)) / 180) == 0 &&
-        Math.floor((mouseEvent.y - 390) / 200) == 0
-      ) {
-        return this._cards[i];
-      } else if (
-        i < 12 && i >= 8 &&
-        Math.floor((mouseEvent.x - (480 + (i - 8) * 250)) / 180) == 0 &&
-        Math.floor((mouseEvent.y - 150) / 200) == 0
-      ) {
-        return this._cards[i];
+    for (let card of this._cards) {
+      if (card.isUnderCursor(mouseEvent)) {
+        return card;
       }
     }
     return null;
@@ -222,10 +244,10 @@ class Board {
     return null;
   }
 
-  handleTokenExchange(mouseEvent){
+  handleTokenExchange(mouseEvent) {
     let i = 0;
-    for(let token of this._tokens){
-      if(token == this.findTokenAtCursor(mouseEvent)){
+    for (let token of this._tokens) {
+      if (token == this.findTokenAtCursor(mouseEvent)) {
         this._tokens[i].value--;
         this.increaseTokenPanel(this._tokens[i]);
       }
@@ -233,17 +255,16 @@ class Board {
     }
   }
 
-  increaseTokenPanel(token){
-    if(token.color == WHITE){
+  increaseTokenPanel(token) {
+    if (token.color == WHITE) {
       this._tokenPanel.white++;
-      console.log(this._tokenPanel);
-    }else if(token.color == BLUE){
+    } else if (token.color == BLUE) {
       this._tokenPanel.blue++;
-    }else if(token.color == GREEN){
+    } else if (token.color == GREEN) {
       this._tokenPanel.green++;
-    }else if(token.color == RED){
+    } else if (token.color == RED) {
       this._tokenPanel.red++;
-    }else if(token.color == BLACK){
+    } else if (token.color == BLACK) {
       this._tokenPanel.black++;
     }
   }
@@ -253,76 +274,14 @@ class Board {
     this.handleTokenExchange(mouseEvent);
   }
 
-
   mouseMove(mouseEvent) {
     this._focusedCard = this.findCardAtCursor(mouseEvent);
     this._focusedToken = this.findTokenAtCursor(mouseEvent);
 
-    if(this._focusedCard == null && this._focusedToken == null){
+    if (this._focusedCard == null && this._focusedToken == null) {
       canvas.style = "cursor : auto;";
-    }else{
+    } else {
       canvas.style = "cursor : pointer;";
     }
   }
-
 }
-
-
-
-//ezeket külön osztályba megcsinálni
-function roundedRectangle(
-  context,
-  x,
-  y,
-  w,
-  h,
-  radius,
-  lineWidth,
-  contourColor
-) {
-  var r = x + w;
-  var b = y + h;
-  context.beginPath();
-  context.strokeStyle = contourColor;
-  context.lineWidth = lineWidth;
-  context.moveTo(x + radius, y);
-  context.lineTo(r - radius, y);
-  context.quadraticCurveTo(r, y, r, y + radius);
-  context.lineTo(r, y + h - radius);
-  context.quadraticCurveTo(r, b, r - radius, b);
-  context.lineTo(x + radius, b);
-  context.quadraticCurveTo(x, b, x, b - radius);
-  context.lineTo(x, y + radius);
-  context.quadraticCurveTo(x, y, x + radius, y);
-  context.stroke();
-}
-
-function shuffle(array) {
-  let currentIndex = array.length,
-    randomIndex;
-
-  while (currentIndex != 0) {
-    randomIndex = Math.floor(Math.random() * currentIndex);
-    currentIndex--;
-
-    [array[currentIndex], array[randomIndex]] = [
-      array[randomIndex],
-      array[currentIndex],
-    ];
-  }
-}
-
-
-
-
-/* // ez a card osztályba valósul meg, így dönti el hogy a kurzor alatt van e az adott kártya
-function findCardAtCursor(mouseEvent) {
-  for(let card of cards){
-    if(card.isUnderCursor(mouseEvent)){
-      return card;
-    }
-  }
-  return null;
-}
-*/
-
