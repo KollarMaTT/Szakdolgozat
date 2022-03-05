@@ -91,7 +91,6 @@ class Board {
     while (slot < 4) {
       let x = 480 + slot * 250;
       let y = 630;
-      /*
       let level1CardData = {
         level: level1Cards[0].level,
         color: level1Cards[0].color,
@@ -101,20 +100,9 @@ class Board {
         green: level1Cards[0].green,
         red: level1Cards[0].red,
         black: level1Cards[0].black,
-      };*/
+      };
 
-      let card = new Card(
-        x,
-        y,
-        level1Cards[0].level,
-        level1Cards[0].color,
-        level1Cards[0].point,
-        level1Cards[0].white,
-        level1Cards[0].blue,
-        level1Cards[0].green,
-        level1Cards[0].red,
-        level1Cards[0].black
-      );
+      let card = new Card(x, y, level1CardData);
       this._cards.push(card);
       slot++;
       level1Cards.shift();
@@ -122,19 +110,18 @@ class Board {
     while (slot < 8) {
       let x = 480 + (slot - 4) * 250;
       let y = 390;
+      let level2CardData = {
+        level: level2Cards[0].level,
+        color: level2Cards[0].color,
+        point: level2Cards[0].point,
+        white: level2Cards[0].white,
+        blue: level2Cards[0].blue,
+        green: level2Cards[0].green,
+        red: level2Cards[0].red,
+        black: level2Cards[0].black,
+      };
 
-      let card = new Card(
-        x,
-        y,
-        level2Cards[0].level,
-        level2Cards[0].color,
-        level2Cards[0].point,
-        level2Cards[0].white,
-        level2Cards[0].blue,
-        level2Cards[0].green,
-        level2Cards[0].red,
-        level2Cards[0].black
-      );
+      let card = new Card(x, y, level2CardData);
       this._cards.push(card);
       slot++;
       level2Cards.shift();
@@ -142,19 +129,18 @@ class Board {
     while (slot < 12) {
       let x = 480 + (slot - 8) * 250;
       let y = 150;
+      let level3CardData = {
+        level: level3Cards[0].level,
+        color: level3Cards[0].color,
+        point: level3Cards[0].point,
+        white: level3Cards[0].white,
+        blue: level3Cards[0].blue,
+        green: level3Cards[0].green,
+        red: level3Cards[0].red,
+        black: level3Cards[0].black,
+      };
 
-      let card = new Card(
-        x,
-        y,
-        level3Cards[0].level,
-        level3Cards[0].color,
-        level3Cards[0].point,
-        level3Cards[0].white,
-        level3Cards[0].blue,
-        level3Cards[0].green,
-        level3Cards[0].red,
-        level3Cards[0].black
-      );
+      let card = new Card(x, y, level3CardData);
       this._cards.push(card);
       slot++;
       level3Cards.shift();
@@ -164,7 +150,6 @@ class Board {
   initTokenPanel() {
     let x = 250;
     let y = 870;
-    //TODO: ugyanígy megcsinálni a kártya inicializálást
     let colors = {
       white: 0,
       blue: 0,
@@ -257,20 +242,29 @@ class Board {
 
   increaseTokenPanel(token) {
     if (token.color == WHITE) {
-      this._tokenPanel.white++;
+      this._tokenPanel.colors.white++;
     } else if (token.color == BLUE) {
-      this._tokenPanel.blue++;
+      this._tokenPanel.colors.blue++;
     } else if (token.color == GREEN) {
-      this._tokenPanel.green++;
+      this._tokenPanel.colors.green++;
     } else if (token.color == RED) {
-      this._tokenPanel.red++;
+      this._tokenPanel.colors.red++;
     } else if (token.color == BLACK) {
-      this._tokenPanel.black++;
+      this._tokenPanel.colors.black++;
     }
   }
 
+  /*
+  pullCardFromDeck(mouseEvent) {
+    if (this.findCardAtCursor(mouseEvent) != null) {
+      if (this.findCardAtCursor(mouseEvent).data.level == 1) {
+        console.log(level1Cards);
+      }
+    }
+  }*/
+
   mouseDown(mouseEvent) {
-    console.log("Click at (" + mouseEvent.x + ", " + mouseEvent.y + ")");
+    //console.log("Click at (" + mouseEvent.x + ", " + mouseEvent.y + ")");
     this.handleTokenExchange(mouseEvent);
   }
 

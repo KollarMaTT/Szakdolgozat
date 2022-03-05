@@ -9,17 +9,10 @@ const BACKGROUND = "#FFB266";
  * Syntax of the cards
  */
 class Card {
-  constructor(x, y, level, color, point, white, blue, green, red, black) {
+  constructor(x, y, data) {
     this.x = x;
     this.y = y;
-    this.level = level;
-    this.color = color;
-    this.point = point;
-    this.white = white;
-    this.blue = blue;
-    this.green = green;
-    this.red = red;
-    this.black = black;
+    this.data = data;
   }
 
   draw(context) {
@@ -27,33 +20,33 @@ class Card {
 
     this.drawCardContour(context, this.x, this.y, 180, 200, 20);
 
-    this.drawCardToken(context, i, this.color, "");
+    this.drawCardToken(context, i, this.data.color, "");
 
-    if (this.white >= 1) {
+    if (this.data.white >= 1) {
       i++;
-      this.drawCardToken(context, i, WHITE, this.white);
+      this.drawCardToken(context, i, WHITE, this.data.white);
     }
-    if (this.blue >= 1) {
+    if (this.data.blue >= 1) {
       i++;
-      this.drawCardToken(context, i, BLUE, this.blue);
+      this.drawCardToken(context, i, BLUE, this.data.blue);
     }
-    if (this.green >= 1) {
+    if (this.data.green >= 1) {
       i++;
-      this.drawCardToken(context, i, GREEN, this.green);
+      this.drawCardToken(context, i, GREEN, this.data.green);
     }
-    if (this.red >= 1) {
+    if (this.data.red >= 1) {
       i++;
-      this.drawCardToken(context, i, RED, this.red);
+      this.drawCardToken(context, i, RED, this.data.red);
     }
-    if (this.black >= 1) {
+    if (this.data.black >= 1) {
       i++;
-      this.drawCardToken(context, i, BLACK, this.black);
+      this.drawCardToken(context, i, BLACK, this.data.black);
     }
 
-    if (this.point > 0) {
+    if (this.data.point > 0) {
       context.font = "35px Arial";
       context.textAlign = "center";
-      context.fillText(this.point, this.x + 25, this.y + 45);
+      context.fillText(this.data.point, this.x + 25, this.y + 45);
     }
   }
 
