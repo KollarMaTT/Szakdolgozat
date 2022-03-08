@@ -16,7 +16,7 @@ class Board {
   }
 
   draw(context) {
-    for (let card of this._cards) {
+    for (let card of this._cardsOnBorad) {
       card.draw(context);
     }
 
@@ -63,28 +63,29 @@ class Board {
   }
 
   initCards() {
-    this._cards = [];
+    this._cardsOnBorad = [];
 
-    let level1Cards = [];
+    this._level1Cards = [];
+    this._level2Cards = [];
+    this._level3Cards = [];
+
     for (let i = 0; i < 40; i++) {
-      level1Cards.push(CARDS[i]);
+      this._level1Cards.push(CARDS[i]);
     }
 
-    shuffle(level1Cards);
+    shuffle(this._level1Cards);
 
-    let level2Cards = [];
     for (let i = 40; i < 70; i++) {
-      level2Cards.push(CARDS[i]);
+      this._level2Cards.push(CARDS[i]);
     }
 
-    shuffle(level2Cards);
+    shuffle(this._level2Cards);
 
-    let level3Cards = [];
     for (let i = 70; i < 90; i++) {
-      level3Cards.push(CARDS[i]);
+      this._level3Cards.push(CARDS[i]);
     }
 
-    shuffle(level3Cards);
+    shuffle(this._level3Cards);
 
     let slot = 0;
 
@@ -92,58 +93,58 @@ class Board {
       let x = 480 + slot * 250;
       let y = 630;
       let level1CardData = {
-        level: level1Cards[0].level,
-        color: level1Cards[0].color,
-        point: level1Cards[0].point,
-        white: level1Cards[0].white,
-        blue: level1Cards[0].blue,
-        green: level1Cards[0].green,
-        red: level1Cards[0].red,
-        black: level1Cards[0].black,
+        level: this._level1Cards[0].level,
+        color: this._level1Cards[0].color,
+        point: this._level1Cards[0].point,
+        white: this._level1Cards[0].white,
+        blue: this._level1Cards[0].blue,
+        green: this._level1Cards[0].green,
+        red: this._level1Cards[0].red,
+        black: this._level1Cards[0].black,
       };
 
       let card = new Card(x, y, level1CardData);
-      this._cards.push(card);
+      this._cardsOnBorad.push(card);
       slot++;
-      level1Cards.shift();
+      this._level1Cards.shift();
     }
     while (slot < 8) {
       let x = 480 + (slot - 4) * 250;
       let y = 390;
       let level2CardData = {
-        level: level2Cards[0].level,
-        color: level2Cards[0].color,
-        point: level2Cards[0].point,
-        white: level2Cards[0].white,
-        blue: level2Cards[0].blue,
-        green: level2Cards[0].green,
-        red: level2Cards[0].red,
-        black: level2Cards[0].black,
+        level: this._level2Cards[0].level,
+        color: this._level2Cards[0].color,
+        point: this._level2Cards[0].point,
+        white: this._level2Cards[0].white,
+        blue: this._level2Cards[0].blue,
+        green: this._level2Cards[0].green,
+        red: this._level2Cards[0].red,
+        black: this._level2Cards[0].black,
       };
 
       let card = new Card(x, y, level2CardData);
-      this._cards.push(card);
+      this._cardsOnBorad.push(card);
       slot++;
-      level2Cards.shift();
+      this._level2Cards.shift();
     }
     while (slot < 12) {
       let x = 480 + (slot - 8) * 250;
       let y = 150;
       let level3CardData = {
-        level: level3Cards[0].level,
-        color: level3Cards[0].color,
-        point: level3Cards[0].point,
-        white: level3Cards[0].white,
-        blue: level3Cards[0].blue,
-        green: level3Cards[0].green,
-        red: level3Cards[0].red,
-        black: level3Cards[0].black,
+        level: this._level3Cards[0].level,
+        color: this._level3Cards[0].color,
+        point: this._level3Cards[0].point,
+        white: this._level3Cards[0].white,
+        blue: this._level3Cards[0].blue,
+        green: this._level3Cards[0].green,
+        red: this._level3Cards[0].red,
+        black: this._level3Cards[0].black,
       };
 
       let card = new Card(x, y, level3CardData);
-      this._cards.push(card);
+      this._cardsOnBorad.push(card);
       slot++;
-      level3Cards.shift();
+      this._level3Cards.shift();
     }
   }
 
@@ -209,7 +210,7 @@ class Board {
   }
 
   findCardAtCursor(mouseEvent) {
-    for (let card of this._cards) {
+    for (let card of this._cardsOnBorad) {
       if (card.isUnderCursor(mouseEvent)) {
         return card;
       }
@@ -254,18 +255,44 @@ class Board {
     }
   }
 
-  /*
-  pullCardFromDeck(mouseEvent) {
+  buyCard(mouseEvent) {
     if (this.findCardAtCursor(mouseEvent) != null) {
-      if (this.findCardAtCursor(mouseEvent).data.level == 1) {
-        console.log(level1Cards);
+      let i = 0;
+      for (let card of this._cardsOnBorad) {
+        if (card == this.findCardAtCursor(mouseEvent)) {
+          break;
+        } else {
+          i++;
+        }
+      }
+      if (this._cardsOnBorad[i].data.point > 0) {
+        this._tokenPanel.point += this._cardsOnBorad[i].data.point;
+      }
+      if (
+        this.findCardAtCursor(mouseEvent).data.level == 1 &&
+        this._level1Cards.length > 0
+      ) {
+        this._cardsOnBorad[i].data = this._level1Cards[0];
+        this._level1Cards.shift();
+      } else if (
+        this.findCardAtCursor(mouseEvent).data.level == 2 &&
+        this._level2Cards.length > 0
+      ) {
+        this._cardsOnBorad[i].data = this._level2Cards[0];
+        this._level2Cards.shift();
+      } else if (
+        this.findCardAtCursor(mouseEvent).data.level == 3 &&
+        this._level3Cards.length > 0
+      ) {
+        this._cardsOnBorad[i].data = this._level3Cards[0];
+        this._level3Cards.shift();
       }
     }
-  }*/
+  }
 
   mouseDown(mouseEvent) {
-    //console.log("Click at (" + mouseEvent.x + ", " + mouseEvent.y + ")");
     this.handleTokenExchange(mouseEvent);
+    this.buyCard(mouseEvent);
   }
 
   mouseMove(mouseEvent) {

@@ -16,37 +16,39 @@ class Card {
   }
 
   draw(context) {
-    var i = 0;
+    if (this.data != null) {
+      let i = 0;
 
-    this.drawCardContour(context, this.x, this.y, 180, 200, 20);
+      this.drawCardContour(context, this.x, this.y, 180, 200, 20);
 
-    this.drawCardToken(context, i, this.data.color, "");
+      this.drawCardToken(context, i, this.data.color, "");
 
-    if (this.data.white >= 1) {
-      i++;
-      this.drawCardToken(context, i, WHITE, this.data.white);
-    }
-    if (this.data.blue >= 1) {
-      i++;
-      this.drawCardToken(context, i, BLUE, this.data.blue);
-    }
-    if (this.data.green >= 1) {
-      i++;
-      this.drawCardToken(context, i, GREEN, this.data.green);
-    }
-    if (this.data.red >= 1) {
-      i++;
-      this.drawCardToken(context, i, RED, this.data.red);
-    }
-    if (this.data.black >= 1) {
-      i++;
-      this.drawCardToken(context, i, BLACK, this.data.black);
-    }
+      if (this.data.white >= 1) {
+        i++;
+        this.drawCardToken(context, i, WHITE, this.data.white);
+      }
+      if (this.data.blue >= 1) {
+        i++;
+        this.drawCardToken(context, i, BLUE, this.data.blue);
+      }
+      if (this.data.green >= 1) {
+        i++;
+        this.drawCardToken(context, i, GREEN, this.data.green);
+      }
+      if (this.data.red >= 1) {
+        i++;
+        this.drawCardToken(context, i, RED, this.data.red);
+      }
+      if (this.data.black >= 1) {
+        i++;
+        this.drawCardToken(context, i, BLACK, this.data.black);
+      }
 
-    if (this.data.point > 0) {
-      context.font = "35px Arial";
-      context.textAlign = "center";
-      context.fillText(this.data.point, this.x + 25, this.y + 45);
+      if (this.data.point > 0) {
+        context.font = "35px Arial";
+        context.textAlign = "center";
+        context.fillText(this.data.point, this.x + 25, this.y + 45);
+      }
     }
   }
 

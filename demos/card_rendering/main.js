@@ -35,6 +35,11 @@ function mouseWheel(event) {
   event.preventDefault();
 }
 
+function resize() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  board.draw(context);
+}
 
 function initialize() {
   canvas = document.getElementById("my-canvas");
@@ -48,4 +53,6 @@ function initialize() {
 
   board = new Board();
   board.draw(context);
+
+  resize();
 }
