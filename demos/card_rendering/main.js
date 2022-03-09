@@ -21,7 +21,6 @@ function mouseDown(event) {
 function mouseMove(event) {
   const mouse = calcMouseEvent(event);
   board.mouseMove(mouse);
-  context.clearRect(0, 0, canvas.width, canvas.height);
   board.draw(context);
 }
 
@@ -38,7 +37,14 @@ function mouseWheel(event) {
 function resize() {
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
+
+  /*
+  context.scale(canvas.width * 0.00053, canvas.height * 0.00103);
+  context.translate(canvas.width * 0.00053, canvas.height * 0.00103);
+  context.save();
   board.draw(context);
+  context.restore();
+  */
 }
 
 function initialize() {

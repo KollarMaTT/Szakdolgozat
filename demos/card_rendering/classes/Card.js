@@ -1,53 +1,53 @@
-const BLACK = "#686868";
 const WHITE = "#FFFFFF";
 const BLUE = "#5264FF";
 const GREEN = "#3FBA3F";
 const RED = "#FD3333";
+const BLACK = "#686868";
 const BACKGROUND = "#FFB266";
 
 /**
  * Syntax of the cards
  */
 class Card {
-  constructor(x, y, data) {
+  constructor(x, y, cardData) {
     this.x = x;
     this.y = y;
-    this.data = data;
+    this.cardData = cardData;
   }
 
   draw(context) {
-    if (this.data != null) {
+    if (this.cardData != null) {
       let i = 0;
 
       this.drawCardContour(context, this.x, this.y, 180, 200, 20);
 
-      this.drawCardToken(context, i, this.data.color, "");
+      this.drawCardToken(context, i, this.cardData.color, "");
 
-      if (this.data.white >= 1) {
+      if (this.cardData.white >= 1) {
         i++;
-        this.drawCardToken(context, i, WHITE, this.data.white);
+        this.drawCardToken(context, i, WHITE, this.cardData.white);
       }
-      if (this.data.blue >= 1) {
+      if (this.cardData.blue >= 1) {
         i++;
-        this.drawCardToken(context, i, BLUE, this.data.blue);
+        this.drawCardToken(context, i, BLUE, this.cardData.blue);
       }
-      if (this.data.green >= 1) {
+      if (this.cardData.green >= 1) {
         i++;
-        this.drawCardToken(context, i, GREEN, this.data.green);
+        this.drawCardToken(context, i, GREEN, this.cardData.green);
       }
-      if (this.data.red >= 1) {
+      if (this.cardData.red >= 1) {
         i++;
-        this.drawCardToken(context, i, RED, this.data.red);
+        this.drawCardToken(context, i, RED, this.cardData.red);
       }
-      if (this.data.black >= 1) {
+      if (this.cardData.black >= 1) {
         i++;
-        this.drawCardToken(context, i, BLACK, this.data.black);
+        this.drawCardToken(context, i, BLACK, this.cardData.black);
       }
 
-      if (this.data.point > 0) {
+      if (this.cardData.point > 0) {
         context.font = "35px Arial";
         context.textAlign = "center";
-        context.fillText(this.data.point, this.x + 25, this.y + 45);
+        context.fillText(this.cardData.point, this.x + 25, this.y + 45);
       }
     }
   }

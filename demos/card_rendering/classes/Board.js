@@ -230,30 +230,114 @@ class Board {
     return null;
   }
 
-  handleTokenExchange(mouseEvent) {
+  fillTokenPanel(mouseEvent) {
     let i = 0;
     for (let token of this._tokens) {
-      if (token == this.findTokenAtCursor(mouseEvent)) {
+      if (token == this.findTokenAtCursor(mouseEvent) && this._tokens[i].value > 0) {
         this._tokens[i].value--;
-        this.increaseTokenPanel(this._tokens[i]);
+        this.increaseTokenPanel(this._tokens[i].color, "basic");
       }
       i++;
     }
   }
 
-  increaseTokenPanel(token) {
-    if (token.color == WHITE) {
-      this._tokenPanel.colors.white++;
-    } else if (token.color == BLUE) {
-      this._tokenPanel.colors.blue++;
-    } else if (token.color == GREEN) {
-      this._tokenPanel.colors.green++;
-    } else if (token.color == RED) {
-      this._tokenPanel.colors.red++;
-    } else if (token.color == BLACK) {
-      this._tokenPanel.colors.black++;
+  increaseTokenPanel(color, valueType) {
+    if (color == WHITE) {
+      if(valueType == "basic"){
+        this._tokenPanel.colors.white++;
+      }else{
+        this._tokenPanel.fixColors.white++;
+      }
+    } if (color == BLUE) {
+      if(valueType == "basic"){
+        this._tokenPanel.colors.blue++;
+      }else{
+        this._tokenPanel.fixColors.blue++;
+      }
+    } if (color == GREEN) {
+      if(valueType == "basic"){
+        this._tokenPanel.colors.green++;
+      }else{
+        this._tokenPanel.fixColors.green++;
+      }
+    } if (color == RED) {
+      if(valueType == "basic"){
+        this._tokenPanel.colors.red++;
+      }else{
+        this._tokenPanel.fixColors.red++;
+      }
+    } if (color == BLACK) {
+      if(valueType == "basic"){
+        this._tokenPanel.colors.black++;
+      }else{
+        this._tokenPanel.fixColors.black++;
+      }
     }
   }
+
+  switchCard(mouseEvent, slot){
+    if (
+      this.findCardAtCursor(mouseEvent).cardData.level == 1 &&
+      this._level1Cards.length > 0
+    ) {
+      this._cardsOnBorad[slot].cardData = this._level1Cards[0];
+      this._level1Cards.shift();
+    } else if (
+      this.findCardAtCursor(mouseEvent).cardData.level == 2 &&
+      this._level2Cards.length > 0
+    ) {
+      this._cardsOnBorad[slot].cardData = this._level2Cards[0];
+      this._level2Cards.shift();
+    } else if (
+      this.findCardAtCursor(mouseEvent).cardData.level == 3 &&
+      this._level3Cards.length > 0
+    ) {
+      this._cardsOnBorad[slot].cardData = this._level3Cards[0];
+      this._level3Cards.shift();
+    }
+  }
+
+  handleTokenExchange(slot){
+    if(this._cardsOnBorad[slot].cardData.white > 0){
+      let diff = this._cardsOnBorad[slot].cardData.white - this._tokenPanel.fixColors.white;
+      console.log(diff);
+      if(diff > 0){
+        this._tokenPanel.colors.white -= diff;
+        this._tokens[0].value += diff;
+      }
+    }
+    if(this._cardsOnBorad[slot].cardData.blue > 0){
+      let diff = this._cardsOnBorad[slot].cardData.blue - this._tokenPanel.fixColors.blue;
+      if(diff > 0){
+        this._tokenPanel.colors.blue -= diff;
+        this._tokens[1].value += diff;
+      }
+    }
+    if(this._cardsOnBorad[slot].cardData.green > 0){
+      let diff = this._cardsOnBorad[slot].cardData.green - this._tokenPanel.fixColors.green;
+      if(diff > 0){
+        this._tokenPanel.colors.green -= diff;
+        this._tokens[2].value += diff;
+      }
+    }
+    if(this._cardsOnBorad[slot].cardData.red > 0){
+      let diff = this._cardsOnBorad[slot].cardData.red - this._tokenPanel.fixColors.red;
+      if(diff > 0){
+        this._tokenPanel.colors.red -= diff;
+        this._tokens[3].value += diff;
+      }
+    }
+    if(this._cardsOnBorad[slot].cardData.black > 0){
+      let diff = this._cardsOnBorad[slot].cardData.black - this._tokenPanel.fixColors.black;
+      if(diff > 0){
+        this._tokenPanel.colors.black -= diff;
+        this._tokens[4].value += diff;
+      }
+    }
+
+    this.increaseTokenPanel(this._cardsOnBorad[slot].cardData.color, "fixValue");
+  }
+
 
   buyCard(mouseEvent) {
     if (this.findCardAtCursor(mouseEvent) != null) {
@@ -265,33 +349,20 @@ class Board {
           i++;
         }
       }
-      if (this._cardsOnBorad[i].data.point > 0) {
-        this._tokenPanel.point += this._cardsOnBorad[i].data.point;
-      }
-      if (
-        this.findCardAtCursor(mouseEvent).data.level == 1 &&
-        this._level1Cards.length > 0
-      ) {
-        this._cardsOnBorad[i].data = this._level1Cards[0];
-        this._level1Cards.shift();
-      } else if (
-        this.findCardAtCursor(mouseEvent).data.level == 2 &&
-        this._level2Cards.length > 0
-      ) {
-        this._cardsOnBorad[i].data = this._level2Cards[0];
-        this._level2Cards.shift();
-      } else if (
-        this.findCardAtCursor(mouseEvent).data.level == 3 &&
-        this._level3Cards.length > 0
-      ) {
-        this._cardsOnBorad[i].data = this._level3Cards[0];
-        this._level3Cards.shift();
+      if(this._cardsOnBorad[i].cardData.white <= (this._tokenPanel.colors.white + this._tokenPanel.fixColors.white) 
+      && this._cardsOnBorad[i].cardData.blue <= (this._tokenPanel.colors.blue + this._tokenPanel.fixColors.blue) 
+      && this._cardsOnBorad[i].cardData.green <= (this._tokenPanel.colors.green + this._tokenPanel.fixColors.green) 
+      && this._cardsOnBorad[i].cardData.red <= (this._tokenPanel.colors.red + this._tokenPanel.fixColors.red) 
+      && this._cardsOnBorad[i].cardData.black <= (this._tokenPanel.colors.black + this._tokenPanel.fixColors.black)){
+        this._tokenPanel.point += this._cardsOnBorad[i].cardData.point;
+        this.handleTokenExchange(i);
+        this.switchCard(mouseEvent, i);
       }
     }
   }
 
   mouseDown(mouseEvent) {
-    this.handleTokenExchange(mouseEvent);
+    this.fillTokenPanel(mouseEvent);
     this.buyCard(mouseEvent);
   }
 

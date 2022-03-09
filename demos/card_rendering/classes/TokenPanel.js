@@ -13,8 +13,8 @@ class TokenPanel {
 
   draw(context) {
     this.drawPanelContour(context, this.x, this.y, 1400, 90, 20);
-    //KÉRDÉSES
-    this.initPanelElements();
+
+    //this.initPanelElements();
 
     this.drawPanelElements(context);
     this.drawPanelPointBox(
@@ -26,6 +26,7 @@ class TokenPanel {
       10,
       this.point
     );
+
   }
 
   drawPanelContour(context, x, y, w, h, radius) {
@@ -62,24 +63,20 @@ class TokenPanel {
     };
 
     this.panelElements = [];
-    let value;
-    let fixValue;
 
     for (let i = 0; i < 5; i++) {
       let x = this.x + 15 + i * 240;
       let y = this.y + 10;
       let color = colors[i];
 
-      value = this.colors[color];
-      fixValue = this.fixColors[color];
-
       let panelElement = new PanelElement(
         x,
         y,
-        displayColors[color],
-        value,
-        fixValue
+        this.colors,
+        this.fixColors,
+        displayColors[color]
       );
+
       this.panelElements.push(panelElement);
     }
   }

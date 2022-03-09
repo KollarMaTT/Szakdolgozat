@@ -2,15 +2,15 @@
  * Syntax of the panel elements
  */
 class PanelElement {
-  constructor(x, y, color, value, fixValue) {
+  constructor(x, y, colors, fixColors, ownColor) {
     this.x = x;
     this.y = y;
     this.w = 210;
     this.h = 70;
     this.radius = 20;
-    this.color = color;
-    this.value = value;
-    this.fixValue = fixValue;
+    this.colors = colors;
+    this.fixColors = fixColors;
+    this.ownColor = ownColor;
   }
 
   draw(context) {
@@ -25,7 +25,16 @@ class PanelElement {
       "black"
     );
 
-    context.fillStyle = this.color;
+    let usableColors = {
+      "#FFFFFF": "white",
+      "#5264FF": "blue",
+      "#3FBA3F": "green",
+      "#FD3333": "red",
+      "#686868": "black",
+    };
+
+
+    context.fillStyle = this.ownColor;
     context.fill();
     context.stroke();
 
@@ -39,7 +48,7 @@ class PanelElement {
     context.font = "50px Arial";
     context.textAlign = "center";
     context.fillStyle = "black";
-    context.fillText(this.value, this.x + 50, this.y + 53);
+    context.fillText(this.colors[usableColors[this.ownColor]], this.x + 50, this.y + 53);
 
     roundedRectangle(
       context,
@@ -53,6 +62,6 @@ class PanelElement {
     );
 
     context.font = "bold 50px Arial";
-    context.fillText(this.fixValue, this.x + 155, this.y + 53);
+    context.fillText(this.fixColors[usableColors[this.ownColor]], this.x + 155, this.y + 53);
   }
 }
