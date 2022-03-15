@@ -14,8 +14,6 @@ class TokenPanel {
   draw(context) {
     this.drawPanelContour(context, this.x, this.y, 1400, 90, 20);
 
-    //this.initPanelElements();
-
     this.drawPanelElements(context);
     this.drawPanelPointBox(
       context,

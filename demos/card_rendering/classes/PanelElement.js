@@ -33,7 +33,6 @@ class PanelElement {
       "#686868": "black",
     };
 
-
     context.fillStyle = this.ownColor;
     context.fill();
     context.stroke();
