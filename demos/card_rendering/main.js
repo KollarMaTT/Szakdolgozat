@@ -2,7 +2,7 @@ var canvas = null;
 var canvasPosition = null;
 var context = null;
 let board = null;
-const BOARD_HEIGHT = 970;
+const BOARD_HEIGHT = 937;
 const BOARD_WIDTH = 1920;
 
 function calcMouseEvent(event) {
@@ -40,20 +40,18 @@ function mouseWheel(event) {
   event.preventDefault();
 }
 
-function drawBoard(){
-  
-  
-  let boardHeight = (16/9)*canvas.height;
-  let scale = canvas.height/BOARD_HEIGHT;
-  let scale2 = canvas.width/BOARD_WIDTH;
+function drawBoard() {
+  let boardHeight = (16 / 9) * canvas.height;
+  let scale = canvas.height / BOARD_HEIGHT;
+  let scale2 = canvas.width / BOARD_WIDTH;
 
   context.save();
 
-  if((canvas.width/canvas.height) > (BOARD_WIDTH/BOARD_HEIGHT)){
-    context.translate((canvas.width - BOARD_WIDTH*scale)/2,0);
+  if (canvas.width / canvas.height > BOARD_WIDTH / BOARD_HEIGHT) {
+    context.translate((canvas.width - BOARD_WIDTH * scale) / 2, 0);
     context.scale(scale, scale);
-  }else{
-    context.translate(0,(canvas.height - BOARD_HEIGHT*scale2)/2);
+  } else {
+    context.translate(0, (canvas.height - BOARD_HEIGHT * scale2) / 2);
     context.scale(scale2, scale2);
   }
 
