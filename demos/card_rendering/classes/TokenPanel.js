@@ -24,7 +24,6 @@ class TokenPanel {
       10,
       this.point
     );
-
   }
 
   drawPanelContour(context, x, y, w, h, radius) {

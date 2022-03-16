@@ -7,16 +7,11 @@ const BOARD_WIDTH = 1920;
 let transform = null;
 
 function calcMouseEvent(event) {
-
-  let heightScale = canvas.height / BOARD_HEIGHT;
-  let widthScale = canvas.width / BOARD_WIDTH;
-
   let x = event.clientX - canvasPosition.left;
   let y = event.clientY - canvasPosition.top;
 
-  x = (x-transform.offset_x)/transform.scale;
-  y = (y-transform.offset_y)/transform.scale;
-
+  x = (x - transform.offset_x) / transform.scale;
+  y = (y - transform.offset_y) / transform.scale;
 
   return {
     x,
@@ -25,30 +20,30 @@ function calcMouseEvent(event) {
   };
 }
 
-function calcCenterAlign(canvas, preferred){
+function calcCenterAlign(canvas, preferred) {
   let canvasRatio = canvas.width / canvas.height;
   let preferredRatio = BOARD_WIDTH / BOARD_HEIGHT;
   let offset_x;
   let offset_y;
   let scale;
 
-  if(canvasRatio > preferredRatio){
-    scale = (canvas.height / preferred.height);
+  if (canvasRatio > preferredRatio) {
+    scale = canvas.height / preferred.height;
     let realWidth = scale * preferred.width;
-    offset_x = (canvas.width - realWidth)/2;
+    offset_x = (canvas.width - realWidth) / 2;
     offset_y = 0;
-  }else{
-    scale = (canvas.width / preferred.width);
+  } else {
+    scale = canvas.width / preferred.width;
     let realHeight = scale * preferred.height;
     offset_x = 0;
-    offset_y = (canvas.height - realHeight)/2;
+    offset_y = (canvas.height - realHeight) / 2;
   }
 
   return {
     offset_x,
     offset_y,
-    scale
-  }
+    scale,
+  };
 }
 
 function mouseDown(event) {
@@ -77,7 +72,7 @@ function mouseWheel(event) {
 
 function drawBoard() {
   context.save();
-  context.translate(transform.offset_x,transform.offset_y);;
+  context.translate(transform.offset_x, transform.offset_y);
   context.scale(transform.scale, transform.scale);
 
   board.draw(context);
@@ -88,7 +83,10 @@ function resize() {
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
 
-  transform = calcCenterAlign(canvas, {width: BOARD_WIDTH, height: BOARD_HEIGHT});
+  transform = calcCenterAlign(canvas, {
+    width: BOARD_WIDTH,
+    height: BOARD_HEIGHT,
+  });
 
   drawBoard();
 }
