@@ -8,11 +8,12 @@ var context = null;
 class Board {
   constructor() {
     this.initCards();
-    this.initTokenPanel();
-    this.initAITokenPanel();
+    this.initPlayers();
+    this.initTokenPanels();
     this.initTokens();
     this._focusedCard = null;
     this._focusedToken = null;
+    this._playerIndex = 0;
   }
 
   draw(context) {
@@ -20,12 +21,13 @@ class Board {
       card.draw(context);
     }
 
+
     for (let token of this._tokens) {
       token.draw(context);
     }
 
     this._tokenPanel.draw(context);
-    this._AItokenPanel.draw(context);
+    this._AITokenPanel.draw(context);
 
     var level1_deck = document.getElementById("level1_deck");
     var level2_deck = document.getElementById("level2_deck");
@@ -88,111 +90,77 @@ class Board {
     shuffle(this._level3Cards);
 
     let slot = 0;
+    let card;
 
-    while (slot < 4) {
-      let x = 480 + slot * 250;
-      let y = 630;
-      let level1CardData = {
-        level: this._level1Cards[0].level,
-        color: this._level1Cards[0].color,
-        point: this._level1Cards[0].point,
-        white: this._level1Cards[0].white,
-        blue: this._level1Cards[0].blue,
-        green: this._level1Cards[0].green,
-        red: this._level1Cards[0].red,
-        black: this._level1Cards[0].black,
-      };
 
-      let card = new Card(x, y, level1CardData);
-      this._cardsOnBorad.push(card);
-      slot++;
-      this._level1Cards.shift();
-    }
-    while (slot < 8) {
-      let x = 480 + (slot - 4) * 250;
-      let y = 390;
-      let level2CardData = {
-        level: this._level2Cards[0].level,
-        color: this._level2Cards[0].color,
-        point: this._level2Cards[0].point,
-        white: this._level2Cards[0].white,
-        blue: this._level2Cards[0].blue,
-        green: this._level2Cards[0].green,
-        red: this._level2Cards[0].red,
-        black: this._level2Cards[0].black,
-      };
+    for(let i = 0; i < 3; i++){
+      for(let j = 0; j < 4; j++){
+        slot = i * 4 + j;
+        let x = j * 250 + 480;
+        let y = 630 - i * 240;
 
-      let card = new Card(x, y, level2CardData);
-      this._cardsOnBorad.push(card);
-      slot++;
-      this._level2Cards.shift();
-    }
-    while (slot < 12) {
-      let x = 480 + (slot - 8) * 250;
-      let y = 150;
-      let level3CardData = {
-        level: this._level3Cards[0].level,
-        color: this._level3Cards[0].color,
-        point: this._level3Cards[0].point,
-        white: this._level3Cards[0].white,
-        blue: this._level3Cards[0].blue,
-        green: this._level3Cards[0].green,
-        red: this._level3Cards[0].red,
-        black: this._level3Cards[0].black,
-      };
+        if(i == 0){
+          let level1CardData = {
+            level: this._level1Cards[0].level,
+            color: this._level1Cards[0].color,
+            point: this._level1Cards[0].point,
+            white: this._level1Cards[0].white,
+            blue: this._level1Cards[0].blue,
+            green: this._level1Cards[0].green,
+            red: this._level1Cards[0].red,
+            black: this._level1Cards[0].black,
+          };
 
-      let card = new Card(x, y, level3CardData);
-      this._cardsOnBorad.push(card);
-      slot++;
-      this._level3Cards.shift();
+          card = new Card(x, y, level1CardData);
+          this._level1Cards.shift();
+
+        }else if(i == 1){
+          let level2CardData = {
+            level: this._level2Cards[0].level,
+            color: this._level2Cards[0].color,
+            point: this._level2Cards[0].point,
+            white: this._level2Cards[0].white,
+            blue: this._level2Cards[0].blue,
+            green: this._level2Cards[0].green,
+            red: this._level2Cards[0].red,
+            black: this._level2Cards[0].black,
+          };
+
+          card = new Card(x, y, level2CardData);
+          this._level2Cards.shift();
+        }else if(i == 2){
+          let level3CardData = {
+            level: this._level3Cards[0].level,
+            color: this._level3Cards[0].color,
+            point: this._level3Cards[0].point,
+            white: this._level3Cards[0].white,
+            blue: this._level3Cards[0].blue,
+            green: this._level3Cards[0].green,
+            red: this._level3Cards[0].red,
+            black: this._level3Cards[0].black,
+          };
+    
+          card = new Card(x, y, level3CardData);
+          this._level3Cards.shift();
+        }
+        this._cardsOnBorad.push(card);
+      }
     }
   }
 
-  initTokenPanel() {
-    let x = 250;
-    let y = 870;
-    let colors = {
-      white: 0,
-      blue: 0,
-      green: 0,
-      red: 0,
-      black: 0,
-    };
+  initPlayers(){
 
-    let fixColors = {
-      white: 0,
-      blue: 0,
-      green: 0,
-      red: 0,
-      black: 0,
-    };
-    let panel = new TokenPanel(x, y, colors, fixColors, 0);
+    this._prevClick = [];
+    
+    let humanPlayer = new Player();
+    let AIPlayer = new Player();
 
-    this._tokenPanel = panel;
+    this._players = [humanPlayer, AIPlayer];
   }
 
-  initAITokenPanel() {
-    let x = 250;
-    let y = 15;
-
-    let colors = {
-      white: 0,
-      blue: 0,
-      green: 0,
-      red: 0,
-      black: 0,
-    };
-
-    let fixColors = {
-      white: 0,
-      blue: 0,
-      green: 0,
-      red: 0,
-      black: 0,
-    };
-    let panel = new TokenPanel(x, y, colors, fixColors, 0);
-
-    this._AItokenPanel = panel;
+  initTokenPanels() {
+    this._tokenPanel = new TokenPanel(250, 870, this._players[0].colors, this._players[0].fixColors, 0);
+    this._AITokenPanel = new TokenPanel(250, 15, this._players[1].colors, this._players[1].fixColors, 0);
   }
 
   initTokens() {
@@ -217,6 +185,7 @@ class Board {
     }
     return null;
   }
+
 
   findTokenAtCursor(mouseEvent) {
     for (let i = 0; i < 5; i++) {
@@ -244,33 +213,33 @@ class Board {
   increaseTokenPanel(color, valueType) {
     if (color == WHITE) {
       if(valueType == "basic"){
-        this._tokenPanel.colors.white++;
+        this._players[this._playerIndex].colors.white++;
       }else{
-        this._tokenPanel.fixColors.white++;
+        this._players[this._playerIndex].fixColors.white++;
       }
     } if (color == BLUE) {
       if(valueType == "basic"){
-        this._tokenPanel.colors.blue++;
+        this._players[this._playerIndex].colors.blue++;
       }else{
-        this._tokenPanel.fixColors.blue++;
+        this._players[this._playerIndex].fixColors.blue++;
       }
     } if (color == GREEN) {
       if(valueType == "basic"){
-        this._tokenPanel.colors.green++;
+        this._players[this._playerIndex].colors.green++;
       }else{
-        this._tokenPanel.fixColors.green++;
+        this._players[this._playerIndex].fixColors.green++;
       }
     } if (color == RED) {
       if(valueType == "basic"){
-        this._tokenPanel.colors.red++;
+        this._players[this._playerIndex].colors.red++;
       }else{
-        this._tokenPanel.fixColors.red++;
+        this._players[this._playerIndex].fixColors.red++;
       }
     } if (color == BLACK) {
       if(valueType == "basic"){
-        this._tokenPanel.colors.black++;
+        this._players[this._playerIndex].colors.black++;
       }else{
-        this._tokenPanel.fixColors.black++;
+        this._players[this._playerIndex].fixColors.black++;
       }
     }
   }
@@ -299,38 +268,37 @@ class Board {
 
   handleTokenExchange(slot){
     if(this._cardsOnBorad[slot].cardData.white > 0){
-      let diff = this._cardsOnBorad[slot].cardData.white - this._tokenPanel.fixColors.white;
-      console.log(diff);
+      let diff = this._cardsOnBorad[slot].cardData.white - this._players[this._playerIndex].fixColors.white;
       if(diff > 0){
-        this._tokenPanel.colors.white -= diff;
+        this._players[this._playerIndex].colors.white -= diff;
         this._tokens[0].value += diff;
       }
     }
     if(this._cardsOnBorad[slot].cardData.blue > 0){
-      let diff = this._cardsOnBorad[slot].cardData.blue - this._tokenPanel.fixColors.blue;
+      let diff = this._cardsOnBorad[slot].cardData.blue - this._players[this._playerIndex].fixColors.blue;
       if(diff > 0){
-        this._tokenPanel.colors.blue -= diff;
+        this._players[this._playerIndex].colors.blue -= diff;
         this._tokens[1].value += diff;
       }
     }
     if(this._cardsOnBorad[slot].cardData.green > 0){
-      let diff = this._cardsOnBorad[slot].cardData.green - this._tokenPanel.fixColors.green;
+      let diff = this._cardsOnBorad[slot].cardData.green - this._players[this._playerIndex].fixColors.green;
       if(diff > 0){
-        this._tokenPanel.colors.green -= diff;
+        this._players[this._playerIndex].colors.green -= diff;
         this._tokens[2].value += diff;
       }
     }
     if(this._cardsOnBorad[slot].cardData.red > 0){
-      let diff = this._cardsOnBorad[slot].cardData.red - this._tokenPanel.fixColors.red;
+      let diff = this._cardsOnBorad[slot].cardData.red - this._players[this._playerIndex].fixColors.red;
       if(diff > 0){
-        this._tokenPanel.colors.red -= diff;
+        this._players[this._playerIndex].colors.red -= diff;
         this._tokens[3].value += diff;
       }
     }
     if(this._cardsOnBorad[slot].cardData.black > 0){
-      let diff = this._cardsOnBorad[slot].cardData.black - this._tokenPanel.fixColors.black;
+      let diff = this._cardsOnBorad[slot].cardData.black - this._players[this._playerIndex].fixColors.black;
       if(diff > 0){
-        this._tokenPanel.colors.black -= diff;
+        this._players[this._playerIndex].colors.black -= diff;
         this._tokens[4].value += diff;
       }
     }
@@ -349,19 +317,28 @@ class Board {
           i++;
         }
       }
-      if(this._cardsOnBorad[i].cardData.white <= (this._tokenPanel.colors.white + this._tokenPanel.fixColors.white) 
-      && this._cardsOnBorad[i].cardData.blue <= (this._tokenPanel.colors.blue + this._tokenPanel.fixColors.blue) 
-      && this._cardsOnBorad[i].cardData.green <= (this._tokenPanel.colors.green + this._tokenPanel.fixColors.green) 
-      && this._cardsOnBorad[i].cardData.red <= (this._tokenPanel.colors.red + this._tokenPanel.fixColors.red) 
-      && this._cardsOnBorad[i].cardData.black <= (this._tokenPanel.colors.black + this._tokenPanel.fixColors.black)){
-        this._tokenPanel.point += this._cardsOnBorad[i].cardData.point;
+
+      if(this._cardsOnBorad[i].cardData.white <= (this._players[this._playerIndex].colors.white + this._players[this._playerIndex].fixColors.white) 
+      && this._cardsOnBorad[i].cardData.blue <= (this._players[this._playerIndex].colors.blue + this._players[this._playerIndex].fixColors.blue) 
+      && this._cardsOnBorad[i].cardData.green <= (this._players[this._playerIndex].colors.green + this._players[this._playerIndex].fixColors.green) 
+      && this._cardsOnBorad[i].cardData.red <= (this._players[this._playerIndex].colors.red + this._players[this._playerIndex].fixColors.red) 
+      && this._cardsOnBorad[i].cardData.black <= (this._players[this._playerIndex].colors.black + this._players[this._playerIndex].fixColors.black)){
+        this._players[this._playerIndex].point += this._cardsOnBorad[i].cardData.point;
         this.handleTokenExchange(i);
         this.switchCard(mouseEvent, i);
       }
+      this._prevClick.push("card");
     }
   }
 
+  selectNextPlayer(){
+    this._playerIndex = (this._playerIndex + 1 ) % this._players.length;
+  }
+
   mouseDown(mouseEvent) {
+    if(this._prevClick[this._prevClick.length-1] == "card"){
+      this.selectNextPlayer();
+    }
     this.fillTokenPanel(mouseEvent);
     this.buyCard(mouseEvent);
   }
