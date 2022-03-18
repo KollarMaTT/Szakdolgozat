@@ -2,12 +2,12 @@
  * Syntax of the token panel
  */
 class TokenPanel {
-  constructor(x, y, colors, fixColors, point) {
+  constructor(x, y, colors, fixColors, score) {
     this.x = x;
     this.y = y;
     this.colors = colors;
     this.fixColors = fixColors;
-    this.point = point;
+    this.score = score;
     this.initPanelElements();
   }
 
@@ -15,14 +15,14 @@ class TokenPanel {
     this.drawPanelContour(context, this.x, this.y, 1400, 90, 20);
 
     this.drawPanelElements(context);
-    this.drawPanelPointBox(
+    this.drawPanelScoreBox(
       context,
       this.x + 1250,
       this.y + 10,
       120,
       70,
       10,
-      this.point
+      this.score.value
     );
   }
 
@@ -33,7 +33,7 @@ class TokenPanel {
     context.stroke();
   }
 
-  drawPanelPointBox(context, x, y, w, h, radius, value) {
+  drawPanelScoreBox(context, x, y, w, h, radius, value) {
     roundedRectangle(context, x, y, w, h, radius, 5, "black");
 
     context.font = "bold 70px Arial";

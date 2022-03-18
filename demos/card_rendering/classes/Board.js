@@ -13,6 +13,8 @@ class Board {
     this.initTokens();
     this._focusedCard = null;
     this._focusedToken = null;
+    this._availableCards = [];
+    this._notAvailableTokens = [];
     this._playerIndex = 0;
   }
 
@@ -25,6 +27,12 @@ class Board {
       token.draw(context);
     }
 
+    this.drawCardHover(context);
+    this.drawTokenHover(context);
+
+    this.showAvailableCards(context);
+    this.showNotAvailableTokens(context);
+
     this._tokenPanel.draw(context);
     this._AITokenPanel.draw(context);
 
@@ -34,33 +42,6 @@ class Board {
     context.drawImage(level3_deck, 130, 150, 205, 205);
     context.drawImage(level2_deck, 130, 390, 205, 205);
     context.drawImage(level1_deck, 130, 630, 205, 205);
-
-    if (this._focusedCard != null) {
-      roundedRectangle(
-        context,
-        this._focusedCard.x,
-        this._focusedCard.y,
-        180,
-        200,
-        20,
-        3,
-        "#F3E45F"
-      );
-    }
-
-    if (this._focusedToken != null) {
-      context.strokeStyle = "#F3E45F";
-      context.lineWidth = "3";
-      context.beginPath();
-      context.arc(
-        this._focusedToken.x,
-        this._focusedToken.y,
-        50,
-        0,
-        2 * Math.PI
-      );
-      context.stroke();
-    }
   }
 
   initCards() {
@@ -160,14 +141,14 @@ class Board {
       870,
       this._players[0].colors,
       this._players[0].fixColors,
-      this._players[0].point
+      this._players[0].score
     );
     this._AITokenPanel = new TokenPanel(
       250,
       15,
       this._players[1].colors,
       this._players[1].fixColors,
-      this._players[1].point
+      this._players[1].score
     );
   }
 
@@ -206,15 +187,16 @@ class Board {
     return null;
   }
 
-  fillTokenPanel(mouseEvent) {
+  buyToken(mouseEvent) {
     let i = 0;
     for (let token of this._tokens) {
       if (
         token == this.findTokenAtCursor(mouseEvent) &&
-        this._tokens[i].value > 0
+        this.isTokenAvailable(token)
       ) {
-        this._tokens[i].value--;
-        this.increaseTokenPanel(this._tokens[i].color, "basic");
+        token.value--;
+        this.increaseTokenPanel(token.color, "basic");
+        this._prevClick.push(token.color);
       }
       i++;
     }
@@ -345,23 +327,10 @@ class Board {
       }
 
       if (
-        this._cardsOnBorad[i].cardData.white <=
-          this._players[this._playerIndex].colors.white +
-            this._players[this._playerIndex].fixColors.white &&
-        this._cardsOnBorad[i].cardData.blue <=
-          this._players[this._playerIndex].colors.blue +
-            this._players[this._playerIndex].fixColors.blue &&
-        this._cardsOnBorad[i].cardData.green <=
-          this._players[this._playerIndex].colors.green +
-            this._players[this._playerIndex].fixColors.green &&
-        this._cardsOnBorad[i].cardData.red <=
-          this._players[this._playerIndex].colors.red +
-            this._players[this._playerIndex].fixColors.red &&
-        this._cardsOnBorad[i].cardData.black <=
-          this._players[this._playerIndex].colors.black +
-            this._players[this._playerIndex].fixColors.black
+        this.isCardAvailable(this._cardsOnBorad[i]) &&
+        this._prevClick.length == 0
       ) {
-        this._players[this._playerIndex].point +=
+        this._players[this._playerIndex].score.value +=
           this._cardsOnBorad[i].cardData.point;
         this.handleTokenExchange(i);
         this.switchCard(mouseEvent, i);
@@ -370,20 +339,148 @@ class Board {
     }
   }
 
+  isCardAvailable(card) {
+    if (
+      card.cardData.white <=
+        this._players[this._playerIndex].colors.white +
+          this._players[this._playerIndex].fixColors.white &&
+      card.cardData.blue <=
+        this._players[this._playerIndex].colors.blue +
+          this._players[this._playerIndex].fixColors.blue &&
+      card.cardData.green <=
+        this._players[this._playerIndex].colors.green +
+          this._players[this._playerIndex].fixColors.green &&
+      card.cardData.red <=
+        this._players[this._playerIndex].colors.red +
+          this._players[this._playerIndex].fixColors.red &&
+      card.cardData.black <=
+        this._players[this._playerIndex].colors.black +
+          this._players[this._playerIndex].fixColors.black
+    ) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  isTokenAvailable(token) {
+    if (
+      token.value > 0 &&
+      token.color != this._prevClick[1] &&
+      ((this._prevClick.length >= 2 && token.color != this._prevClick[0]) ||
+        this._prevClick.length < 2) &&
+      (this._prevClick[0] != token.color || token.value >= 3)
+    ) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  drawCardHover(context) {
+    if (this._focusedCard != null) {
+      roundedRectangle(
+        context,
+        this._focusedCard.x,
+        this._focusedCard.y,
+        180,
+        200,
+        20,
+        3,
+        "#F3E45F"
+      );
+    }
+  }
+
+  drawTokenHover(context) {
+    if (this._focusedToken != null) {
+      context.strokeStyle = "#F3E45F";
+      context.lineWidth = "3";
+      context.beginPath();
+      context.arc(
+        this._focusedToken.x,
+        this._focusedToken.y,
+        50,
+        0,
+        2 * Math.PI
+      );
+      context.stroke();
+    }
+  }
+
+  selectAvailableCards() {
+    for (let card of this._cardsOnBorad) {
+      if (this.isCardAvailable(card)) {
+        this._availableCards.push(card);
+      }
+    }
+  }
+
+  showAvailableCards(context) {
+    if (this._availableCards != null && this._prevClick.length == 0) {
+      for (let card of this._availableCards) {
+        roundedRectangle(
+          context,
+          card.x - 1.5,
+          card.y - 1.5,
+          183,
+          203,
+          20,
+          1,
+          "#62F275"
+        );
+      }
+    }
+  }
+
+  selectNotAvailableTokens() {
+    for (let token of this._tokens) {
+      if (!this.isTokenAvailable(token)) {
+        this._notAvailableTokens.push(token);
+      }
+    }
+  }
+
+  showNotAvailableTokens(context) {
+    if (this._notAvailableTokens != null) {
+      for (let token of this._notAvailableTokens) {
+        context.strokeStyle = "#AFAFAF";
+        context.lineWidth = "1";
+        context.beginPath();
+        context.arc(token.x, token.y, 53, 0, 2 * Math.PI);
+        context.stroke();
+      }
+    }
+  }
+
   selectNextPlayer() {
-    this._playerIndex = (this._playerIndex + 1) % this._players.length;
+    if (
+      this._prevClick[0] == "card" ||
+      (this._prevClick.length == 2 &&
+        this._prevClick[0] == this._prevClick[1]) ||
+      (this._prevClick.length == 3 &&
+        this._prevClick[0] != this._prevClick[1] &&
+        this._prevClick[1] != this._prevClick[2] &&
+        this._prevClick[0] != this._prevClick[2])
+    ) {
+      this._availableCards = [];
+      this._notAvailableTokens = [];
+      this._prevClick = [];
+      this._playerIndex = (this._playerIndex + 1) % this._players.length;
+    }
   }
 
   mouseDown(mouseEvent) {
-    if (this._prevClick[this._prevClick.length - 1] == "card") {
-      this._prevClick = [];
-      this.selectNextPlayer();
-    }
-    this.fillTokenPanel(mouseEvent);
+    this.buyToken(mouseEvent);
     this.buyCard(mouseEvent);
   }
 
   mouseMove(mouseEvent) {
+    this.selectNextPlayer();
+
+    this.selectAvailableCards();
+    this.selectNotAvailableTokens();
+
     this._focusedCard = this.findCardAtCursor(mouseEvent);
     this._focusedToken = this.findTokenAtCursor(mouseEvent);
 

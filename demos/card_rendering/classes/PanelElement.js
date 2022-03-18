@@ -47,7 +47,11 @@ class PanelElement {
     context.font = "50px Arial";
     context.textAlign = "center";
     context.fillStyle = "black";
-    context.fillText(this.colors[usableColors[this.ownColor]], this.x + 50, this.y + 53);
+    context.fillText(
+      this.colors[usableColors[this.ownColor]],
+      this.x + 50,
+      this.y + 53
+    );
 
     roundedRectangle(
       context,
@@ -61,6 +65,10 @@ class PanelElement {
     );
 
     context.font = "bold 50px Arial";
-    context.fillText(this.fixColors[usableColors[this.ownColor]], this.x + 155, this.y + 53);
+    context.fillText(
+      this.fixColors[usableColors[this.ownColor]],
+      this.x + 155,
+      this.y + 53
+    );
   }
 }

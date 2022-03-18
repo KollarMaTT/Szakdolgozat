@@ -19,6 +19,8 @@ class Player {
       black: 0,
     };
 
-    this.point = 0;
+    this.score = {
+      value: 0,
+    };
   }
 }
