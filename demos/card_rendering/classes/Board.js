@@ -30,6 +30,11 @@ class Board {
     this._tokenPanel.draw(context);
     this._AITokenPanel.draw(context);
 
+    context.shadowColor = "black";
+    context.shadowBlur = 30;
+    context.shadowOffsetX = 20;
+    context.shadowOffsetY = 20;
+
     context.drawImage(
       document.getElementById("level3_deck"),
       130,
@@ -51,6 +56,9 @@ class Board {
       205,
       205
     );
+    context.shadowBlur = 0;
+    context.shadowOffsetX = 0;
+    context.shadowOffsetY = 0;
 
     this.showActivePlayer(context);
 
@@ -405,7 +413,7 @@ class Board {
         180,
         200,
         20,
-        3,
+        4,
         "#F3E45F"
       );
     }
@@ -414,7 +422,7 @@ class Board {
   drawTokenHover(context) {
     if (this._focusedToken != null) {
       context.strokeStyle = "#F3E45F";
-      context.lineWidth = "3";
+      context.lineWidth = "4";
       context.beginPath();
       context.arc(
         this._focusedToken.x,
@@ -440,10 +448,10 @@ class Board {
       for (let card of this._availableCards) {
         roundedRectangle(
           context,
-          card.x - 1.5,
-          card.y - 1.5,
-          183,
-          203,
+          card.x - 2,
+          card.y - 2,
+          184,
+          204,
           20,
           2,
           "#62F275"
@@ -484,7 +492,7 @@ class Board {
         this._prevClick[0] != this._prevClick[1] &&
         this._prevClick[1] != this._prevClick[2] &&
         this._prevClick[0] != this._prevClick[2]) ||
-      (this._notAvailableTokens.length == 5 && this._prevClick.length > 0)
+      (this._notAvailableTokens.length == 4 && this._prevClick.length > 0)
     ) {
       this._availableCards = [];
       this._notAvailableTokens = [];
@@ -502,42 +510,73 @@ class Board {
         120,
         120
       );
+      roundedRectangle(
+        context,
+        this._tokenPanel.x,
+        this._tokenPanel.y,
+        1400,
+        90,
+        20,
+        3,
+        "#F3E45F"
+      );
     } else {
       context.drawImage(document.getElementById("AI_icon"), 50, 8, 120, 120);
+      roundedRectangle(
+        context,
+        this._AITokenPanel.x,
+        this._AITokenPanel.y,
+        1400,
+        90,
+        20,
+        3,
+        "#F3E45F"
+      );
     }
   }
 
   showEndScreen() {
     if (this._players[0].score.value >= 1) {
       document.querySelector(".overlay").classList.remove("hidden");
-      document.querySelector(".new_game").classList.remove("hidden");
+      document.getElementById("end_screen_btn").classList.remove("hidden");
       document.querySelector(".human").classList.remove("hidden");
     } else if (this._players[1].score.value >= 1) {
       document.querySelector(".overlay").classList.remove("hidden");
-      document.querySelector(".new_game").classList.remove("hidden");
+      document.getElementById("end_screen_btn").classList.remove("hidden");
       document.querySelector(".ai").classList.remove("hidden");
     }
   }
 
   resetGame() {
-    document.querySelector(".overlay").classList.add("hidden");
-    document.querySelector(".new_game").classList.add("hidden");
+    if (!document.querySelector(".overlay").classList.contains("hidden")) {
+      document.querySelector(".overlay").classList.add("hidden");
+      document.getElementById("end_screen_btn").classList.add("hidden");
+      if (this._players[0].score.value >= 1) {
+        document.querySelector(".human").classList.add("hidden");
+      } else if (this._players[1].score.value >= 1) {
+        document.querySelector(".ai").classList.add("hidden");
+      }
 
-    if (this._players[0].score.value >= 1) {
-      document.querySelector(".human").classList.add("hidden");
-    } else if (this._players[1].score.value >= 1) {
-      document.querySelector(".ai").classList.add("hidden");
+      this.initCards();
+      this.initPlayers();
+      this.initTokenPanels();
+      this.initTokens();
+      this._focusedCard = null;
+      this._focusedToken = null;
+      this._availableCards = [];
+      this._notAvailableTokens = [];
+      this._playerIndex = 0;
+    } else {
+      this.initCards();
+      this.initPlayers();
+      this.initTokenPanels();
+      this.initTokens();
+      this._focusedCard = null;
+      this._focusedToken = null;
+      this._availableCards = [];
+      this._notAvailableTokens = [];
+      this._playerIndex = 0;
     }
-
-    this.initCards();
-    this.initPlayers();
-    this.initTokenPanels();
-    this.initTokens();
-    this._focusedCard = null;
-    this._focusedToken = null;
-    this._availableCards = [];
-    this._notAvailableTokens = [];
-    this._playerIndex = 0;
   }
 
   openRules() {

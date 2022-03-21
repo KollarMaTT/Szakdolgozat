@@ -12,7 +12,6 @@ class TokenPanel {
   }
 
   draw(context) {
-    //context.filter = "blur(1px)";
     this.drawPanelContour(context, this.x, this.y, 1400, 90, 20);
 
     this.drawPanelElements(context);
@@ -28,9 +27,16 @@ class TokenPanel {
   }
 
   drawPanelContour(context, x, y, w, h, radius) {
+    context.shadowColor = "black";
+    context.shadowBlur = 30;
+    context.shadowOffsetX = 20;
+    context.shadowOffsetY = 20;
     roundedRectangle(context, x, y, w, h, radius, 3, "black");
     context.fillStyle = BACKGROUND;
     context.fill();
+    context.shadowBlur = 0;
+    context.shadowOffsetX = 0;
+    context.shadowOffsetY = 0;
     context.stroke();
   }
 

@@ -3,7 +3,7 @@ const BLUE = "#5264FF";
 const GREEN = "#3FBA3F";
 const RED = "#FD3333";
 const BLACK = "#686868";
-const BACKGROUND = "#FFB266";
+const BACKGROUND = "#B95828";
 
 /**
  * Syntax of the cards
@@ -75,6 +75,7 @@ class Card {
       x = this.x + 90;
       y = this.y + 115;
     }
+    context.lineWidth = "5";
     context.arc(x, y, 24, 0, 2 * Math.PI);
     context.stroke();
     context.fill();
@@ -85,13 +86,20 @@ class Card {
   }
 
   drawCardContour(context, x, y, w, h, radius) {
-    roundedRectangle(context, x, y, w, h, radius, 3, "black");
+    context.shadowColor = "black";
+    context.shadowBlur = 30;
+    context.shadowOffsetX = 20;
+    context.shadowOffsetY = 20;
+    roundedRectangle(context, x, y, w, h, radius, 4, "black");
 
     context.moveTo(this.x + 0, this.y + 60);
     context.lineTo(this.x + 180, this.y + 60);
 
     context.fillStyle = BACKGROUND;
     context.fill();
+    context.shadowBlur = 0;
+    context.shadowOffsetX = 0;
+    context.shadowOffsetY = 0;
     context.stroke();
   }
 

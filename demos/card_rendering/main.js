@@ -93,6 +93,8 @@ function resize() {
 
 function resetGame() {
   board.resetGame();
+  context.clearRect(0, 0, canvas.width, canvas.height);
+  drawBoard();
 }
 
 function openRules() {
@@ -116,7 +118,11 @@ function initialize() {
   board = new Board();
   board.draw(context);
 
-  document.querySelector(".new_game").addEventListener("click", resetGame);
+  let newGameBtns = document.querySelectorAll(".new_game");
+
+  for (let i = 0; i < newGameBtns.length; i++) {
+    newGameBtns[i].addEventListener("click", resetGame);
+  }
   document.querySelector(".rules_btn").addEventListener("click", openRules);
   document.querySelector(".overlay").addEventListener("click", closeRules);
 

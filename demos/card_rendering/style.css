@@ -25,7 +25,7 @@ canvas#my-canvas {
   display: none;
 }
 
-.new_game {
+#end_screen_btn {
   text-align: center;
   position: absolute;
   top: 70%;
@@ -35,11 +35,39 @@ canvas#my-canvas {
   font-size: 1000%;
   font-weight: 600;
   border: solid;
-  background-color: #ffb266;
+  background-color: #b95828;
   color: black;
   border-radius: 50px;
   cursor: pointer;
   z-index: 2;
+}
+
+#end_screen_btn:hover {
+  color: #f3e45f;
+  border-color: black;
+}
+
+#during_game_btn {
+  text-align: center;
+  position: absolute;
+  top: 1.5%;
+  right: 2%;
+  width: 10%;
+  height: 5%;
+  font-size: 500%;
+  font-weight: 600;
+  border: solid;
+  background-color: #b95828;
+  color: black;
+  border-radius: 50px;
+  cursor: pointer;
+  z-index: 0;
+  box-shadow: 10px 10px 20px black;
+}
+
+#during_game_btn:hover {
+  color: #f3e45f;
+  border-color: black;
 }
 
 .win_subtitle {
@@ -52,7 +80,7 @@ canvas#my-canvas {
   font-weight: 600;
   padding: 2% 4%;
   border: solid;
-  background-color: #ffb266;
+  background-color: #b95828;
   color: black;
   border-radius: 50px;
   z-index: 2;
@@ -61,18 +89,24 @@ canvas#my-canvas {
 .rules_btn {
   text-align: center;
   position: absolute;
-  top: 92%;
-  right: 1%;
+  top: 7.5%;
+  right: 2%;
   width: 10%;
-  height: 7%;
+  height: 5%;
   font-size: 500%;
   font-weight: 600;
   border: solid;
-  background-color: #ffb266;
+  background-color: #b95828;
   color: black;
   border-radius: 50px;
   cursor: pointer;
   z-index: 0;
+  box-shadow: 10px 10px 20px black;
+}
+
+.rules_btn:hover {
+  color: #f3e45f;
+  border-color: black;
 }
 
 .rules {
@@ -85,18 +119,20 @@ canvas#my-canvas {
   font-size: 700%;
   font-weight: 600;
   border: solid;
-  background-image: radial-gradient(circle, #ffb266, #f0a65d, #5d2e01);
+  background-color: #b95828;
   color: black;
   border-radius: 50px;
   z-index: 1;
 }
 
 .rule_title {
+  color: #f3e45f;
   font-size: 180;
   font-weight: 600;
   text-align: center;
-  text-decoration-line: underline;
   text-shadow: 10px 10px 12px #6e3700;
+  text-shadow: 14px 14px 0px black;
+  text-decoration-line: underline;
 }
 
 .list {
@@ -105,4 +141,5 @@ canvas#my-canvas {
 
 p {
   text-decoration-line: underline;
+  color: #f3e45f;
 }
