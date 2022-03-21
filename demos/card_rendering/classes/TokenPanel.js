@@ -12,6 +12,7 @@ class TokenPanel {
   }
 
   draw(context) {
+    //context.filter = "blur(1px)";
     this.drawPanelContour(context, this.x, this.y, 1400, 90, 20);
 
     this.drawPanelElements(context);

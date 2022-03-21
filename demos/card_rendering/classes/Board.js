@@ -27,21 +27,40 @@ class Board {
       token.draw(context);
     }
 
+    this._tokenPanel.draw(context);
+    this._AITokenPanel.draw(context);
+
+    context.drawImage(
+      document.getElementById("level3_deck"),
+      130,
+      150,
+      205,
+      205
+    );
+    context.drawImage(
+      document.getElementById("level2_deck"),
+      130,
+      390,
+      205,
+      205
+    );
+    context.drawImage(
+      document.getElementById("level1_deck"),
+      130,
+      630,
+      205,
+      205
+    );
+
+    this.showActivePlayer(context);
+
     this.drawCardHover(context);
     this.drawTokenHover(context);
 
     this.showAvailableCards(context);
     this.showNotAvailableTokens(context);
 
-    this._tokenPanel.draw(context);
-    this._AITokenPanel.draw(context);
-
-    var level1_deck = document.getElementById("level1_deck");
-    var level2_deck = document.getElementById("level2_deck");
-    var level3_deck = document.getElementById("level3_deck");
-    context.drawImage(level3_deck, 130, 150, 205, 205);
-    context.drawImage(level2_deck, 130, 390, 205, 205);
-    context.drawImage(level1_deck, 130, 630, 205, 205);
+    this.showEndScreen(context);
   }
 
   initCards() {
@@ -161,7 +180,7 @@ class Board {
 
     for (let i = 0; i < colors.length; i++) {
       let y = 200 + i * 150;
-      let token = new Token(x, y, colors[i], 4);
+      let token = new Token(x, y, colors[i], 5);
       this._tokens.push(token);
     }
   }
@@ -410,7 +429,7 @@ class Board {
 
   selectAvailableCards() {
     for (let card of this._cardsOnBorad) {
-      if (this.isCardAvailable(card)) {
+      if (this.isCardAvailable(card) && !this._availableCards.includes(card)) {
         this._availableCards.push(card);
       }
     }
@@ -426,7 +445,7 @@ class Board {
           183,
           203,
           20,
-          1,
+          2,
           "#62F275"
         );
       }
@@ -435,7 +454,10 @@ class Board {
 
   selectNotAvailableTokens() {
     for (let token of this._tokens) {
-      if (!this.isTokenAvailable(token)) {
+      if (
+        !this.isTokenAvailable(token) &&
+        !this._notAvailableTokens.includes(token)
+      ) {
         this._notAvailableTokens.push(token);
       }
     }
@@ -445,9 +467,9 @@ class Board {
     if (this._notAvailableTokens != null) {
       for (let token of this._notAvailableTokens) {
         context.strokeStyle = "#AFAFAF";
-        context.lineWidth = "1";
+        context.lineWidth = "4";
         context.beginPath();
-        context.arc(token.x, token.y, 53, 0, 2 * Math.PI);
+        context.arc(token.x, token.y, 50, 0, 2 * Math.PI);
         context.stroke();
       }
     }
@@ -461,7 +483,8 @@ class Board {
       (this._prevClick.length == 3 &&
         this._prevClick[0] != this._prevClick[1] &&
         this._prevClick[1] != this._prevClick[2] &&
-        this._prevClick[0] != this._prevClick[2])
+        this._prevClick[0] != this._prevClick[2]) ||
+      (this._notAvailableTokens.length == 5 && this._prevClick.length > 0)
     ) {
       this._availableCards = [];
       this._notAvailableTokens = [];
@@ -470,17 +493,75 @@ class Board {
     }
   }
 
+  showActivePlayer(context) {
+    if (this._playerIndex == 0) {
+      context.drawImage(
+        document.getElementById("player_icon"),
+        50,
+        847,
+        120,
+        120
+      );
+    } else {
+      context.drawImage(document.getElementById("AI_icon"), 50, 8, 120, 120);
+    }
+  }
+
+  showEndScreen() {
+    if (this._players[0].score.value >= 1) {
+      document.querySelector(".overlay").classList.remove("hidden");
+      document.querySelector(".new_game").classList.remove("hidden");
+      document.querySelector(".human").classList.remove("hidden");
+    } else if (this._players[1].score.value >= 1) {
+      document.querySelector(".overlay").classList.remove("hidden");
+      document.querySelector(".new_game").classList.remove("hidden");
+      document.querySelector(".ai").classList.remove("hidden");
+    }
+  }
+
+  resetGame() {
+    document.querySelector(".overlay").classList.add("hidden");
+    document.querySelector(".new_game").classList.add("hidden");
+
+    if (this._players[0].score.value >= 1) {
+      document.querySelector(".human").classList.add("hidden");
+    } else if (this._players[1].score.value >= 1) {
+      document.querySelector(".ai").classList.add("hidden");
+    }
+
+    this.initCards();
+    this.initPlayers();
+    this.initTokenPanels();
+    this.initTokens();
+    this._focusedCard = null;
+    this._focusedToken = null;
+    this._availableCards = [];
+    this._notAvailableTokens = [];
+    this._playerIndex = 0;
+  }
+
+  openRules() {
+    document.querySelector(".overlay").classList.remove("hidden");
+    document.querySelector(".rules").classList.remove("hidden");
+  }
+
+  closeRules() {
+    if (!document.querySelector(".rules").classList.contains("hidden")) {
+      document.querySelector(".overlay").classList.add("hidden");
+      document.querySelector(".rules").classList.add("hidden");
+    }
+  }
+
   mouseDown(mouseEvent) {
     this.buyToken(mouseEvent);
     this.buyCard(mouseEvent);
+
+    this.selectNextPlayer();
+    this.selectAvailableCards();
+    this.selectNotAvailableTokens();
   }
 
   mouseMove(mouseEvent) {
-    this.selectNextPlayer();
-
-    this.selectAvailableCards();
-    this.selectNotAvailableTokens();
-
     this._focusedCard = this.findCardAtCursor(mouseEvent);
     this._focusedToken = this.findTokenAtCursor(mouseEvent);
 

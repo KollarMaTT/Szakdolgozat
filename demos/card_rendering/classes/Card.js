@@ -89,6 +89,7 @@ class Card {
 
     context.moveTo(this.x + 0, this.y + 60);
     context.lineTo(this.x + 180, this.y + 60);
+
     context.fillStyle = BACKGROUND;
     context.fill();
     context.stroke();

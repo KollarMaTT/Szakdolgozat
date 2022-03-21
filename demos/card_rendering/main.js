@@ -91,6 +91,18 @@ function resize() {
   drawBoard();
 }
 
+function resetGame() {
+  board.resetGame();
+}
+
+function openRules() {
+  board.openRules();
+}
+
+function closeRules() {
+  board.closeRules();
+}
+
 function initialize() {
   canvas = document.getElementById("my-canvas");
   canvasPosition = canvas.getBoundingClientRect();
@@ -103,6 +115,10 @@ function initialize() {
 
   board = new Board();
   board.draw(context);
+
+  document.querySelector(".new_game").addEventListener("click", resetGame);
+  document.querySelector(".rules_btn").addEventListener("click", openRules);
+  document.querySelector(".overlay").addEventListener("click", closeRules);
 
   resize();
 }
