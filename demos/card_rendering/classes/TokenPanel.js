@@ -28,9 +28,9 @@ class TokenPanel {
 
   drawPanelContour(context, x, y, w, h, radius) {
     context.shadowColor = "black";
-    context.shadowBlur = 30;
-    context.shadowOffsetX = 20;
-    context.shadowOffsetY = 20;
+    context.shadowBlur = 20;
+    context.shadowOffsetX = 10;
+    context.shadowOffsetY = 10;
     roundedRectangle(context, x, y, w, h, radius, 3, "black");
     context.fillStyle = BACKGROUND;
     context.fill();

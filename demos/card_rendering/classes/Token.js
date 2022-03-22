@@ -11,9 +11,9 @@ class Token {
 
   draw(context) {
     context.shadowColor = "black";
-    context.shadowBlur = 30;
-    context.shadowOffsetX = 20;
-    context.shadowOffsetY = 20;
+    context.shadowBlur = 20;
+    context.shadowOffsetX = 10;
+    context.shadowOffsetY = 10;
     context.fillStyle = this.color;
     context.strokeStyle = "black";
     context.lineWidth = "8";
