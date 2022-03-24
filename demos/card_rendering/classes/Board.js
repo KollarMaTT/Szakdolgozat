@@ -11,14 +11,21 @@ class Board {
     this.initPlayers();
     this.initTokenPanels();
     this.initTokens();
+    this.initButtons();
     this._focusedCard = null;
     this._focusedToken = null;
     this._availableCards = [];
+    this._availableTokens = [];
     this._notAvailableTokens = [];
     this._playerIndex = 0;
   }
 
   draw(context) {
+
+    this._gameState = {
+      board: this,
+    };
+
     for (let card of this._cardsOnBorad) {
       card.draw(context);
     }
@@ -30,10 +37,14 @@ class Board {
     this._tokenPanel.draw(context);
     this._AITokenPanel.draw(context);
 
+    for (let button of this._buttons) {
+      button.draw(context);
+    }
+
     context.shadowColor = "black";
-    context.shadowBlur = 30;
-    context.shadowOffsetX = 20;
-    context.shadowOffsetY = 20;
+    context.shadowBlur = 10;
+    context.shadowOffsetX = 2;
+    context.shadowOffsetY = 2;
 
     context.drawImage(
       document.getElementById("level3_deck"),
@@ -64,6 +75,7 @@ class Board {
 
     this.drawCardHover(context);
     this.drawTokenHover(context);
+    this.drawButtonHover(context);
 
     this.showAvailableCards(context);
     this.showNotAvailableTokens(context);
@@ -193,6 +205,12 @@ class Board {
     }
   }
 
+  initButtons(){
+    this._newGameBtn = new Button(1700, 20, 180, 90, "Új játék");
+    this._rulesBtn = new Button(1670,80, 240, 120, "Játékszabályok");
+    this._buttons = [this._newGameBtn, this._rulesBtn];
+  }
+
   findCardAtCursor(mouseEvent) {
     for (let card of this._cardsOnBorad) {
       if (card.isUnderCursor(mouseEvent)) {
@@ -214,11 +232,11 @@ class Board {
     return null;
   }
 
-  buyToken(mouseEvent) {
+  buyToken(selectedToken) {
     let i = 0;
     for (let token of this._tokens) {
       if (
-        token == this.findTokenAtCursor(mouseEvent) &&
+        token == selectedToken &&
         this.isTokenAvailable(token)
       ) {
         token.value--;
@@ -227,6 +245,9 @@ class Board {
       }
       i++;
     }
+    this.selectNextPlayer();
+    this.selectAvailableTokens();
+    this.selectNotAvailableTokens();
   }
 
   increaseTokenPanel(color, valueType) {
@@ -267,21 +288,21 @@ class Board {
     }
   }
 
-  switchCard(mouseEvent, slot) {
+  switchCard(selectedCard, slot) {
     if (
-      this.findCardAtCursor(mouseEvent).cardData.level == 1 &&
+      selectedCard.cardData.level == 1 &&
       this._level1Cards.length > 0
     ) {
       this._cardsOnBorad[slot].cardData = this._level1Cards[0];
       this._level1Cards.shift();
     } else if (
-      this.findCardAtCursor(mouseEvent).cardData.level == 2 &&
+      selectedCard.cardData.level == 2 &&
       this._level2Cards.length > 0
     ) {
       this._cardsOnBorad[slot].cardData = this._level2Cards[0];
       this._level2Cards.shift();
     } else if (
-      this.findCardAtCursor(mouseEvent).cardData.level == 3 &&
+      selectedCard.cardData.level == 3 &&
       this._level3Cards.length > 0
     ) {
       this._cardsOnBorad[slot].cardData = this._level3Cards[0];
@@ -342,28 +363,28 @@ class Board {
     );
   }
 
-  buyCard(mouseEvent) {
-    if (this.findCardAtCursor(mouseEvent) != null) {
+  buyCard(selectedCard) {
+    if (selectedCard != null) {
       let i = 0;
       for (let card of this._cardsOnBorad) {
-        if (card == this.findCardAtCursor(mouseEvent)) {
+        if (card == selectedCard) {
           break;
         } else {
           i++;
         }
       }
 
-      if (
-        this.isCardAvailable(this._cardsOnBorad[i]) &&
-        this._prevClick.length == 0
-      ) {
+      if (this.isCardAvailable(this._cardsOnBorad[i])) {
         this._players[this._playerIndex].score.value +=
           this._cardsOnBorad[i].cardData.point;
         this.handleTokenExchange(i);
-        this.switchCard(mouseEvent, i);
+        this.switchCard(selectedCard, i);
         this._prevClick.push("card");
       }
     }
+    this.selectNextPlayer();
+    this.selectAvailableTokens();
+    this.selectNotAvailableTokens();
   }
 
   isCardAvailable(card) {
@@ -405,7 +426,7 @@ class Board {
   }
 
   drawCardHover(context) {
-    if (this._focusedCard != null) {
+    if (this._focusedCard != null && this._playerIndex == 0) {
       roundedRectangle(
         context,
         this._focusedCard.x,
@@ -420,7 +441,7 @@ class Board {
   }
 
   drawTokenHover(context) {
-    if (this._focusedToken != null) {
+    if (this._focusedToken != null && this._playerIndex == 0) {
       context.strokeStyle = "#F3E45F";
       context.lineWidth = "4";
       context.beginPath();
@@ -437,7 +458,7 @@ class Board {
 
   selectAvailableCards() {
     for (let card of this._cardsOnBorad) {
-      if (this.isCardAvailable(card) && !this._availableCards.includes(card)) {
+      if (this.isCardAvailable(card) && !this._availableCards.includes(card) && this._prevClick.length == 0) {
         this._availableCards.push(card);
       }
     }
@@ -456,6 +477,16 @@ class Board {
           2,
           "#62F275"
         );
+      }
+    }
+  }
+
+  selectAvailableTokens(){
+    this._availableTokens = [];
+    for (let token of this._tokens) {
+      if (this.isTokenAvailable(token) && !this._availableTokens.includes(token)
+      ) {
+        this._availableTokens.push(token);
       }
     }
   }
@@ -492,13 +523,16 @@ class Board {
         this._prevClick[0] != this._prevClick[1] &&
         this._prevClick[1] != this._prevClick[2] &&
         this._prevClick[0] != this._prevClick[2]) ||
-      (this._notAvailableTokens.length == 4 && this._prevClick.length > 0)
+      (this._notAvailableTokens.length == 5 && this._prevClick.length > 0) ||
+      (this._notAvailableTokens.length == 5 && this._availableCards.length == 0)
     ) {
       this._availableCards = [];
       this._notAvailableTokens = [];
       this._prevClick = [];
       this._playerIndex = (this._playerIndex + 1) % this._players.length;
     }
+    this.selectAvailableCards();
+    this.selectAvailableTokens();
   }
 
   showActivePlayer(context) {
@@ -547,7 +581,25 @@ class Board {
     }
   }
 
-  resetGame() {
+  findButtonAtCursor(mouseEvent){
+    for (let button of this._buttons) {
+      if (button.isUnderCursor(mouseEvent)) {
+        return button;
+      }
+    }
+    return null;
+  }
+
+  drawButtonHover(context){
+    if(this._focusedButton != null){
+      context.textAlign = "center";
+      context.fillStyle = "#F3E45F";
+      context.font = "550 30px Arial";
+      context.fillText(this._focusedButton.text, this._focusedButton.x + this._focusedButton.textPos, this._focusedButton.y + 30);
+    }
+  }
+
+  resetGame(mouseEvent) {
     if (!document.querySelector(".overlay").classList.contains("hidden")) {
       document.querySelector(".overlay").classList.add("hidden");
       document.getElementById("end_screen_btn").classList.add("hidden");
@@ -566,7 +618,7 @@ class Board {
       this._availableCards = [];
       this._notAvailableTokens = [];
       this._playerIndex = 0;
-    } else {
+    }else if(this._focusedButton == this._newGameBtn){
       this.initCards();
       this.initPlayers();
       this.initTokenPanels();
@@ -580,31 +632,50 @@ class Board {
   }
 
   openRules() {
-    document.querySelector(".overlay").classList.remove("hidden");
-    document.querySelector(".rules").classList.remove("hidden");
+    if(this._focusedButton == this._rulesBtn){
+      document.querySelector(".overlay").classList.remove("hidden");
+      document.querySelector(".rules").classList.remove("hidden");
+    }
   }
 
   closeRules() {
     if (!document.querySelector(".rules").classList.contains("hidden")) {
       document.querySelector(".overlay").classList.add("hidden");
       document.querySelector(".rules").classList.add("hidden");
+      this._focusedButton = null;
     }
   }
 
-  mouseDown(mouseEvent) {
-    this.buyToken(mouseEvent);
-    this.buyCard(mouseEvent);
-
+  selectAIChoice(){
+      if(this._gameState.board._availableCards.length != 0){
+        let item = this._gameState.board._availableCards[Math.floor(Math.random()*this._gameState.board._availableCards.length)];
+        this.buyCard(item);
+      }else if(this._gameState.board._availableTokens.length != 0){
+          let item = this._gameState.board._availableTokens[Math.floor(Math.random()*this._gameState.board._availableTokens.length)];
+        this.buyToken(item);
+      }
     this.selectNextPlayer();
-    this.selectAvailableCards();
-    this.selectNotAvailableTokens();
+  }
+
+  mouseDown(mouseEvent) {
+    if(this._playerIndex == 0){
+      this.buyToken(this._focusedToken);
+      this.buyCard(this._focusedCard);
+    } else if(this._playerIndex == 1){
+      this.selectAIChoice();
+    }
+    
+    this.resetGame(mouseEvent);
+    
+    this.openRules();
   }
 
   mouseMove(mouseEvent) {
     this._focusedCard = this.findCardAtCursor(mouseEvent);
     this._focusedToken = this.findTokenAtCursor(mouseEvent);
+    this._focusedButton = this.findButtonAtCursor(mouseEvent);
 
-    if (this._focusedCard == null && this._focusedToken == null) {
+    if (this._focusedCard == null && this._focusedToken == null && this._focusedButton == null || this._playerIndex == 1 && this._focusedButton == null) {
       canvas.style = "cursor : auto;";
     } else {
       canvas.style = "cursor : pointer;";

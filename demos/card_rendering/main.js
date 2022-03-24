@@ -97,12 +97,10 @@ function resetGame() {
   drawBoard();
 }
 
-function openRules() {
-  board.openRules();
-}
-
 function closeRules() {
   board.closeRules();
+  context.clearRect(0, 0, canvas.width, canvas.height);
+  drawBoard();
 }
 
 function initialize() {
@@ -118,12 +116,7 @@ function initialize() {
   board = new Board();
   board.draw(context);
 
-  let newGameBtns = document.querySelectorAll(".new_game");
-
-  for (let i = 0; i < newGameBtns.length; i++) {
-    newGameBtns[i].addEventListener("click", resetGame);
-  }
-  document.querySelector(".rules_btn").addEventListener("click", openRules);
+  document.querySelector(".new_game").addEventListener("click", resetGame);
   document.querySelector(".overlay").addEventListener("click", closeRules);
 
   resize();
