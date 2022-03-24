@@ -54,6 +54,7 @@ function mouseDown(event) {
 }
 
 function mouseMove(event) {
+  console.log(canvas.width, canvas.height);
   const mouse = calcMouseEvent(event);
   board.mouseMove(mouse);
   context.clearRect(0, 0, canvas.width, canvas.height);
