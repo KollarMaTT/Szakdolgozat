@@ -54,7 +54,6 @@ function mouseDown(event) {
 }
 
 function mouseMove(event) {
-  console.log(canvas.width, canvas.height);
   const mouse = calcMouseEvent(event);
   board.mouseMove(mouse);
   context.clearRect(0, 0, canvas.width, canvas.height);
@@ -116,6 +115,8 @@ function initialize() {
 
   board = new Board();
   board.draw(context);
+
+  //board.selectAIChoice();
 
   document.querySelector(".new_game").addEventListener("click", resetGame);
   document.querySelector(".overlay").addEventListener("click", closeRules);

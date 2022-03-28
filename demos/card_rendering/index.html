@@ -48,42 +48,48 @@
     <div class="overlay hidden"></div>
 
     <div class="rules hidden">
-      <div class="rule_title">JÁTÉKSZABÁLYOK</div>
-      <br />
-      Saját körében a játékos egyetlen cselekvést hajt végre az alábbi 3
-      lehetőség közül:
-      <div class="list">
-        <ul>
-          <li>Elvesz 3 különböző színű zsetont az ékkő halmokból.</li>
-          <li>
-            Elvesz 2 azonos színű zsetont egy ékkő halomból (ez azonban csak
-            akkor lehetséges, ha legalább 4 zseton van abban a halomban, amikor
-            a játékos elveszi őket).
-          </li>
-          <li>
-            Megvásárol a középen képpel felfelé található fejlődéskártyák közül
-            egyet.
-          </li>
-        </ul>
+      <div class="inner_box_of_rules">
+        <div class="rule_title">JÁTÉKSZABÁLYOK</div>
+        <br />
+        Saját körében a játékos egyetlen cselekvést hajt végre az alábbi 3
+        lehetőség közül:
+        <div class="list">
+          <ul>
+            <li>Elvesz 3 különböző színű zsetont az ékkő halmokból.</li>
+            <li>
+              Elvesz 2 azonos színű zsetont egy ékkő halomból (ez azonban csak
+              akkor lehetséges, ha legalább 4 zseton van abban a halomban,
+              amikor a játékos elveszi őket).
+            </li>
+            <li>
+              Megvásárol a középen képpel felfelé található fejlődéskártyák
+              közül egyet.
+            </li>
+          </ul>
+        </div>
+        <p>A kártyavásárlás:</p>
+        Egy kártya megvásárlásához a játékosnak a kártyán látható mennyiségű
+        zsetont el kell költenie. Az elköltött zsetonok a játéktéren lévő
+        halmokba kerülnek vissza.
+        <p>A bónuszok:</p>
+        A korábban megvásárolt fejlődéskártyák bónuszai lehetővé teszik a
+        következő körökben új fejlődéskártyák kevesebb költségen történő
+        megvásárlását. A kártyákon található bónusz színe egyenértékű ugyanazon
+        szín egy zsetonjával. Amennyiben a játékosnak elegendő mennyiségű bónusz
+        áll rendelkezésére, akkor akár ingyen is vásárolhat fejlődéskártyát.
+        <p>A játék vége:</p>
+        Amikor egy játékos megszerzi a 15. tekintély pontját, azonnal véget ér a
+        játék.
       </div>
-      <p>A kártyavásárlás:</p>
-      Egy kártya megvásárlásához a játékosnak a kártyán látható mennyiségű
-      zsetont el kell költenie. Az elköltött zsetonok a játéktéren lévő halmokba
-      kerülnek vissza.
-      <p>A bónuszok:</p>
-      A korábban megvásárolt fejlődéskártyák bónuszai lehetővé teszik a
-      következő körökben új fejlődéskártyák kevesebb költségen történő
-      megvásárlását. A kártyákon található bónusz színe egyenértékű ugyanazon
-      szín egy zsetonjával. Amennyiben a játékosnak elegendő mennyiségű bónusz
-      áll rendelkezésére, akkor akár ingyen is vásárolhat fejlődéskártyát.
-      <p>A játék vége:</p>
-      Amikor egy játékos megszerzi a 15. tekintély pontját, azonnal véget ér a
-      játék.
     </div>
 
-    <div class="human win_subtitle hidden">🎉Nyertél!🎉</div>
+    <div class="first_player win_subtitle hidden">
+      🎉Az első játékos nyert!🎉
+    </div>
 
-    <div class="ai win_subtitle hidden">🎉A számítógép nyert!🎉</div>
+    <div class="second_player win_subtitle hidden">
+      🎉A második játékos nyert!🎉
+    </div>
 
     <button class="new_game hidden" id="end_screen_btn">Új játék</button>
   </body>

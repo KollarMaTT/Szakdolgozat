@@ -1,6 +1,7 @@
 var canvas = null;
 var canvasPosition = null;
 var context = null;
+const WINNING_POINT = 1;
 
 /**
  * Syntax of the board
@@ -18,10 +19,10 @@ class Board {
     this._availableTokens = [];
     this._notAvailableTokens = [];
     this._playerIndex = 0;
+    this._winner = null;
   }
 
   draw(context) {
-
     this._gameState = {
       board: this,
     };
@@ -80,7 +81,7 @@ class Board {
     this.showAvailableCards(context);
     this.showNotAvailableTokens(context);
 
-    this.showEndScreen(context);
+    this.showEndScreen();
   }
 
   initCards() {
@@ -168,8 +169,8 @@ class Board {
   initPlayers() {
     this._prevClick = [];
 
-    let humanPlayer = new Player();
-    let AIPlayer = new Player();
+    let humanPlayer = new Player("AI");
+    let AIPlayer = new Player("AI");
 
     this._players = [humanPlayer, AIPlayer];
   }
@@ -205,9 +206,9 @@ class Board {
     }
   }
 
-  initButtons(){
+  initButtons() {
     this._newGameBtn = new Button(1700, 20, 180, 90, "Új játék");
-    this._rulesBtn = new Button(1670,80, 240, 120, "Játékszabályok");
+    this._rulesBtn = new Button(1670, 80, 240, 120, "Játékszabályok");
     this._buttons = [this._newGameBtn, this._rulesBtn];
   }
 
@@ -235,10 +236,7 @@ class Board {
   buyToken(selectedToken) {
     let i = 0;
     for (let token of this._tokens) {
-      if (
-        token == selectedToken &&
-        this.isTokenAvailable(token)
-      ) {
+      if (token == selectedToken && this.isTokenAvailable(token)) {
         token.value--;
         this.increaseTokenPanel(token.color, "basic");
         this._prevClick.push(token.color);
@@ -289,10 +287,7 @@ class Board {
   }
 
   switchCard(selectedCard, slot) {
-    if (
-      selectedCard.cardData.level == 1 &&
-      this._level1Cards.length > 0
-    ) {
+    if (selectedCard.cardData.level == 1 && this._level1Cards.length > 0) {
       this._cardsOnBorad[slot].cardData = this._level1Cards[0];
       this._level1Cards.shift();
     } else if (
@@ -426,7 +421,10 @@ class Board {
   }
 
   drawCardHover(context) {
-    if (this._focusedCard != null && this._playerIndex == 0) {
+    if (
+      this._focusedCard != null &&
+      this._players[this._playerIndex].type == "human"
+    ) {
       roundedRectangle(
         context,
         this._focusedCard.x,
@@ -441,7 +439,10 @@ class Board {
   }
 
   drawTokenHover(context) {
-    if (this._focusedToken != null && this._playerIndex == 0) {
+    if (
+      this._focusedToken != null &&
+      this._players[this._playerIndex].type == "human"
+    ) {
       context.strokeStyle = "#F3E45F";
       context.lineWidth = "4";
       context.beginPath();
@@ -458,7 +459,11 @@ class Board {
 
   selectAvailableCards() {
     for (let card of this._cardsOnBorad) {
-      if (this.isCardAvailable(card) && !this._availableCards.includes(card) && this._prevClick.length == 0) {
+      if (
+        this.isCardAvailable(card) &&
+        !this._availableCards.includes(card) &&
+        this._prevClick.length == 0
+      ) {
         this._availableCards.push(card);
       }
     }
@@ -481,10 +486,12 @@ class Board {
     }
   }
 
-  selectAvailableTokens(){
+  selectAvailableTokens() {
     this._availableTokens = [];
     for (let token of this._tokens) {
-      if (this.isTokenAvailable(token) && !this._availableTokens.includes(token)
+      if (
+        this.isTokenAvailable(token) &&
+        !this._availableTokens.includes(token)
       ) {
         this._availableTokens.push(token);
       }
@@ -537,13 +544,23 @@ class Board {
 
   showActivePlayer(context) {
     if (this._playerIndex == 0) {
-      context.drawImage(
-        document.getElementById("player_icon"),
-        50,
-        847,
-        120,
-        120
-      );
+      if (this._players[this._playerIndex].type == "human") {
+        context.drawImage(
+          document.getElementById("player_icon"),
+          50,
+          847,
+          120,
+          120
+        );
+      } else {
+        context.drawImage(
+          document.getElementById("AI_icon"),
+          50,
+          847,
+          120,
+          120
+        );
+      }
       roundedRectangle(
         context,
         this._tokenPanel.x,
@@ -555,7 +572,17 @@ class Board {
         "#F3E45F"
       );
     } else {
-      context.drawImage(document.getElementById("AI_icon"), 50, 8, 120, 120);
+      if (this._players[this._playerIndex].type == "AI") {
+        context.drawImage(document.getElementById("AI_icon"), 50, 8, 120, 120);
+      } else {
+        context.drawImage(
+          document.getElementById("player_icon"),
+          50,
+          8,
+          120,
+          120
+        );
+      }
       roundedRectangle(
         context,
         this._AITokenPanel.x,
@@ -570,18 +597,20 @@ class Board {
   }
 
   showEndScreen() {
-    if (this._players[0].score.value >= 1) {
+    if (this._players[0].score.value >= WINNING_POINT) {
+      this._winner = this._players[0];
       document.querySelector(".overlay").classList.remove("hidden");
       document.getElementById("end_screen_btn").classList.remove("hidden");
-      document.querySelector(".human").classList.remove("hidden");
-    } else if (this._players[1].score.value >= 1) {
+      document.querySelector(".first_player").classList.remove("hidden");
+    } else if (this._players[1].score.value >= WINNING_POINT) {
+      this._winner = this._players[1];
       document.querySelector(".overlay").classList.remove("hidden");
       document.getElementById("end_screen_btn").classList.remove("hidden");
-      document.querySelector(".ai").classList.remove("hidden");
+      document.querySelector(".second_player").classList.remove("hidden");
     }
   }
 
-  findButtonAtCursor(mouseEvent){
+  findButtonAtCursor(mouseEvent) {
     for (let button of this._buttons) {
       if (button.isUnderCursor(mouseEvent)) {
         return button;
@@ -590,23 +619,27 @@ class Board {
     return null;
   }
 
-  drawButtonHover(context){
-    if(this._focusedButton != null){
+  drawButtonHover(context) {
+    if (this._focusedButton != null) {
       context.textAlign = "center";
       context.fillStyle = "#F3E45F";
       context.font = "550 30px Arial";
-      context.fillText(this._focusedButton.text, this._focusedButton.x + this._focusedButton.textPos, this._focusedButton.y + 30);
+      context.fillText(
+        this._focusedButton.text,
+        this._focusedButton.x + this._focusedButton.textPos,
+        this._focusedButton.y + 30
+      );
     }
   }
 
-  resetGame(mouseEvent) {
+  resetGame() {
     if (!document.querySelector(".overlay").classList.contains("hidden")) {
       document.querySelector(".overlay").classList.add("hidden");
       document.getElementById("end_screen_btn").classList.add("hidden");
-      if (this._players[0].score.value >= 1) {
-        document.querySelector(".human").classList.add("hidden");
-      } else if (this._players[1].score.value >= 1) {
-        document.querySelector(".ai").classList.add("hidden");
+      if (this._players[0].score.value >= WINNING_POINT) {
+        document.querySelector(".first_player").classList.add("hidden");
+      } else if (this._players[1].score.value >= WINNING_POINT) {
+        document.querySelector(".second_player").classList.add("hidden");
       }
 
       this.initCards();
@@ -618,7 +651,8 @@ class Board {
       this._availableCards = [];
       this._notAvailableTokens = [];
       this._playerIndex = 0;
-    }else if(this._focusedButton == this._newGameBtn){
+      this._winner = null;
+    } else if (this._focusedButton == this._newGameBtn) {
       this.initCards();
       this.initPlayers();
       this.initTokenPanels();
@@ -628,11 +662,12 @@ class Board {
       this._availableCards = [];
       this._notAvailableTokens = [];
       this._playerIndex = 0;
+      this._winner = null;
     }
   }
 
   openRules() {
-    if(this._focusedButton == this._rulesBtn){
+    if (this._focusedButton == this._rulesBtn) {
       document.querySelector(".overlay").classList.remove("hidden");
       document.querySelector(".rules").classList.remove("hidden");
     }
@@ -646,27 +681,44 @@ class Board {
     }
   }
 
-  selectAIChoice(){
-      if(this._gameState.board._availableCards.length != 0){
-        let item = this._gameState.board._availableCards[Math.floor(Math.random()*this._gameState.board._availableCards.length)];
-        this.buyCard(item);
-      }else if(this._gameState.board._availableTokens.length != 0){
-          let item = this._gameState.board._availableTokens[Math.floor(Math.random()*this._gameState.board._availableTokens.length)];
-        this.buyToken(item);
-      }
-    this.selectNextPlayer();
+  selectAIChoices() {
+    if (this._gameState.board._availableCards.length != 0) {
+      let item =
+        this._gameState.board._availableCards[
+          Math.floor(
+            Math.random() * this._gameState.board._availableCards.length
+          )
+        ];
+      this.buyCard(item);
+    } else if (this._gameState.board._availableTokens.length != 0) {
+      let item =
+        this._gameState.board._availableTokens[
+          Math.floor(
+            Math.random() * this._gameState.board._availableTokens.length
+          )
+        ];
+      this.buyToken(item);
+    }
   }
 
-  mouseDown(mouseEvent) {
-    if(this._playerIndex == 0){
+  selectPlayerChoice() {
+    let recentPlayer = this._playerIndex;
+    if (this._players[recentPlayer].type == "AI") {
+      while (recentPlayer == this._playerIndex) {
+        this.selectAIChoices();
+        this.selectNextPlayer();
+      }
+    } else {
       this.buyToken(this._focusedToken);
       this.buyCard(this._focusedCard);
-    } else if(this._playerIndex == 1){
-      this.selectAIChoice();
     }
-    
-    this.resetGame(mouseEvent);
-    
+  }
+
+  mouseDown() {
+    this.selectPlayerChoice();
+
+    this.resetGame();
+
     this.openRules();
   }
 
@@ -675,7 +727,13 @@ class Board {
     this._focusedToken = this.findTokenAtCursor(mouseEvent);
     this._focusedButton = this.findButtonAtCursor(mouseEvent);
 
-    if (this._focusedCard == null && this._focusedToken == null && this._focusedButton == null || this._playerIndex == 1 && this._focusedButton == null) {
+    if (
+      (this._focusedCard == null &&
+        this._focusedToken == null &&
+        this._focusedButton == null) ||
+      (this._players[this._playerIndex].type != "human" &&
+        this._focusedButton == null)
+    ) {
       canvas.style = "cursor : auto;";
     } else {
       canvas.style = "cursor : pointer;";

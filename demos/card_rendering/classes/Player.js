@@ -2,7 +2,7 @@
  * Syntax of the players
  */
 class Player {
-  constructor() {
+  constructor(type) {
     this.colors = {
       white: 0,
       blue: 0,
@@ -22,7 +22,7 @@ class Player {
     this.score = {
       value: 0,
     };
-  }
 
-  
+    this.type = type;
+  }
 }

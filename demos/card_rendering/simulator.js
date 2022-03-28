@@ -1,1 +1,3 @@
-console.log("hello");
+function initialize() {
+  board = new Board();
+}
