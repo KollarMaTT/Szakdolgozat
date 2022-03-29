@@ -1,4 +1,4 @@
-const ROUNDS = 100;
+const ROUNDS = 1000;
 
 function isThereWinner() {
   if (board._players[0].score.value >= WINNING_POINT) {
