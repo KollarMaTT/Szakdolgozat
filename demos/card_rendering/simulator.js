@@ -1,4 +1,4 @@
-const ROUNDS = 500;
+const ROUNDS = 100;
 
 function isThereWinner() {
   if (board._players[0].score.value >= WINNING_POINT) {
@@ -9,6 +9,73 @@ function isThereWinner() {
     return true;
   } else {
     return false;
+  }
+}
+
+function firstAIChoices() {
+  if (board._gameState.board._availableCards.length != 0) {
+    let item =
+      board._gameState.board._availableCards[
+        Math.floor(
+          Math.random() * board._gameState.board._availableCards.length
+        )
+      ];
+    board.buyCard(item);
+  } else if (board._gameState.board._availableTokens.length != 0) {
+    let item =
+      board._gameState.board._availableTokens[
+        Math.floor(
+          Math.random() * board._gameState.board._availableTokens.length
+        )
+      ];
+    board.buyToken(item);
+  } else {
+    resetGame();
+  }
+}
+
+function secondAIChoices() {
+  if (board._gameState.board._availableCards.length != 0) {
+    let level = 1;
+    for (let i = 0; i < board._gameState.board._availableCards.length; i++) {
+      if (board._gameState.board._availableCards[i].cardData.level > level) {
+        level = board._gameState.board._availableCards[i].cardData.level;
+      }
+    }
+    let availableCards = [];
+    for (let i = 0; i < board._gameState.board._availableCards.length; i++) {
+      if (board._gameState.board._availableCards[i].cardData.level == level) {
+        availableCards.push(board._gameState.board._availableCards[i]);
+      }
+    }
+    let item =
+      availableCards[Math.floor(Math.random() * availableCards.length)];
+    board.buyCard(item);
+  } else if (board._gameState.board._availableTokens.length != 0) {
+    let item =
+      board._gameState.board._availableTokens[
+        Math.floor(
+          Math.random() * board._gameState.board._availableTokens.length
+        )
+      ];
+    board.buyToken(item);
+  } else {
+    resetGame();
+  }
+}
+
+function selectAIChoices() {
+  let recentPlayer = board._playerIndex;
+  if (board._players[recentPlayer].type == "AI1") {
+    while (recentPlayer == board._playerIndex) {
+      firstAIChoices();
+      board.selectNextPlayer();
+    }
+  } else if (board._players[recentPlayer].type == "AI2") {
+    while (recentPlayer == board._playerIndex) {
+      secondAIChoices();
+      board.selectNextPlayer();
+    }
   }
 }
 
@@ -36,7 +103,10 @@ function initialize() {
 
   for (let i = 0; i < ROUNDS; i++) {
     while (!isThereWinner()) {
-      board.selectPlayerChoice();
+      selectAIChoices();
+      //console.log(board._players);
+      //console.log("elso: ", board._players[0].score.value);
+      //console.log("masodik: ", board._players[1].score.value);
     }
     if (board._winner == 0) {
       first++;

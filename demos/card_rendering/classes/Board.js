@@ -1,7 +1,7 @@
 var canvas = null;
 var canvasPosition = null;
 var context = null;
-const WINNING_POINT = 5;
+const WINNING_POINT = 15;
 
 /**
  * Syntax of the board
@@ -26,6 +26,7 @@ class Board {
   }
 
   draw(context) {
+    console.log(this._availableTokens);
     for (let card of this._cardsOnBorad) {
       card.draw(context);
     }
@@ -166,7 +167,6 @@ class Board {
     }
   }
 
-  /*
   showStartScreen() {
     document.querySelector(".overlay").classList.remove("hidden");
     document.getElementById("select_players").classList.remove("hidden");
@@ -182,18 +182,17 @@ class Board {
   }
 
   humanVsHuman() {
-    let secondPlayer = new Player("human");
-    this._players[1] = secondPlayer;
+    this._players[1].type = "human";
     document.querySelector(".overlay").classList.add("hidden");
     document.getElementById("select_players").classList.add("hidden");
     document.getElementById("human_vs_AI_btn").classList.add("hidden");
     document.getElementById("human_vs_human_btn").classList.add("hidden");
-  }*/
+  }
 
   initPlayers() {
     this._prevClick = [];
 
-    this._players = [new Player("AI1"), new Player("AI2")];
+    this._players = [new Player("human"), new Player("AI2")];
   }
 
   initTokenPanels() {
@@ -661,6 +660,7 @@ class Board {
       this._notAvailableTokens = [];
       this._playerIndex = Math.round(Math.random());
       this._winner = null;
+      this.showStartScreen();
     } else if (this._focusedButton == this._newGameBtn) {
       this.initCards();
       this.initPlayers();
@@ -672,6 +672,7 @@ class Board {
       this._notAvailableTokens = [];
       this._playerIndex = Math.round(Math.random());
       this._winner = null;
+      this.showStartScreen();
     }
   }
 
@@ -683,8 +684,8 @@ class Board {
   }
 
   openMassage() {
-    document.querySelector(".overlay").classList.remove("hidden");
     document.querySelector(".message").classList.remove("hidden");
+    document.querySelector(".overlay").style.display = "block";
   }
 
   closeInformations() {
@@ -695,7 +696,7 @@ class Board {
     } else if (
       !document.querySelector(".message").classList.contains("hidden")
     ) {
-      document.querySelector(".overlay").classList.add("hidden");
+      document.querySelector(".overlay").style.display = "none";
       document.querySelector(".message").classList.add("hidden");
     }
   }
@@ -719,8 +720,7 @@ class Board {
       this.buyToken(item);
     } else {
       //TODO: VALAMIÉRT NEM MŰKÖDIK AZ OVERLAY
-      //document.querySelector(".overlay").classList.remove("hidden");
-      //document.querySelector(".message").classList.remove("hidden");
+      this.openMassage();
       this.initCards();
       this.initPlayers();
       this.initTokenPanels();
@@ -758,8 +758,7 @@ class Board {
       this.buyToken(item);
     } else {
       //TODO: VALAMIÉRT NEM MŰKÖDIK AZ OVERLAY
-      //document.querySelector(".overlay").classList.remove("hidden");
-      //document.querySelector(".message").classList.remove("hidden");
+      this.openMassage();
       this.initCards();
       this.initPlayers();
       this.initTokenPanels();
@@ -782,9 +781,21 @@ class Board {
         this.secondAIChoices();
         this.selectNextPlayer();
       }
-    } else {
+    } else if (
+      this._availableCards.length != 0 ||
+      this._availableTokens.length != 0
+    ) {
       this.buyToken(this._focusedToken);
       this.buyCard(this._focusedCard);
+    } else {
+      this.openMassage();
+      this.initCards();
+      this.initPlayers();
+      this.initTokenPanels();
+      this.initTokens();
+      this._availableCards = [];
+      this._notAvailableTokens = [];
+      this._playerIndex = Math.round(Math.random());
     }
   }
 

@@ -127,18 +127,16 @@ function initialize() {
 
   board = new Board();
   board.draw(context);
-  //board.showStartScreen();
+  board.showStartScreen();
 
   document.querySelector(".new_game").addEventListener("click", resetGame);
-  /*
+
   document
     .querySelector(".human_vs_AI_btn")
     .addEventListener("click", humanVsAi);
   document
     .querySelector(".human_vs_human_btn")
     .addEventListener("click", humanVsHuman);
-
-  */
 
   document
     .querySelector(".overlay")
