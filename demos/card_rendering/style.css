@@ -25,13 +25,9 @@ canvas#my-canvas {
   display: none;
 }
 
-#end_screen_btn {
+button {
   text-align: center;
   position: absolute;
-  top: 70%;
-  right: 41%;
-  width: 20%;
-  height: 10%;
   font-size: 300%;
   font-weight: 600;
   border: solid;
@@ -40,14 +36,38 @@ canvas#my-canvas {
   border-radius: 35px;
   cursor: pointer;
   z-index: 2;
+  resize: both;
 }
 
-#end_screen_btn:hover {
+button:hover {
   color: #f3e45f;
   border-color: black;
 }
 
-.win_subtitle {
+#human_vs_AI_btn {
+  font-size: 200%;
+  top: 50%;
+  right: 40.5%;
+  width: 20%;
+  height: 10%;
+}
+
+#human_vs_human_btn {
+  font-size: 200%;
+  top: 65%;
+  right: 40.5%;
+  width: 20%;
+  height: 10%;
+}
+
+#end_screen_btn {
+  top: 70%;
+  right: 41%;
+  width: 20%;
+  height: 10%;
+}
+
+.subtitle {
   text-align: center;
   position: absolute;
   top: 30%;
@@ -61,6 +81,13 @@ canvas#my-canvas {
   color: black;
   border-radius: 50px;
   z-index: 2;
+}
+
+#select_players {
+  font-size: 400%;
+  top: 20%;
+  right: 26%;
+  width: 40%;
 }
 
 .rules {
@@ -116,4 +143,20 @@ p {
 .inner_box_of_rules::-webkit-scrollbar-thumb {
   border-radius: 10px;
   background-color: #612000;
+}
+
+.message {
+  text-align: center;
+  position: absolute;
+  top: 30%;
+  right: 26%;
+  width: 40%;
+  font-size: 300%;
+  font-weight: 600;
+  padding: 2% 4%;
+  border: solid;
+  background-color: #b95828;
+  color: black;
+  border-radius: 50px;
+  z-index: 2;
 }

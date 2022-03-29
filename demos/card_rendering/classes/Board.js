@@ -1,7 +1,7 @@
 var canvas = null;
 var canvasPosition = null;
 var context = null;
-const WINNING_POINT = 1;
+const WINNING_POINT = 5;
 
 /**
  * Syntax of the board
@@ -18,15 +18,14 @@ class Board {
     this._availableCards = [];
     this._availableTokens = [];
     this._notAvailableTokens = [];
-    this._playerIndex = 0;
+    this._playerIndex = Math.round(Math.random());
     this._winner = null;
-  }
-
-  draw(context) {
     this._gameState = {
       board: this,
     };
+  }
 
+  draw(context) {
     for (let card of this._cardsOnBorad) {
       card.draw(context);
     }
@@ -80,6 +79,7 @@ class Board {
 
     this.showAvailableCards(context);
     this.showNotAvailableTokens(context);
+    this.selectAvailableTokens();
 
     this.showEndScreen();
   }
@@ -166,13 +166,34 @@ class Board {
     }
   }
 
+  /*
+  showStartScreen() {
+    document.querySelector(".overlay").classList.remove("hidden");
+    document.getElementById("select_players").classList.remove("hidden");
+    document.getElementById("human_vs_AI_btn").classList.remove("hidden");
+    document.getElementById("human_vs_human_btn").classList.remove("hidden");
+  }
+
+  humanVsAi() {
+    document.querySelector(".overlay").classList.add("hidden");
+    document.getElementById("select_players").classList.add("hidden");
+    document.getElementById("human_vs_AI_btn").classList.add("hidden");
+    document.getElementById("human_vs_human_btn").classList.add("hidden");
+  }
+
+  humanVsHuman() {
+    let secondPlayer = new Player("human");
+    this._players[1] = secondPlayer;
+    document.querySelector(".overlay").classList.add("hidden");
+    document.getElementById("select_players").classList.add("hidden");
+    document.getElementById("human_vs_AI_btn").classList.add("hidden");
+    document.getElementById("human_vs_human_btn").classList.add("hidden");
+  }*/
+
   initPlayers() {
     this._prevClick = [];
 
-    let humanPlayer = new Player("AI");
-    let AIPlayer = new Player("AI");
-
-    this._players = [humanPlayer, AIPlayer];
+    this._players = [new Player("AI1"), new Player("AI2")];
   }
 
   initTokenPanels() {
@@ -540,27 +561,19 @@ class Board {
     }
     this.selectAvailableCards();
     this.selectAvailableTokens();
+    this.selectNotAvailableTokens();
   }
 
   showActivePlayer(context) {
+    let icon = null;
     if (this._playerIndex == 0) {
       if (this._players[this._playerIndex].type == "human") {
-        context.drawImage(
-          document.getElementById("player_icon"),
-          50,
-          847,
-          120,
-          120
-        );
+        icon = "player_icon";
       } else {
-        context.drawImage(
-          document.getElementById("AI_icon"),
-          50,
-          847,
-          120,
-          120
-        );
+        icon = "AI_icon";
       }
+      context.drawImage(document.getElementById(icon), 50, 847, 120, 120);
+
       roundedRectangle(
         context,
         this._tokenPanel.x,
@@ -572,17 +585,13 @@ class Board {
         "#F3E45F"
       );
     } else {
-      if (this._players[this._playerIndex].type == "AI") {
-        context.drawImage(document.getElementById("AI_icon"), 50, 8, 120, 120);
+      if (this._players[this._playerIndex].type == "human") {
+        icon = "player_icon";
       } else {
-        context.drawImage(
-          document.getElementById("player_icon"),
-          50,
-          8,
-          120,
-          120
-        );
+        icon = "AI_icon";
       }
+      context.drawImage(document.getElementById(icon), 50, 8, 120, 120);
+
       roundedRectangle(
         context,
         this._AITokenPanel.x,
@@ -601,12 +610,12 @@ class Board {
       this._winner = this._players[0];
       document.querySelector(".overlay").classList.remove("hidden");
       document.getElementById("end_screen_btn").classList.remove("hidden");
-      document.querySelector(".first_player").classList.remove("hidden");
+      document.getElementById("first_player").classList.remove("hidden");
     } else if (this._players[1].score.value >= WINNING_POINT) {
       this._winner = this._players[1];
       document.querySelector(".overlay").classList.remove("hidden");
       document.getElementById("end_screen_btn").classList.remove("hidden");
-      document.querySelector(".second_player").classList.remove("hidden");
+      document.getElementById("second_player").classList.remove("hidden");
     }
   }
 
@@ -637,9 +646,9 @@ class Board {
       document.querySelector(".overlay").classList.add("hidden");
       document.getElementById("end_screen_btn").classList.add("hidden");
       if (this._players[0].score.value >= WINNING_POINT) {
-        document.querySelector(".first_player").classList.add("hidden");
+        document.getElementById("first_player").classList.add("hidden");
       } else if (this._players[1].score.value >= WINNING_POINT) {
-        document.querySelector(".second_player").classList.add("hidden");
+        document.getElementById("second_player").classList.add("hidden");
       }
 
       this.initCards();
@@ -650,7 +659,7 @@ class Board {
       this._focusedToken = null;
       this._availableCards = [];
       this._notAvailableTokens = [];
-      this._playerIndex = 0;
+      this._playerIndex = Math.round(Math.random());
       this._winner = null;
     } else if (this._focusedButton == this._newGameBtn) {
       this.initCards();
@@ -661,7 +670,7 @@ class Board {
       this._focusedToken = null;
       this._availableCards = [];
       this._notAvailableTokens = [];
-      this._playerIndex = 0;
+      this._playerIndex = Math.round(Math.random());
       this._winner = null;
     }
   }
@@ -673,15 +682,25 @@ class Board {
     }
   }
 
-  closeRules() {
+  openMassage() {
+    document.querySelector(".overlay").classList.remove("hidden");
+    document.querySelector(".message").classList.remove("hidden");
+  }
+
+  closeInformations() {
     if (!document.querySelector(".rules").classList.contains("hidden")) {
       document.querySelector(".overlay").classList.add("hidden");
       document.querySelector(".rules").classList.add("hidden");
       this._focusedButton = null;
+    } else if (
+      !document.querySelector(".message").classList.contains("hidden")
+    ) {
+      document.querySelector(".overlay").classList.add("hidden");
+      document.querySelector(".message").classList.add("hidden");
     }
   }
 
-  selectAIChoices() {
+  firstAIChoices() {
     if (this._gameState.board._availableCards.length != 0) {
       let item =
         this._gameState.board._availableCards[
@@ -698,14 +717,69 @@ class Board {
           )
         ];
       this.buyToken(item);
+    } else {
+      //TODO: VALAMIÉRT NEM MŰKÖDIK AZ OVERLAY
+      //document.querySelector(".overlay").classList.remove("hidden");
+      //document.querySelector(".message").classList.remove("hidden");
+      this.initCards();
+      this.initPlayers();
+      this.initTokenPanels();
+      this.initTokens();
+      this._availableCards = [];
+      this._notAvailableTokens = [];
+      this._playerIndex = Math.round(Math.random());
+    }
+  }
+
+  secondAIChoices() {
+    if (this._gameState.board._availableCards.length != 0) {
+      let level = 1;
+      for (let i = 0; i < this._gameState.board._availableCards.length; i++) {
+        if (this._gameState.board._availableCards[i].cardData.level > level) {
+          level = this._gameState.board._availableCards[i].cardData.level;
+        }
+      }
+      let availableCards = [];
+      for (let i = 0; i < this._gameState.board._availableCards.length; i++) {
+        if (this._gameState.board._availableCards[i].cardData.level == level) {
+          availableCards.push(this._gameState.board._availableCards[i]);
+        }
+      }
+      let item =
+        availableCards[Math.floor(Math.random() * availableCards.length)];
+      board.buyCard(item);
+    } else if (this._gameState.board._availableTokens.length != 0) {
+      let item =
+        this._gameState.board._availableTokens[
+          Math.floor(
+            Math.random() * this._gameState.board._availableTokens.length
+          )
+        ];
+      this.buyToken(item);
+    } else {
+      //TODO: VALAMIÉRT NEM MŰKÖDIK AZ OVERLAY
+      //document.querySelector(".overlay").classList.remove("hidden");
+      //document.querySelector(".message").classList.remove("hidden");
+      this.initCards();
+      this.initPlayers();
+      this.initTokenPanels();
+      this.initTokens();
+      this._availableCards = [];
+      this._notAvailableTokens = [];
+      this._playerIndex = Math.round(Math.random());
     }
   }
 
   selectPlayerChoice() {
     let recentPlayer = this._playerIndex;
-    if (this._players[recentPlayer].type == "AI") {
+    if (this._players[recentPlayer].type == "AI1") {
       while (recentPlayer == this._playerIndex) {
-        this.selectAIChoices();
+        this.firstAIChoices();
+        this.selectNextPlayer();
+      }
+    } else if (this._players[recentPlayer].type == "AI2") {
+      while (recentPlayer == this._playerIndex) {
+        this.secondAIChoices();
         this.selectNextPlayer();
       }
     } else {

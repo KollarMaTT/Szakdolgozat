@@ -97,8 +97,20 @@ function resetGame() {
   drawBoard();
 }
 
-function closeRules() {
-  board.closeRules();
+function humanVsAi() {
+  board.humanVsAi();
+  context.clearRect(0, 0, canvas.width, canvas.height);
+  drawBoard();
+}
+
+function humanVsHuman() {
+  board.humanVsHuman();
+  context.clearRect(0, 0, canvas.width, canvas.height);
+  drawBoard();
+}
+
+function closeInformations() {
+  board.closeInformations();
   context.clearRect(0, 0, canvas.width, canvas.height);
   drawBoard();
 }
@@ -115,11 +127,22 @@ function initialize() {
 
   board = new Board();
   board.draw(context);
-
-  //board.selectAIChoice();
+  //board.showStartScreen();
 
   document.querySelector(".new_game").addEventListener("click", resetGame);
-  document.querySelector(".overlay").addEventListener("click", closeRules);
+  /*
+  document
+    .querySelector(".human_vs_AI_btn")
+    .addEventListener("click", humanVsAi);
+  document
+    .querySelector(".human_vs_human_btn")
+    .addEventListener("click", humanVsHuman);
+
+  */
+
+  document
+    .querySelector(".overlay")
+    .addEventListener("click", closeInformations);
 
   resize();
 }

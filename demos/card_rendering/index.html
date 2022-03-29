@@ -47,6 +47,18 @@
 
     <div class="overlay hidden"></div>
 
+    <div class="hidden subtitle" id="select_players">
+      Válasz ki a játékosokat!
+    </div>
+
+    <button class="human_vs_AI_btn hidden" id="human_vs_AI_btn">
+      Ember vs Számítógép
+    </button>
+
+    <button class="human_vs_human_btn hidden" id="human_vs_human_btn">
+      Ember vs Ember
+    </button>
+
     <div class="rules hidden">
       <div class="inner_box_of_rules">
         <div class="rule_title">JÁTÉKSZABÁLYOK</div>
@@ -83,13 +95,15 @@
       </div>
     </div>
 
-    <div class="first_player win_subtitle hidden">
-      🎉Az első játékos nyert!🎉
+    <div class="subtitle hidden" id="first_player">
+      🎉Az alsó játékos nyert!🎉
     </div>
 
-    <div class="second_player win_subtitle hidden">
-      🎉A második játékos nyert!🎉
+    <div class="subtitle hidden" id="second_player">
+      🎉A felső játékos nyert!🎉
     </div>
+
+    <div class="message hidden">Nincs elérhető lépés, a játék újraindul!</div>
 
     <button class="new_game hidden" id="end_screen_btn">Új játék</button>
   </body>
