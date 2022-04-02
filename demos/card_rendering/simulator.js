@@ -1,4 +1,6 @@
-const ROUNDS = 1000;
+import "classes/Board.js";
+
+const ROUNDS = 100;
 
 function isThereWinner() {
   if (board._players[0].score.value >= WINNING_POINT) {
@@ -12,7 +14,47 @@ function isThereWinner() {
   }
 }
 
-function firstAIChoices() {
+
+
+function countDiff(card) {
+  let diff = 0;
+  let white = blue = green = red = black = 0;
+  
+  if (card.cardData.white > board._players[board._playerIndex].colors.white + board._players[board._playerIndex].fixColors.white){
+    white += card.cardData.white - (board._players[board._playerIndex].colors.white + board._players[board._playerIndex].fixColors.white);
+    diff += white;
+  }
+  if(card.cardData.blue > board._players[board._playerIndex].colors.blue + board._players[board._playerIndex].fixColors.blue){
+    blue += card.cardData.blue - (board._players[board._playerIndex].colors.blue + board._players[board._playerIndex].fixColors.blue);
+    diff += blue;
+  }
+  if(card.cardData.green > board._players[board._playerIndex].colors.green + board._players[board._playerIndex].fixColors.green){
+    green += card.cardData.green - board._players[board._playerIndex].colors.green + board._players[board._playerIndex].fixColors.green;
+    diff += green;
+  }
+  if(card.cardData.red > board._players[board._playerIndex].colors.red + board._players[board._playerIndex].fixColors.red){
+    red += card.cardData.red - board._players[board._playerIndex].colors.red + board._players[board._playerIndex].fixColors.red;
+    diff += red;
+  }
+  if(card.cardData.black > board._players[board._playerIndex].colors.black + board._players[board._playerIndex].fixColors.black){
+    black += card.cardData.black - board._players[board._playerIndex].colors.black + board._players[board._playerIndex].fixColors.black;
+    diff += black;
+  }
+
+
+  let cardDatas = {
+    diff: diff,
+    white: white,
+    blue: blue,
+    green: green,
+    red: red,
+    black:black
+  };
+
+  return cardDatas;
+}
+
+function firstAI() {
   if (board._gameState.board._availableCards.length != 0) {
     let item =
       board._gameState.board._availableCards[
@@ -34,7 +76,7 @@ function firstAIChoices() {
   }
 }
 
-function secondAIChoices() {
+function secondAI() {
   if (board._gameState.board._availableCards.length != 0) {
     let level = 1;
     for (let i = 0; i < board._gameState.board._availableCards.length; i++) {
@@ -42,14 +84,14 @@ function secondAIChoices() {
         level = board._gameState.board._availableCards[i].cardData.level;
       }
     }
-    let availableCards = [];
+    let selectableCards = [];
     for (let i = 0; i < board._gameState.board._availableCards.length; i++) {
       if (board._gameState.board._availableCards[i].cardData.level == level) {
-        availableCards.push(board._gameState.board._availableCards[i]);
+        selectableCards.push(board._gameState.board._availableCards[i]);
       }
     }
     let item =
-      availableCards[Math.floor(Math.random() * availableCards.length)];
+    selectableCards[Math.floor(Math.random() * selectableCards.length)];
     board.buyCard(item);
   } else if (board._gameState.board._availableTokens.length != 0) {
     let item =
@@ -62,18 +104,140 @@ function secondAIChoices() {
   } else {
     resetGame();
   }
+  
 }
+
+function thirdAI() {
+  if (board._gameState.board._availableCards.length != 0) {
+    let level = 1;
+    for (let i = 0; i < board._gameState.board._availableCards.length; i++) {
+      if (board._gameState.board._availableCards[i].cardData.level > level) {
+        level = board._gameState.board._availableCards[i].cardData.level;
+      }
+    }
+    let selectableCards = [];
+    for (let i = 0; i < board._gameState.board._availableCards.length; i++) {
+      if (board._gameState.board._availableCards[i].cardData.level == level) {
+        selectableCards.push(board._gameState.board._availableCards[i]);
+      }
+    }
+    let item =
+    selectableCards[Math.floor(Math.random() * selectableCards.length)];
+    board.buyCard(item);
+  } else if (board._gameState.board._availableTokens.length != 0) {
+    let wantedCards = [];
+    for (let i = 0; i < board._gameState.board._cardsOnBorad.length; i++) {
+      wantedCards.push(board._gameState.board._cardsOnBorad[i]);
+    }
+    if(wantedCards.length != 0){
+      let wantedCard = wantedCards[0];
+      for(let i=1;i<wantedCards.length;i++){
+        if(countDiff(wantedCards[i]).diff < countDiff(wantedCard).diff){
+          wantedCard = wantedCards[i];
+        }
+      }
+      let items = [countDiff(wantedCard).white, countDiff(wantedCard).blue, countDiff(wantedCard).green, countDiff(wantedCard).red, countDiff(wantedCard).black];
+      let item = null;
+      for(let i=0;i<items.length;i++){
+        if(items[i] != 0 && board.isTokenAvailable(board._tokens[i])){
+          item = board._tokens[i];
+          break;
+        }
+      }
+      if(item != null){
+        board.buyToken(item);
+      }else{
+        let item = board._gameState.board._availableTokens[Math.floor(Math.random() * board._gameState.board._availableTokens.length)];
+        board.buyToken(item);
+      }
+      
+    }else{
+      let item = board._gameState.board._availableTokens[Math.floor(Math.random() * board._gameState.board._availableTokens.length)];
+      board.buyToken(item);
+    }
+  } else {
+    resetGame();
+  }
+}
+
+
+function fourthAI() {
+  if (board._gameState.board._availableCards.length != 0) {
+    let level = 1;
+    for (let i = 0; i < board._gameState.board._availableCards.length; i++) {
+      if (board._gameState.board._availableCards[i].cardData.level > level) {
+        level = board._gameState.board._availableCards[i].cardData.level;
+      }
+    }
+    let selectableCards = [];
+    for (let i = 0; i < board._gameState.board._availableCards.length; i++) {
+      if (board._gameState.board._availableCards[i].cardData.level == level) {
+        selectableCards.push(board._gameState.board._availableCards[i]);
+      }
+    }
+    let item =
+    selectableCards[Math.floor(Math.random() * selectableCards.length)];
+    board.buyCard(item);
+  } else if (board._gameState.board._availableTokens.length != 0) {
+    let wantedCards = [];
+    for (let i = 0; i < board._gameState.board._cardsOnBorad.length; i++) {
+      if(board._gameState.board._cardsOnBorad[i].cardData.point + board._players[board._playerIndex].score.value >= WINNING_POINT){
+        wantedCards.push(board._gameState.board._cardsOnBorad[i]);
+      }
+    }
+    if(wantedCards.length != 0){
+      let wantedCard = wantedCards[0];
+      for(let i=1;i<wantedCards.length;i++){
+        if(countDiff(wantedCards[i]).diff < countDiff(wantedCard).diff){
+          wantedCard = wantedCards[i];
+        }
+      }
+      let items = [countDiff(wantedCard).white, countDiff(wantedCard).blue, countDiff(wantedCard).green, countDiff(wantedCard).red, countDiff(wantedCard).black];
+      let item = null;
+      for(let i=0;i<items.length;i++){
+        if(items[i] != 0 && board.isTokenAvailable(board._tokens[i])){
+          item = board._tokens[i];
+          break;
+        }
+      }
+      if(item != null){
+        board.buyToken(item);
+      }else{
+        let item = board._gameState.board._availableTokens[Math.floor(Math.random() * board._gameState.board._availableTokens.length)];
+        board.buyToken(item);
+      }
+      
+    }else{
+      let item = board._gameState.board._availableTokens[Math.floor(Math.random() * board._gameState.board._availableTokens.length)];
+      board.buyToken(item);
+    }
+  } else {
+    resetGame();
+  }
+}
+
+
 
 function selectAIChoices() {
   let recentPlayer = board._playerIndex;
   if (board._players[recentPlayer].type == "AI1") {
     while (recentPlayer == board._playerIndex) {
-      firstAIChoices();
+      firstAI();
       board.selectNextPlayer();
     }
   } else if (board._players[recentPlayer].type == "AI2") {
     while (recentPlayer == board._playerIndex) {
-      secondAIChoices();
+      secondAI();
+      board.selectNextPlayer();
+    }
+  }else if (board._players[recentPlayer].type == "AI3") {
+    while (recentPlayer == board._playerIndex) {
+      thirdAI();
+      board.selectNextPlayer();
+    }
+  }else if (board._players[recentPlayer].type == "AI4") {
+    while (recentPlayer == board._playerIndex) {
+      fourthAI();
       board.selectNextPlayer();
     }
   }
@@ -89,34 +253,43 @@ function resetGame() {
   board._playerIndex = Math.round(Math.random());
   board._winner = null;
   board._players[0].type = "AI1";
-  board._players[1].type = "AI2";
+  board._players[1].type = "AI3";
 }
 
 function initialize() {
+
+  let turnNumber = 0;
+  let avg;
+
   board = new Board();
 
   board._players[0].type = "AI1";
-  board._players[1].type = "AI2";
+  board._players[1].type = "AI3";
 
   let first = 0;
   let second = 0;
 
   for (let i = 0; i < ROUNDS; i++) {
+    let turn = 0;
     while (!isThereWinner()) {
       selectAIChoices();
-      //console.log(board._players);
-      //console.log("elso: ", board._players[0].score.value);
-      //console.log("masodik: ", board._players[1].score.value);
+      turn++;
     }
     if (board._winner == 0) {
       first++;
     } else if (board._winner == 1) {
       second++;
     }
+    turnNumber += turn;
+    avg = turnNumber/ ROUNDS;
 
     resetGame();
   }
 
   console.log(`Az elso jatekos ${first} alaklommal nyert.`);
   console.log(`A masodik jatekos ${second} alaklommal nyert.`);
+  console.log(`A jatek atlagosan ${avg} korbol allt.`);
 }
+
+
+initialize();

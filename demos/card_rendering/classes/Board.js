@@ -26,7 +26,6 @@ class Board {
   }
 
   draw(context) {
-    console.log(this._availableTokens);
     for (let card of this._cardsOnBorad) {
       card.draw(context);
     }
@@ -392,9 +391,9 @@ class Board {
       if (this.isCardAvailable(this._cardsOnBorad[i])) {
         this._players[this._playerIndex].score.value +=
           this._cardsOnBorad[i].cardData.point;
+        this._prevClick.push(i);
         this.handleTokenExchange(i);
         this.switchCard(selectedCard, i);
-        this._prevClick.push("card");
       }
     }
     this.selectNextPlayer();
@@ -541,9 +540,44 @@ class Board {
     }
   }
 
+  writeTrunInf(){
+
+    let convertedColors = {
+      "#FFFFFF": "white",
+      "#5264FF": "blue",
+      "#3FBA3F": "green",
+      "#FD3333": "red",
+      "#686868": "black",
+    };
+
+    
+    let content;
+
+    if(typeof this._prevClick[0] === "number"){
+      content = "Card: " + this._prevClick[0];
+    }else{
+      content = "Tokens: ";
+      for(let i=0;i<this._prevClick.length;i++){
+        content += convertedColors[this._prevClick[i]] + " ";
+      }
+    }
+    console.log(content);
+
+      /*
+    const fs = require('fs')
+
+    try {
+      fs.writeFileSync('C:\Users\KollárnéSzűcsErzsébe\Documents\GitHub\demos\card_rendering\test.txt', content)
+      //file written successfully
+    } catch (err) {
+      console.error(err)
+    }
+    */
+  }
+
   selectNextPlayer() {
     if (
-      this._prevClick[0] == "card" ||
+      typeof this._prevClick[0] === "number" ||
       (this._prevClick.length == 2 &&
         this._prevClick[0] == this._prevClick[1]) ||
       (this._prevClick.length == 3 &&
@@ -553,6 +587,7 @@ class Board {
       (this._notAvailableTokens.length == 5 && this._prevClick.length > 0) ||
       (this._notAvailableTokens.length == 5 && this._availableCards.length == 0)
     ) {
+      this.writeTrunInf();
       this._availableCards = [];
       this._notAvailableTokens = [];
       this._prevClick = [];
