@@ -1,30 +1,110 @@
-\Chapter{Koncepció}
+\Chapter{A Splendor játék}
 
-\Section{A fejezet célja}
+\Section{Szabályrendszer}
+A Splendor társasjátékban alapvetően egy reneszánsz korabeli gazdag kereskedő szerepébe helyezi a játékost.
+Forrásait felhasználva bányákat, szállítási útvonalakat szerezhet meg, kézműveseket
+alkalmazhat, hogy a nyers drágaköveidből gyönyörű ékszereket készítethessen el.\par
 
-Ez a fejezet még nem a saját eredményekkel foglalkozik, hanem bemutatja, mi a problémakör, milyen módszerekkel, milyeneredményeket sikerült elérni eddig másoknak.
+A játék összesen negyven darab zsetont tartalmaz. A zsetonok a zöld smaragdból, a fehér gyémántból, a kék zafírból, a fekete ónixból, a piros rubinból és a sárga aranyból (joker) állnak. Mindegyik típusú zsetonból hét darabot tartalmaz a játék, kivéve az aranyból, mivel abból csak ötöt.\par
 
-A hivatkozások jelentős része ehhez a fejezethez szokott kötődni.
-(Egy hivatkozás például így néz ki \cite{coombs1987markup}.)
-Itt lehet bemutatni a hasonló alkalmazásokat.
+Emellett összesen kilencven kártya található a dobozban, amelyből negyven darab az első szintű, harminc a második szintű és húsz a harmadik szintű kártyapaklit, az utolsó tíz darab pedig a nemeseket ábrázoló lapokat teszi ki.\par
 
-\Section{Tartalom és felépítés}
+A játék előkészítése során a különböző szintű fejlődéskártya paklikat külön-külön kell megkeverni és elhelyezni a játékterület bal oldalán oszlopot képezve alulról felfelé növekvő szintű paklik formájában.
+Eután pedig minden pakliból, képpel felfelé négy lapot a pakli mellé sorban
+egymást követve kell elhelyezni.
+A nemeseket tartalmazó lapkákat is meg kell keverni és a játékosok számatól egy darabbal többet lapkát kell a kártyaalakzat fölé helyezni. A megmaradt lapkák a játék dobozába kerülnek vissza, azok már nem lesznek
+felhasználva a játék folyamán. Végül a zsetonokat szín szerint halmokba rendezve kell lerakni.\par
 
-A fejezet tartalma témától függően változhat. Az alábbiakat attól függően különböző arányban tartalmazhatják.
-\begin{itemize}
-\item Irodalomkutatás. Amennyiben a dolgozat egy módszer kidolgozására, kifejlesztésére irányul, akkor itt lehet részletesen végignézni (módszertani vagy időrendi bontásban), hogy az eddigiekben milyen eredmények születtek a témakörben.
-\item Technológia. Mivel jellemzően kutatásról vagy szoftverfejlesztésről van szó, ezért annak a jellemző elemeit, technikai részleteit itt kell bemutatni.
-Ez tehát egy módszeres bevezetés ahhoz, hogy ha valaki nem jártas a témakörben, akkor tudja, hogy a dolgozat milyen aktuálisan elérhető eredményeket, eszközöket használt fel.
-\item Piackutatás. Bizonyos témáknál új termék vagy szolgáltatás kifejlesztése a cél.
-Ekkor érdemes annak alaposan utánanézni, hogy aktuálisan milyen eszközök érhetők el a piacon.
-Ez szoftverek esetében a hasonló alkalmazások bemutatását, táblázatos formában történő összehasonlítását jelentheti.
-Szerepelhetnek képek és észrevételek a viszonyításként bemutatott alkalmazásokhoz.
-\item Követelmény specifikáció. Külön szakaszban érdemes részletesen kitérni az elkészítendő alkalmazással kapcsolatos követelményekre.
-Ehhez tartozhatnak forgatókönyvek (\textit{scenario}-k).
-A szemléletesség kedvéért lehet hozzájuk képernyőkép vázlatokat is készíteni, vagy a használati eseteket más módon szemléltetni.
-\end{itemize}
+Fejlődéskártyák\par
+Tekintély pontok megszerzéséhez a játékosoknak fejlődéskártyákat kell vásárolniuk. Ezek a kártyák a játéktér közepén találhatóak és bármelyik játékos számára megvásárolhatóak saját körében a játék folyamán. A kézben tartott fejlődéskártyák a játékos részére tartalékot képeznek és csak az vásárolhatja meg őket, akinek a kezében vannak.\par
 
-\Section{Amit csak említés szintjén érdemes szerepeltetni}
+A nemesek lapkái\par
+A lapkák a játék folyamán szintén a játéktéren találhatóak meg. A játékos köre végén, amennyiben rendelkezik a megfelelő számú bónusszal (csak a bónuszok számítanak) azonnal fogadja a nemes látogatását és megszerzi azt a lapkát. A játékos nem utasíthatja vissza a nemes látogatását. A nemesek látogatásának fogadása nem számít cselekvésnek. Minden nemesi lapka 3 tekintély pontot jelent, azonban egy játékos a saját körében csak egy nemest fogadhat.\par
 
-Az olvasóról annyit feltételezhetünk, hogy programozásban valamilyen szinten járatos, és a matematikai alapfogalmakkal sem ebben a dolgozatban kell megismertetni.
-A speciális eszközök, programozási nyelvek, matematikai módszerekk és jelölések persze jó, hogy ha említésre kerülnek, de nem kell nagyon belemenni a közismertnek tekinthető dolgokba.
+\vspace{3cm}
+
+JÁTÉKSZABÁLYOK\par
+A legfiatalabb játékos kezdi a fordulót, majd a játék óramutató járásának megfelelő irányban halad tovább.\par 
+\vspace{1cm}
+Saját körében a játékos egyetlen cselekvést hajt végre az alábbi négy lehetőség közül:
+\begin{enumerate}
+\item Elvesz három különböző színű zsetont az ékkő halmokból.
+\item Elvesz két azonos színű zsetont egy ékkő halomból (ez
+azonban csak akkor lehetséges, ha legalább négy zseton van
+abban a halomban, amikor a játékos elveszi őket).
+\item Tartalékol egy fejlődéskártyát és ezzel szerez egy Arany Joker zsetont.
+\item Megvásárol a középen képpel felfelé található vagy a
+saját kezében lévő tartalék fejlődéskártyák közül egyet.
+\end{enumerate}\par
+
+A zsetonok kiválasztása\par
+A játékos birtokában sohasem lehet tíz zsetonnál több a köre végén (beleértve a Joker zsetonokat is). Amennyiben ez megtörténik, akkor annyi zsetont kell visszatenni a halmokba, hogy összesen tíz zseton maradjon a birtokában. A játékos az összes zsetont vagy annak egy részét visszateheti, amikor megszerezte őket. A játékosok birtokában lévő zsetonokat a többi játékos számára láthatóan (számolhatóan) kell tartani. Amennyiben a játéktéren levő zsetonszám nem egyenlő az adott játékos által felvehető zsetonok számával, annyit vehet fel, amennyi a rendelkezésére áll a korábbi szabályok betartásával.\par
+
+Fejlődéskártyák tartalékolása\par
+Amennyiben a játékos tartalékolni szeretne egy fejlődéskártyát, abban az esetben felvesz egyet a játéktér közepén található kártyák közül, vagy (ha szerencsésnek érzi magát) az egyik pakli legfelső lapját veszi fel anélkül, hogy megmutatná azt a többi játékosnak. A tartalék kártyákat kézben kell tartani és nem lehet őket eldobni. Egy játékos kezében legfeljebb 3 kártya lehet. Csak abban az esetben játszhatóak ki a játékos kezéből, ha megvásárolja azt. Tartalék kártya képzése az egyetlen módja Arany Joker zseton megszerzésének. Ha már nincs elérhető Arany Joker zseton, abban az esetben is tartalékolhat kártyát, de nem kap Arany Joker zsetont ezért a cselekvésedért.\par
+
+Fejlődéskártyák megvásárlása\par
+Egy kártya megvásárlásához a játékosnak a kártyán látható mennyiségű zsetont el kell költenie. Az Arany Joker zseton bármilyen zsetont helyettesíthet. Az elköltött zsetonok a játéktéren lévő halmokba kerülnek vissza (az Arany Joker is). A játékos megvásárolhat egy kártyát a játéktér közepén lévőkből vagy a korábbi kör(ök)ben megszerzett és kezében tartott tartalék(ok)ból. A kártyák által biztosított bónuszok és tekintély pontok mindenkor láthatóak (számolhatóak) kell, hogy legyenek.\par
+
+Amikor a játéktér közepéről egy kártya megvásárlásra került (akár tartaléknak, akár nem), helyette azonnal az adott szintű pakliból képpel felfelé egy másikat kell letenni. Az egész játék folyamán folyamatosan minden szintű pakliból négy képpel felfelé fordított kártyának kell középen lennie (kivéve, ha elfogytak az adott szintű pakli kártyái; ebben az esetben az üressé vált hely üres marad).\par
+
+A bónuszok\par
+A korábban megvásárolt fejlődéskártyák bónuszai lehetővé teszik a következő körökben új fejlődéskártyák kevesebb költségen történő megvásárlását. A kártyákon található bónusz színe egyenértékű ugyanazon szín egy zsetonjával. Tehát, a két kék bónusszal rendelkező játékosnak amennyiben a megvásárolni kívánt kártya értéke két kék és egy zöld zseton, csak egy zöld zsetont kell megfizetnie. Amennyiben a játékosnak elegendő mennyiségű bónusz áll rendelkezésére, akkor akár ingyen is vásárolhat fejlődéskártyát.\par
+
+A nemesek\par
+A játékos a köre végén ellenőrzi, hogy rendelkezik-e elegendő bónusszal, hogy a kirakott nemesek lapkái közül egynek fogadhassa látogatását. Csak az a játékos fogadhatja egy nemes látogatását, aki rendelkezik a megfelelő mennyiségű és színű bónusszal. A nemes(ek) látogatását nem lehet visszautasítani. A nemes(ek) látogatásának fogadása nem számít cselekvésnek. Amennyiben a játékos rendelkezésére álló bónuszok lehetővé tennék több nemes látogatásának fogadását is, a játékos kiválasztja, hogy melyik látogatását fogadja. Az így megszerzett nemes lapkáját a játékos képpel felfelé maga elé helyezi.\par
+
+A JÁTÉK VÉGE\par
+Amikor egy játékos megszerzi a 15. tekintély pontját véget ér a játék. Az adott fordulóban mindenki befejezheti a körét (végrehajthatja egy cselekvését), majd a tekintély pontok megszámolása után a legtöbb ponttal rendelkező játékos a nyertes. Azonos pontszám esetében az nyer, aki ezt kevesebb fejlődéskártyából érte el.
+
+
+
+
+\Section{Változatok}
+
+Az alapjátékot kettőtől négy főig lehet játszani, de a játékosok számától eltérőek a zsetonok és a nemes lapkák száma. Kettő játékos esetén az arany zsetonokon kívül mindegyik típusú zsetonból csak négy darab lehet a halomban a játék indulásakor. A nemes lapkák száma pedig három lesz. Három játékos esetén hasonlóan változnak a szabályok, annyi eltéréssel, hogy a zsetonhalmok mindegyike öt darabot fog ez esetben tartalmazni és négy nemes lapka lesz elérhető a játék során. Maximális játékosszám mellett a készletben lévő összes zseton a játéktérre kerül, a nemes lapkákból pedig öt darab lesz játékba.\par
+
+A játékhoz angol nyelven elkészítettek három féle kiegészítőt is.\par 
+
+A The Cities nevezetű kiegészítő a nemes lapkákat cseréli le város kártyákra. Ezek közül ha az egyik játékos valamelyik város zsetonkövetelményeit eléri, felveheti azt és megkapja a rajta lévő pontszámot. A másik játékosnak ilyenkor egy köre maradt arra, hogy egy másik városra összegyűjtse a szükséges zsetonokat és megvegye, így megkapja az adott város kártyát és a rajta lévő pontot.\par
+
+A The Strongholds nevet viselő kiegészítő során erődítményekkel bővül az alapjáték. Ezeket az erődöket kártyákra lehet elhelyezni, hogy lefoglalja magának a játékos az adott lapot. Ezeket az erődöket más játékosok a körükben lerombolhatják annak érdekében, hogy megakadájozzák a haladást. Ha egy játékos három erődöt helyez egy kártyára, ingyenesen megvásárolhatja azt.\par
+
+Végezetül pedig a  The Trading Posts néven futó kiegészítő egy kereskedelmi vonalat fűz a játékmenetbe. Tartalmaz ugyanis egy kereskedő modult, ahol a feltüntetett követelmények teljesítésekor az ahhoz tartozó, különleges képességgel ruházza fel az adott játékost. Ilyen például az, hogy a két azonos színű zsetonfelvétel esetén kiválaszthat egy harmadik, eltérő színű zsetont is, amit felvehet az előző kettővel együtt.\par
+
+Az általam megvalósított verzió szabályrendszere eltér az alapverziótól. Az elkészített programomban az egy, vagy két játékos alternatíva van implementálva. Van lehetőség a számítógépes logika ellen játszani, és arra is, hogy két emberi játékos tudja összemérni a tudását lokálisan. Emellett az én játékverziómban a fix két játékos - akár ember, akár számítógép - ellenére mindig öt zseton van mindegyik színből a játék indulásakor, az arany zseton pedig nincs megvalósítva, és így kártyát sem lehet az adott játékosnak lefoglalni. Továbbá pedig a nemes lapkák sincsenek jelen a játék során, csupán a kártyákon lévő pontokból lehet elérni a játék végét jelentő pontszámot. A következő módosításom, hogy a játék az alapverzióval ellentétben rögtön véget ér, ahogy a egyik játékos eléri vagy túllépi a tizenöt pontot, viszont kiegyenlítve a játékosok esélyet a pontszerzésre, randomizáltam a kezdő játékos kijelölését. Az alapverzióban feltüntetett egy játékosnál lévő maximális zsetonokra vonatkozó szabályok sincsenek implementálva, így akármennyi zsetont felvehetnek a játékosok, nem kell visszatennüik ha átlépik a tizet. Ez esetben ritka előfordulással, de bekövetkezhet, hogy a felvehető zsetonok elfogytak, és a játékos sem tud megvásárolni egy lapot sem. Ezt az eshetőséget olyan módon kezeltem, hogy a játékosok számára megjelenik egy felirat ezen állapot ismertetéséről, majd pedig ebből az üzenetből kilépve újraindul a játék. A szintén ezzel járó módosításom, hogy 
+
+\Section{Fizikális implementációk}
+
+Fizikális megvalósítása is létezik természetesen ennek a társasjátéknak. Az első kiadást 2014-ben adták ki és jelölték az év társasjátéka díjára is, amit végül nem nyert meg. A doboz a szépen megrajzolt zsetonokat, különböző szintű kártyákat és nemes lapkákat tartalmazza. 2017-ben megjelent a játék vizuális újragondolásával az új verziója is a játéknak.\par
+
+A játék fizikálisan csak az alapverziójában vásárolható meg egyedül magyar nyelven. A kiegészítők közül is csak a The Cities érhető el jelenleg angol nyelven.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=7cm]{images/physical_edition1.jpg}
+\hspace{1cm}
+\includegraphics[width=7cm]{images/physical_edition2.jpg}
+\caption{A játék fizikális megvalósítása.}
+\label{fig:physical}
+\end{figure}
+
+\newpage
+
+\Section{Szoftveres implementációk}
+
+A szoftveres megvalósítása is elkészült a játéknak egy évvel a megjelenése után. Steamen elérhető a kiegészítőivel együtt, természetesen a játék és a kiegészítők megvásárlásával. Korábban telefonokra is elérhető volt, de ma már sajnos nem.
+
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.2]{images/digital_edition.jpg}
+\caption{A játék szoftveres megvalósítása.}
+\label{fig:digital}
+\end{figure}
+
+
+\vspace{3cm}
+HIVATKOZÁSOK:\par
+http://jatekdij.hu/tartalom/tarsasjatek/Splendor.pdf\par
+https://store.steampowered.com/app/376680/Splendor/
+

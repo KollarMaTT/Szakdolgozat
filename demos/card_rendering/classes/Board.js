@@ -540,8 +540,7 @@ class Board {
     }
   }
 
-  writeTrunInf(){
-
+  writeTrunInf() {
     let convertedColors = {
       "#FFFFFF": "white",
       "#5264FF": "blue",
@@ -550,20 +549,19 @@ class Board {
       "#686868": "black",
     };
 
-    
     let content;
 
-    if(typeof this._prevClick[0] === "number"){
+    if (typeof this._prevClick[0] === "number") {
       content = "Card: " + this._prevClick[0];
-    }else{
+    } else {
       content = "Tokens: ";
-      for(let i=0;i<this._prevClick.length;i++){
+      for (let i = 0; i < this._prevClick.length; i++) {
         content += convertedColors[this._prevClick[i]] + " ";
       }
     }
     console.log(content);
 
-      /*
+    /*
     const fs = require('fs')
 
     try {
@@ -676,7 +674,10 @@ class Board {
   }
 
   resetGame() {
-    if (!document.querySelector(".overlay").classList.contains("hidden")) {
+    if (
+      !document.querySelector(".overlay").classList.contains("hidden") &&
+      document.querySelector(".overlay").classList.contains("hidden")
+    ) {
       document.querySelector(".overlay").classList.add("hidden");
       document.getElementById("end_screen_btn").classList.add("hidden");
       if (this._players[0].score.value >= WINNING_POINT) {
@@ -720,7 +721,7 @@ class Board {
 
   openMassage() {
     document.querySelector(".message").classList.remove("hidden");
-    document.querySelector(".overlay").style.display = "block";
+    document.querySelector(".overlay").classList.remove("hidden");
   }
 
   closeInformations() {
@@ -731,8 +732,8 @@ class Board {
     } else if (
       !document.querySelector(".message").classList.contains("hidden")
     ) {
-      document.querySelector(".overlay").style.display = "none";
       document.querySelector(".message").classList.add("hidden");
+      this.showStartScreen();
     }
   }
 
@@ -754,7 +755,6 @@ class Board {
         ];
       this.buyToken(item);
     } else {
-      //TODO: VALAMIÉRT NEM MŰKÖDIK AZ OVERLAY
       this.openMassage();
       this.initCards();
       this.initPlayers();
@@ -792,7 +792,6 @@ class Board {
         ];
       this.buyToken(item);
     } else {
-      //TODO: VALAMIÉRT NEM MŰKÖDIK AZ OVERLAY
       this.openMassage();
       this.initCards();
       this.initPlayers();

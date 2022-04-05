@@ -1,45 +1,47 @@
-\Chapter{Megvalósítás}
+\Chapter{Az alkalmazás tervei}
 
-Ez a fejezet mutatja be a megvalósítás lépéseit.
-Itt lehet az esetlegesen előforduló technikai nehézségeket említeni.
-Be lehet már mutatni a program elkészült részeit.
+\Section{Képernyő szerkezet}
+Kezdetben összeállítottam egy tervet, arra, hogy nagyvonalakban hogyan is képzelem el a játék felületének felépítését, kinézetét. Ezen a kezdetleges rajzon elhelyeztem a kártyapaklikat, a kártyákat az azokon szereplő értékekkel, a zsetonokat és egy zsetongyűjtő panelt is. Az alapvető elképzeléseim az alapján születtek meg, hogy az alapjáték felépítése mind a fizikális, mind a digitális verzióban ehhez hasonlóan épül fel.
 
-Meg lehet mutatni az elkészített programkód érdekesebb részeit.
-(Az érdekesebb részek bemutatására kellene szorítkozni.
-Többségében a szöveges leírásnak kellene benne lennie.
-Abból lehet kiindulni, hogy a forráskód a dolgozathoz elérhető, azt nem kell magába a dolgozatba bemásolni, elegendő csak behivatkozni.)
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.37]{images/screen_structure_plan.png}
+\caption{A játék kezdetleges kinézeti terve.}
+\label{fig:screen_structure_plan}
+\end{figure}
 
-A dolgozatban szereplő forráskódrészletekhez külön vannak programnyelvenként stílusok.
-Python esetében például így néz ki egy formázott kódrészlet.
-\begin{python}
-import sys
+\newpage
 
-if __name__ == '__main__':
-    pass
-\end{python}
+Az idő előrehaladtával formáltam mind a felépítést, mind a kinézetet, de a koncepció alapja megmaradt. A játék kapott egy hozzá illő hátteret, a kártyalapok színét is élőbbé tettem, a zsetonokat a halomban lévő számuk alapján megszámoztam és a zsetongyűjtő panelt is újraterveztem. Létrehoztam egy második panelt is a képernyő felső részén annak érdekében, hogy az adott játékos tudja követni az ellenfél részeredményeit is.
+Emellett a jobb felső sarokba elhelyeztem egy új játék és egy játékszabályok feliratú gombot, a hozzájuk tartozó funciók ellátásához. Végezetül pedig megjelöltem a soron lévő játékost a hozzá tartozó panelének körberajzolásával és a játékost jellemző ikonnal.
 
-A stílusfájlok a \texttt{styles} jegyzékben találhatók.
-A stílusok között szerepel még C++, Java és Rust stílusfájl.
-Ezek használatához a \texttt{dolgozat.tex} fájl elején \texttt{usepackage} paranccsal hozzá kell adni a stílust, majd a stílusfájl nevével megegyező környezetet lehet használni.
-További példaként C++ forráskód esetében ez így szerepel.
-\begin{cpp}
-#include <iostream>
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.3]{images/screen_structure.png}
+\caption{A játék végleges kinézete.}
+\label{fig:screen_structure}
+\end{figure}
 
-class Sample : public Object
-{
-    // An empty class definition
-}
-\end{cpp}
-Stílusfájlokból elegendő csak annyit meghagyni, amennyire a dolgozatban szükség van.
-Más, C szintaktikájú nyelvekhez (mint például a JavaScript és C\#) a Java vagy C++ stílusfájlok átszerkesztésére van szükség.
-(Elegendő lehet csak a fájlnevet átírni, és a fájlban a környezet nevét.)
 
-Nyers adatok, parancssori kimenetek megjelenítéséhez a \texttt{verbatim} környezetet lehet használni.
-\begin{verbatim}
-$ some commands with arguments
-1 2 3 4 5
-$ _
-\end{verbatim}
+\Section{A játék működése}
 
-A kutatás jellegű témáknál ez a fejezet gyakorlatilag kimaradhat.
-Helyette inkább a fő vizsgálati módszerek, kutatási irányok kaphatnak külön-külön fejezeteket.
+Az általam leszűkített szabályrendszer alapú játék megvalósításához a JavaScriptet, a megjelenítéséhez pedig főleg a HTML5 Canvast, minimálisan pedig a CSS-t használtam. A projekt kezdetekor a kártyák megjelenítésével foglalkoztam. Megvalósítottam a kártyák megjelenítését, külső fájlból való betöltését, és az ezáltal kapott adatok alapján a tulajdonságaik elhelyezését is.
+
+
+
+
+
+
+
+
+
+
+
+
+
+%Nyers adatok, parancssori kimenetek megjelenítéséhez a \texttt{verbatim} környezetet lehet használni.
+%begin{verbatim}
+% some commands with arguments
+% 2 3 4 5
+% _
+%end{verbatim}
