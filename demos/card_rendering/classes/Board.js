@@ -540,7 +540,10 @@ class Board {
     }
   }
 
-  writeTrunInf() {
+  writeTurnInf() {
+    let content;
+
+    /*
     let convertedColors = {
       "#FFFFFF": "white",
       "#5264FF": "blue",
@@ -548,8 +551,6 @@ class Board {
       "#FD3333": "red",
       "#686868": "black",
     };
-
-    let content;
 
     if (typeof this._prevClick[0] === "number") {
       content = "Card: " + this._prevClick[0];
@@ -559,18 +560,12 @@ class Board {
         content += convertedColors[this._prevClick[i]] + " ";
       }
     }
-    console.log(content);
+    console.log(content);*/
 
-    /*
-    const fs = require('fs')
+    //content = "Decks: " + "level 1:" + this._level1Cards.length + " level 2:" + this._level2Cards.length + " level 3:" + this._level3Cards.length;
 
-    try {
-      fs.writeFileSync('C:\Users\KollárnéSzűcsErzsébe\Documents\GitHub\demos\card_rendering\test.txt', content)
-      //file written successfully
-    } catch (err) {
-      console.error(err)
-    }
-    */
+    //console.log(content);
+
   }
 
   selectNextPlayer() {
@@ -585,7 +580,7 @@ class Board {
       (this._notAvailableTokens.length == 5 && this._prevClick.length > 0) ||
       (this._notAvailableTokens.length == 5 && this._availableCards.length == 0)
     ) {
-      this.writeTrunInf();
+      this.writeTurnInf();
       this._availableCards = [];
       this._notAvailableTokens = [];
       this._prevClick = [];
@@ -676,7 +671,7 @@ class Board {
   resetGame() {
     if (
       !document.querySelector(".overlay").classList.contains("hidden") &&
-      document.querySelector(".overlay").classList.contains("hidden")
+      document.querySelector(".message").classList.contains("hidden")
     ) {
       document.querySelector(".overlay").classList.add("hidden");
       document.getElementById("end_screen_btn").classList.add("hidden");

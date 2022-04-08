@@ -4,9 +4,9 @@
 
  class Button {
     constructor(x, y, width, textPos ,text) {
-        this.x=x;
-        this.y=y;
-        this.text=text;
+        this.x = x;
+        this.y = y;
+        this.text = text;
         this.width = width;
         this.textPos = textPos;
     }
