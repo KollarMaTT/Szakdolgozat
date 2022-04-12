@@ -4,6 +4,7 @@ body {
   height: 100%;
   margin: 0;
 }
+
 canvas#my-canvas {
   background-repeat: no-repeat;
   background-size: cover;
@@ -46,8 +47,9 @@ button:hover {
 
 #human_vs_AI_btn {
   font-size: 200%;
-  top: 59%;
+  top: 55%;
   right: 36.5%;
+  left: 36.5%;
   padding: 5px;
 }
 
@@ -55,22 +57,26 @@ button:hover {
   font-size: 200%;
   top: 70%;
   right: 39.5%;
+  left: 39.5%;
   padding: 5px;
 }
 
 #end_screen_btn {
   top: 70%;
   right: 44%;
+  left: 44%;
   font-size: 250%;
   padding: 10px;
 }
 
-#second_player{
+#second_player {
   right: 24%;
+  left: 24%;
 }
 
-#first_player{
+#first_player {
   right: 24%;
+  left: 24%;
 }
 
 .subtitle {
@@ -91,7 +97,8 @@ button:hover {
 #select_players {
   font-size: 400%;
   top: 20%;
-  right: 20%;
+  right: 28.5%;
+  left: 28.5%;
 }
 
 .rules {
@@ -141,6 +148,7 @@ p {
 
 .inner_box_of_rules::-webkit-scrollbar {
   width: 10px;
+  height: 10px;
   background-color: #b95828;
 }
 
@@ -154,6 +162,7 @@ p {
   position: absolute;
   top: 42%;
   right: 14.5%;
+  left: 14.5%;
   font-size: 300%;
   font-weight: 600;
   padding: 2% 4%;

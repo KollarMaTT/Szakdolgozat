@@ -109,12 +109,10 @@ class Board {
 
     shuffle(this._level3Cards);
 
-    let slot = 0;
     let card;
 
     for (let i = 0; i < 3; i++) {
       for (let j = 0; j < 4; j++) {
-        slot = i * 4 + j;
         let x = j * 250 + 480;
         let y = 630 - i * 240;
 
@@ -391,7 +389,7 @@ class Board {
       if (this.isCardAvailable(this._cardsOnBorad[i])) {
         this._players[this._playerIndex].score.value +=
           this._cardsOnBorad[i].cardData.point;
-        this._prevClick.push(i);
+        this._prevClick.push("card");
         this.handleTokenExchange(i);
         this.switchCard(selectedCard, i);
       }
@@ -565,12 +563,11 @@ class Board {
     //content = "Decks: " + "level 1:" + this._level1Cards.length + " level 2:" + this._level2Cards.length + " level 3:" + this._level3Cards.length;
 
     //console.log(content);
-
   }
 
   selectNextPlayer() {
     if (
-      typeof this._prevClick[0] === "number" ||
+      this._prevClick[0] === "card" ||
       (this._prevClick.length == 2 &&
         this._prevClick[0] == this._prevClick[1]) ||
       (this._prevClick.length == 3 &&

@@ -1,6 +1,6 @@
 //import "classes/Board.js";
 
-const ROUNDS = 1000;
+const ROUNDS = 10000;
 const first_player = "AI1";
 const second_player = "AI2";
 
@@ -18,7 +18,7 @@ function isThereWinner() {
 
 function countDiff(card) {
   let diff = 0;
-  let white = blue = green = red = black = 0;
+  let white = (blue = green = red = black = 0);
 
   if (
     card.cardData.white >
@@ -286,7 +286,6 @@ function initialize() {
 
   console.log(`Az elso jatekos ${first} alaklommal nyert.`);
   console.log(`A masodik jatekos ${second} alaklommal nyert.`);
-
 
   /*
   console.log(
