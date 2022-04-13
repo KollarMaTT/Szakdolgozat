@@ -26,7 +26,7 @@ class Board {
   }
 
   draw(context) {
-    for (let card of this._cardsOnBorad) {
+    for (let card of this._cardsOnBoard) {
       card.draw(context);
     }
 
@@ -85,7 +85,7 @@ class Board {
   }
 
   initCards() {
-    this._cardsOnBorad = [];
+    this._cardsOnBoard = [];
 
     this._level1Cards = [];
     this._level2Cards = [];
@@ -108,6 +108,10 @@ class Board {
     }
 
     shuffle(this._level3Cards);
+
+    //console.log(this._level1Cards);
+    //console.log(this._level2Cards);
+    //console.log(this._level3Cards);
 
     let card;
 
@@ -159,7 +163,7 @@ class Board {
           card = new Card(x, y, level3CardData);
           this._level3Cards.shift();
         }
-        this._cardsOnBorad.push(card);
+        this._cardsOnBoard.push(card);
       }
     }
   }
@@ -189,7 +193,7 @@ class Board {
   initPlayers() {
     this._prevClick = [];
 
-    this._players = [new Player("human"), new Player("AI2")];
+    this._players = [new Player("human"), new Player("AI")];
   }
 
   initTokenPanels() {
@@ -230,7 +234,7 @@ class Board {
   }
 
   findCardAtCursor(mouseEvent) {
-    for (let card of this._cardsOnBorad) {
+    for (let card of this._cardsOnBoard) {
       if (card.isUnderCursor(mouseEvent)) {
         return card;
       }
@@ -251,18 +255,18 @@ class Board {
   }
 
   buyToken(selectedToken) {
-    let i = 0;
     for (let token of this._tokens) {
       if (token == selectedToken && this.isTokenAvailable(token)) {
         token.value--;
         this.increaseTokenPanel(token.color, "basic");
         this._prevClick.push(token.color);
+        this._availableCards = [];
       }
-      i++;
     }
     this.selectNextPlayer();
     this.selectAvailableTokens();
     this.selectNotAvailableTokens();
+    this.selectAvailableCards();
   }
 
   increaseTokenPanel(color, valueType) {
@@ -305,63 +309,63 @@ class Board {
 
   switchCard(selectedCard, slot) {
     if (selectedCard.cardData.level == 1 && this._level1Cards.length > 0) {
-      this._cardsOnBorad[slot].cardData = this._level1Cards[0];
+      this._cardsOnBoard[slot].cardData = this._level1Cards[0];
       this._level1Cards.shift();
     } else if (
       selectedCard.cardData.level == 2 &&
       this._level2Cards.length > 0
     ) {
-      this._cardsOnBorad[slot].cardData = this._level2Cards[0];
+      this._cardsOnBoard[slot].cardData = this._level2Cards[0];
       this._level2Cards.shift();
     } else if (
       selectedCard.cardData.level == 3 &&
       this._level3Cards.length > 0
     ) {
-      this._cardsOnBorad[slot].cardData = this._level3Cards[0];
+      this._cardsOnBoard[slot].cardData = this._level3Cards[0];
       this._level3Cards.shift();
     }
   }
 
   handleTokenExchange(slot) {
-    if (this._cardsOnBorad[slot].cardData.white > 0) {
+    if (this._cardsOnBoard[slot].cardData.white > 0) {
       let diff =
-        this._cardsOnBorad[slot].cardData.white -
+        this._cardsOnBoard[slot].cardData.white -
         this._players[this._playerIndex].fixColors.white;
       if (diff > 0) {
         this._players[this._playerIndex].colors.white -= diff;
         this._tokens[0].value += diff;
       }
     }
-    if (this._cardsOnBorad[slot].cardData.blue > 0) {
+    if (this._cardsOnBoard[slot].cardData.blue > 0) {
       let diff =
-        this._cardsOnBorad[slot].cardData.blue -
+        this._cardsOnBoard[slot].cardData.blue -
         this._players[this._playerIndex].fixColors.blue;
       if (diff > 0) {
         this._players[this._playerIndex].colors.blue -= diff;
         this._tokens[1].value += diff;
       }
     }
-    if (this._cardsOnBorad[slot].cardData.green > 0) {
+    if (this._cardsOnBoard[slot].cardData.green > 0) {
       let diff =
-        this._cardsOnBorad[slot].cardData.green -
+        this._cardsOnBoard[slot].cardData.green -
         this._players[this._playerIndex].fixColors.green;
       if (diff > 0) {
         this._players[this._playerIndex].colors.green -= diff;
         this._tokens[2].value += diff;
       }
     }
-    if (this._cardsOnBorad[slot].cardData.red > 0) {
+    if (this._cardsOnBoard[slot].cardData.red > 0) {
       let diff =
-        this._cardsOnBorad[slot].cardData.red -
+        this._cardsOnBoard[slot].cardData.red -
         this._players[this._playerIndex].fixColors.red;
       if (diff > 0) {
         this._players[this._playerIndex].colors.red -= diff;
         this._tokens[3].value += diff;
       }
     }
-    if (this._cardsOnBorad[slot].cardData.black > 0) {
+    if (this._cardsOnBoard[slot].cardData.black > 0) {
       let diff =
-        this._cardsOnBorad[slot].cardData.black -
+        this._cardsOnBoard[slot].cardData.black -
         this._players[this._playerIndex].fixColors.black;
       if (diff > 0) {
         this._players[this._playerIndex].colors.black -= diff;
@@ -370,7 +374,7 @@ class Board {
     }
 
     this.increaseTokenPanel(
-      this._cardsOnBorad[slot].cardData.color,
+      this._cardsOnBoard[slot].cardData.color,
       "fixValue"
     );
   }
@@ -378,7 +382,7 @@ class Board {
   buyCard(selectedCard) {
     if (selectedCard != null) {
       let i = 0;
-      for (let card of this._cardsOnBorad) {
+      for (let card of this._cardsOnBoard) {
         if (card == selectedCard) {
           break;
         } else {
@@ -386,10 +390,10 @@ class Board {
         }
       }
 
-      if (this.isCardAvailable(this._cardsOnBorad[i])) {
+      if (this.isCardAvailable(this._cardsOnBoard[i]) && this._prevClick == 0) {
         this._players[this._playerIndex].score.value +=
-          this._cardsOnBorad[i].cardData.point;
-        this._prevClick.push("card");
+          this._cardsOnBoard[i].cardData.point;
+        this._prevClick.push(i);
         this.handleTokenExchange(i);
         this.switchCard(selectedCard, i);
       }
@@ -397,7 +401,7 @@ class Board {
     this.selectNextPlayer();
     this.selectAvailableTokens();
     this.selectNotAvailableTokens();
-  }
+    }
 
   isCardAvailable(card) {
     if (
@@ -475,7 +479,7 @@ class Board {
   }
 
   selectAvailableCards() {
-    for (let card of this._cardsOnBorad) {
+    for (let card of this._cardsOnBoard) {
       if (
         this.isCardAvailable(card) &&
         !this._availableCards.includes(card) &&
@@ -540,8 +544,8 @@ class Board {
 
   writeTurnInf() {
     let content;
-
     /*
+    
     let convertedColors = {
       "#FFFFFF": "white",
       "#5264FF": "blue",
@@ -559,15 +563,11 @@ class Board {
       }
     }
     console.log(content);*/
-
-    //content = "Decks: " + "level 1:" + this._level1Cards.length + " level 2:" + this._level2Cards.length + " level 3:" + this._level3Cards.length;
-
-    //console.log(content);
   }
 
   selectNextPlayer() {
     if (
-      this._prevClick[0] === "card" ||
+      typeof this._prevClick[0] === "number" ||
       (this._prevClick.length == 2 &&
         this._prevClick[0] == this._prevClick[1]) ||
       (this._prevClick.length == 3 &&
@@ -729,82 +729,92 @@ class Board {
     }
   }
 
-  firstAIChoices() {
-    if (this._gameState.board._availableCards.length != 0) {
-      let item =
-        this._gameState.board._availableCards[
-          Math.floor(
-            Math.random() * this._gameState.board._availableCards.length
-          )
-        ];
-      this.buyCard(item);
-    } else if (this._gameState.board._availableTokens.length != 0) {
-      let item =
-        this._gameState.board._availableTokens[
-          Math.floor(
-            Math.random() * this._gameState.board._availableTokens.length
-          )
-        ];
-      this.buyToken(item);
-    } else {
-      this.openMassage();
-      this.initCards();
-      this.initPlayers();
-      this.initTokenPanels();
-      this.initTokens();
-      this._availableCards = [];
-      this._notAvailableTokens = [];
-      this._playerIndex = Math.round(Math.random());
-    }
+
+  AIChoices() {
+    let usableColors = {
+      "#FFFFFF": "white",
+      "#5264FF": "blue",
+      "#3FBA3F": "green",
+      "#FD3333": "red",
+      "#686868": "black",
+    };
+
+  let wantedCard = this._gameState.board._cardsOnBoard[8];
+  for(let i = 9; i<12;i++){
+      if(countDiff(this._gameState.board._cardsOnBoard[i]).diff < countDiff(wantedCard).diff){
+          wantedCard = this._gameState.board._cardsOnBoard[i];
+      }
   }
 
-  secondAIChoices() {
-    if (this._gameState.board._availableCards.length != 0) {
-      let level = 1;
+  let selectableCards = [];
+
+  if(this._gameState.board._availableCards.includes(wantedCard)){
+      this.buyCard(wantedCard);
+  }else if(this._gameState.board._availableCards.length != 0){
       for (let i = 0; i < this._gameState.board._availableCards.length; i++) {
-        if (this._gameState.board._availableCards[i].cardData.level > level) {
-          level = this._gameState.board._availableCards[i].cardData.level;
-        }
+          if(selectRequiredTokens(wantedCard).includes(usableColors[this._gameState.board._availableCards[i].cardData.color])){
+              selectableCards.push(this._gameState.board._availableCards[i]);
+          }
       }
-      let availableCards = [];
-      for (let i = 0; i < this._gameState.board._availableCards.length; i++) {
-        if (this._gameState.board._availableCards[i].cardData.level == level) {
-          availableCards.push(this._gameState.board._availableCards[i]);
+      if(selectableCards.length != 0){
+          let item = selectableCards[Math.floor(Math.random() * selectableCards.length)];
+          this.buyCard(item);
+      }else if (this._gameState.board._availableTokens.length != 0) {
+        let selectableTokens = [];
+  
+        for (let i = 0; i < this._gameState.board._availableTokens.length; i++) {
+          if(selectRequiredTokens(wantedCard).includes(usableColors[this._availableTokens[i].color])){
+            selectableTokens.push(this._gameState.board._availableTokens[i]);
+          }
         }
+  
+        if(selectableTokens.length != 0){
+          let item = selectableTokens[ Math.floor( Math.random() * selectableTokens.length)];
+          this.buyToken(item);
+        }else{
+          let token =
+                this._gameState.board._availableTokens[
+                  Math.floor(
+                    Math.random() * this._gameState.board._availableTokens.length
+                  )
+                ];
+              this.buyToken(token);
+        }
+      } else {
+          let item = this._gameState.board._availableCards[Math.floor(Math.random() * this._gameState.board._availableCards.length)];
+          this.buyCard(item);
+        }
+  }else if (this._gameState.board._availableTokens.length != 0) {
+    let selectableTokens = [];
+
+    for (let i = 0; i < this._gameState.board._availableTokens.length; i++) {
+      if(selectRequiredTokens(wantedCard).includes(usableColors[this._availableTokens[i].color])){
+        selectableTokens.push(this._gameState.board._availableTokens[i]);
       }
-      let item =
-        availableCards[Math.floor(Math.random() * availableCards.length)];
-      board.buyCard(item);
-    } else if (this._gameState.board._availableTokens.length != 0) {
-      let item =
-        this._gameState.board._availableTokens[
-          Math.floor(
-            Math.random() * this._gameState.board._availableTokens.length
-          )
-        ];
-      this.buyToken(item);
-    } else {
-      this.openMassage();
-      this.initCards();
-      this.initPlayers();
-      this.initTokenPanels();
-      this.initTokens();
-      this._availableCards = [];
-      this._notAvailableTokens = [];
-      this._playerIndex = Math.round(Math.random());
     }
+
+    if(selectableTokens.length != 0){
+      let item = selectableTokens[ Math.floor( Math.random() * selectableTokens.length)];
+      board.buyToken(item);
+    }else{
+      let token =
+            board._gameState.board._availableTokens[
+              Math.floor(
+                Math.random() * board._gameState.board._availableTokens.length
+              )
+            ];
+          board.buyToken(token);
+    }
+  } else {
+    resetGame();
+  }
   }
 
   selectPlayerChoice() {
     let recentPlayer = this._playerIndex;
-    if (this._players[recentPlayer].type == "AI1") {
+    if (this._players[recentPlayer].type == "AI") {
       while (recentPlayer == this._playerIndex) {
-        this.firstAIChoices();
-        this.selectNextPlayer();
-      }
-    } else if (this._players[recentPlayer].type == "AI2") {
-      while (recentPlayer == this._playerIndex) {
-        this.secondAIChoices();
+        this.AIChoices();
         this.selectNextPlayer();
       }
     } else if (
@@ -814,14 +824,7 @@ class Board {
       this.buyToken(this._focusedToken);
       this.buyCard(this._focusedCard);
     } else {
-      this.openMassage();
-      this.initCards();
-      this.initPlayers();
-      this.initTokenPanels();
-      this.initTokens();
-      this._availableCards = [];
-      this._notAvailableTokens = [];
-      this._playerIndex = Math.round(Math.random());
+      this._playerIndex = (this._playerIndex + 1) % this._players.length;
     }
   }
 
