@@ -1,1 +1,18 @@
 \Chapter{Az AI megvalósítása}
+
+A számítógép által vezérelt játékosokat különböző döntési logikák segítségével valósítottam meg.
+
+\Section{Első AI}
+Az első AI egy nagyon alapvető logikának a megvalósítása. A köre elején megnézi, hogy van-e számára elérhető kártyalap. Amennyiben igen, azok közül random módon választ egyet. Ha viszont nem, akkor a zsetonok közül választ szintén véletlenszerűen a megfelelő szabályok betartásával.
+
+\Section{Második AI}
+A következő AI egy szinttel volt csak a korábbinál komplikáltabb, ami a kártyaválasztás terén lépett egy szintet. Ez esetben, amikor van számára elérhető lap, akkor azok közül megnézi, hogy melyik vagy melyikek a legmagasabb szintűek, majd azok közül választ véletlenszerűen egyet. Abban az esetben, amikor nem volt elérhető lap, szintén véletlenszerűen választ zsetont.
+
+\Section{Harmadik AI}
+A harmadik AI egy olyan logikát foglal magába, amely a kártyaválasztás esetén az előző AI logikáját követi, viszont a zsetonválasztásnál már figyelembe veszi a játékállapotot mind a lent lévő lapok, mind a rendelkezésére álló zsetonok tekintetében. Amennyiben nincs elérhető lap, az algoritmus kiválasztja a lent lévő lapok közül azt, amelyikhez a lehető legkevesebb zsetonra van szüksége. Ezután megnézi, hogy melyek a szükséges zsetonok, és ha valamelyik elérhető, akkor megvásárolja közülük az egyiket és folytatja a folyamatot a lépések szabályainak betartásával. Ezzel szemben, ha nem elérhető számára egy szükséges zseton sem, akkor a korábbiakhoz hasonlóan véletlenszerűen választ az elérhetőek közül.
+
+\Section{Negyedik AI}
+Az utolsó AI logikája a legkomplikáltabb és egyben a legeredményesebb a korábbiakkal összevetve. A korábbiaktól eltérően mind a kártya, mind a zsetonválasztás esetében figyelembe veszi, hogy mire lenne szüksége a hármas szintű lapok megvásárlásához, ezáltal egyfajta előre gondolkodást valósít meg.\par
+A kör kezdetén kiválasztja, hogy a harmadik szintű lapokból melyik az, amelyhez a lehető legkevesebb zsetonra van szüksége és amennyiben ez elérhető számára megvásárolja.\par
+Ha viszont nem, akkor megvizsgálja, hogy melyek a megvásárolható lapok. Abban az esetben, ha a megvehető lapok között van olyan, aminek a bónusza szükséges a kinézett lap megvásárlásához hiányzó értékekből, véletlenszerűen megveszi valamelyiket. Ha nincs ilyen lap, akkor megnézi, hogy van-e elérhető zseton. Hogyha van, akkor kiválogatja azokat, amik még szükségesek a kívánt lap megvásárlásához és ezekből random módon választ. Ha nincs ilyen zseton, akkor véletlenszerűen vesz egyet az elérhetőek közül. Ha egyáltalán nem elérhető zseton csak a korábban kiszűrt és a kívánt lap elérését nem elősegítő kártyák, akkor ezek közül vásárol random módon.\par
+Abban az esetben viszont, amikor a kör elején nincs elérhető lap, akkor az imént kifejtett zsetonválasztási lépéseket hatja végre az algoritmus.

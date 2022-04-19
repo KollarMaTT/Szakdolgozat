@@ -1,8 +1,8 @@
 //import "classes/Board.js";
 
-const ROUNDS = 1000;
+const ROUNDS = 10000;
 const first_player = "AI2";
-const second_player = "AI1";
+const second_player = "AI4";
 
 function isThereWinner() {
   if (board._players[0].score.value >= WINNING_POINT) {
@@ -15,7 +15,6 @@ function isThereWinner() {
     return false;
   }
 }
-
 
 function selectAIChoices() {
   let recentPlayer = board._playerIndex;
