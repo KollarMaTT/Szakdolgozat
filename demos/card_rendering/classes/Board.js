@@ -109,10 +109,6 @@ class Board {
 
     shuffle(this._level3Cards);
 
-    //console.log(this._level1Cards);
-    //console.log(this._level2Cards);
-    //console.log(this._level3Cards);
-
     let card;
 
     for (let i = 0; i < 3; i++) {

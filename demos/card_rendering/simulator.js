@@ -1,8 +1,6 @@
-//import "classes/Board.js";
-
 const ROUNDS = 10000;
-const first_player = "AI2";
-const second_player = "AI4";
+const first_player = "AI5";
+const second_player = "AI5";
 
 function isThereWinner() {
   if (board._players[0].score.value >= WINNING_POINT) {
@@ -36,6 +34,11 @@ function selectAIChoices() {
   } else if (board._players[recentPlayer].type == "AI4") {
     while (recentPlayer == board._playerIndex) {
       fourthAIChoices();
+      board.selectNextPlayer();
+    }
+  }else if (board._players[recentPlayer].type == "AI5") {
+    while (recentPlayer == board._playerIndex) {
+      fifthAIChoices();
       board.selectNextPlayer();
     }
   }
@@ -95,10 +98,10 @@ function initialize() {
 
   /*
   console.log(
-    `Az elso jatekos pontszamai a jatek soran: ${firstPlayerPoints}.`
+    `Az elso jatekos pontszamai egy jatek soran: ${firstPlayerPoints}.`
   );
   console.log(
-    `A masodik jatekos pontszamai a jatek soran: ${secondPlayerPoints}.`
+    `A masodik jatekos pontszamai egy jatek soran: ${secondPlayerPoints}.`
   );
   */
 
@@ -106,5 +109,3 @@ function initialize() {
 
   //console.log(`A jatek osszpontszamai a jatek soran: ${scores}.`);
 }
-
-//initialize();
