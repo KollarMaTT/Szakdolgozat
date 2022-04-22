@@ -1,6 +1,6 @@
 const ROUNDS = 10000;
-const first_player = "AI5";
-const second_player = "AI5";
+const first_player = "AI2";
+const second_player = "AI4";
 
 function isThereWinner() {
   if (board._players[0].score.value >= WINNING_POINT) {
@@ -36,7 +36,7 @@ function selectAIChoices() {
       fourthAIChoices();
       board.selectNextPlayer();
     }
-  }else if (board._players[recentPlayer].type == "AI5") {
+  } else if (board._players[recentPlayer].type == "AI5") {
     while (recentPlayer == board._playerIndex) {
       fifthAIChoices();
       board.selectNextPlayer();
