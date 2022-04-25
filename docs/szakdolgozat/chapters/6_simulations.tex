@@ -1,10 +1,13 @@
 \Chapter{Szimulációk}
 
 \Section{Szimuláció program}
+
 A szimulációk elvégzéséhez egy külön programot hoztam létre, amelyben a különböző AI-okat játszattam egymás ellen. Ezeknek a szimulációknak az eredményét kezdetben a konzolra írtam ki, hogy fel tudjam mérni a különböző AI-ok képességeit.
 
 \SubSection{Első AI a második AI ellen}
-A szimulációk elvégeztével egyértelműen látszott, hogy a második sokkal eredményesebb mint az első, hiszen általánosan körülbelül a 85\%-át tudta megnyerni a lejátszott játékoknak.\par
+
+A szimulációk elvégeztével egyértelműen látszott, hogy a második sokkal eredményesebb mint az első, hiszen általánosan körülbelül a 85\%-át tudta megnyerni a lejátszott játékoknak.
+
 Különböző vizsgálatokat futtattam a két AI játszmáinak kapcsán. Először azt vizsgáltam, hogy milyen a lejátszott meccsek végén a játékosok összpontszámainak gyakoriság hisztogramja tízezer játék esetén.
 
 \begin{figure}[h]
@@ -32,40 +35,81 @@ Végezetül pedig egy játékban a pontszámaiknak növekedését tekintettem.
 \label{fig:player_scores1v2}
 \end{figure}
 
-
 \SubSection{Második AI a harmadik AI ellen}
 
-Ahogy elvégeztem a szimulációkat, kiderült, hogy a második logika kicsivel nagyobb arányban tudott nyerni, mint a harmadik. Az, hogy nem hatékony abból fakad, hogy a játék előrehaladtával a késői fázisban is csak azt nézi, hogy melyik a számára legkönnyebben elérhető lap, így az alacsony szintűekre kezd el gyűjteni, nem pedig az értékesebb lapokra, így a pontszerzés a háttérbe szorul és a másik logika felé tud kerekedni.
+A szimulációk elvégzése után láthatóvá vált, hogy a második algoritmus nagyobb arányban tudott nyerni, mint a harmadik. Ebből az a következtetés vonható le, hogy a lapválasztást tekintve érdemesebb mindig a lehető legmagasabb szintű lapot választani a játék megnyerése érdekében. Az eredmények tekintetében a harmadik helyett továbbra is a második AI logikáját vettem alapul a következő algoritmus megvalósításakor a kártyaválasztásra nézve.
 
 \SubSection{Második AI a negyedik AI ellen}
 
-A negyedik AI elkészítése után lefuttatva a szimulációkat kiderült, hogy a negyedik algoritmus körülbelül annyival erősebb, mint amennyivel a második volt az elsőtől. Általánosan 86\%-kát nyeri meg a lejátszott játékaiknak. Ez bizonyult tehát a legeredményesebb logikának a szimulációim során.\par
+Ahogy elvégeztem a szimulációkat, kiderült, hogy a második logika ez esetben is nagyobb arányban tudott nyerni, mint a negyedik. Az, hogy ez az algoritmus nem hatékony abból fakad, hogy a játék előrehaladtával a késői fázisban is csak azt nézi, hogy melyik a számára legkönnyebben elérhető lap, így az alacsony szintűekre kezd el gyűjteni, nem pedig az értékesebb lapokra, így a pontszerzés szempontja a háttérbe szorul és a másik logika felé tud kerekedni.
+
+A konklúzió, hogy a második algoritmus eredményesebb volt a harmadiktól és a negyediktől egyaránt. Ezáltal sem a kártyaválasztás, sem a zsetonválasztás terén nem sikerült előrelépni.
+
+\SubSection{Második AI az ötödik AI ellen}
+
+Az ötödik AI megvalósítása során figyelembe véve az előző próbálkozások sikertelenségét, igyekeztem azokból tanulva kiküszöbölni azok buktatóit, ezáltal a kártya-, és zsetonválasztás terén egyaránt előrelépést eredményezni a másodikhoz képest.
+
+Az AI elkészítése után lefuttatva a szimulációkat kiderült, hogy a fejlesztéseim sikeresek voltak.
+Az ötödik algoritmus körülbelül annyival erősebb, mint amennyivel a második volt az elsőtől. Általánosan 86\%-kát nyeri meg a lejátszott játékaiknak. Ez bizonyult tehát a legeredményesebb logikának a szimulációim során.
 
 Az elsőhöz hasonlóan megnéztem, hogy miként alakul a játékok végén a játékosok összpontszámainak gyakoriság hisztogramja szintén tízezer játszma esetén.
 
 \begin{figure}[h]
 \centering
-\includegraphics[scale=0.55]{images/final_scores_AI2vsAI4.jpg}
-\caption{A második és negyedik AI összpontszámainak eloszlása.}
-\label{fig:scores2v4}
+\includegraphics[scale=0.55]{images/final_scores_AI2vsAI5.jpg}
+\caption{A második és ötödik AI összpontszámainak eloszlása.}
+\label{fig:scores2v5}
 \end{figure}
+
+\newpage
 
 A következő vizsgálat során tízezer játékszám mellett a lejátszott meccsek köreinek számát tekintve vizsgáltam meg a gyakoriság hisztogramját, ahogy korábban is tettem.
 
 \begin{figure}[h]
 \centering
-\includegraphics[scale=0.55]{images/round_number_hist_AI2vsAI4.jpg}
-\caption{A második és negyedik AI köreinek eloszlása.}
-\label{fig:rounds2v4}
+\includegraphics[scale=0.5]{images/round_number_hist_AI2vsAI5.jpg}
+\caption{A második és ötödik AI köreinek eloszlása.}
+\label{fig:rounds2v5}
 \end{figure}
 
 Ezután pedig az egy játékban való pontjaiknak a növekedését is szintén megvizsgáltam.
 
 \begin{figure}[h]
 \centering
-\includegraphics[scale=0.6]{images/player_points_AI2vsAI4.jpg}
-\caption{Az első és második AI pontszámainak növekedése.}
-\label{fig:player_scores2v4}
+\includegraphics[scale=0.5]{images/player_points_AI2vsAI5.jpg}
+\caption{A második és ötödik AI pontszámainak növekedése.}
+\label{fig:player_scores2v5}
 \end{figure}
+
+
+\newpage
+
+\SubSection{Hatékonyság}
+
+Végezetül összegyűjtöttem egy táblázatba a különböző AI-ok hatékonyságát az egymással futtatott szimulációk során. Ezen táblázat elkészítéséhez olyan módon módosítottam a kódomat, hogy mindig egy adott algoritmus kezdte a játékokat. A sorok mutatják, hogy melyik AI kezdett, valamint, hogy milyen százalékban tudta megnyerni a játszmákat a többivel összemérve.
+
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|c|} 
+ \hline
+  & AI1 & AI2 & AI3 & AI4 & AI5 \\ 
+ \hline
+ AI1 & 55\% & 18\% & 40\% & 22\% & 5.5\%\\ 
+ \hline
+ AI2 & 86\% & 56\% & 78\% & 62\% & 17\%\\ 
+ \hline
+ AI3 & 67\% & 30\% & 55\% & 35\% & 8.5\%\\ 
+ \hline
+ AI4 & 85\% & 50\% & 74\% & 56\% & 12\%\\ 
+ \hline
+ AI5 & 96\% & 88\% & 95\% & 92\% & 52\%\\
+ \hline
+\end{tabular}
+\end{center}
+
+A tesztek elvégzése után az a következtetés vonható le, hogy a körkezdésnek viszonylag nagy jelentősége van a nyerési arány tekintetében, hiszen ahogy az első algoritmusnál is láthatjuk körülbelül öt százalékkal eredményesebb volt önmagával szemben az, amelyik kezdett. Ez a randomizálás visszaszorulásával arányosan csökken, ha megnézzük az ötödik AI esetét, ahol nagyobb szerepet kap a következetesség. Ebben az esetben már csak két százalékkal volt jobb a körkezdő algoritmus.
+
+A második és a negyedik logika erősségének összemérése esetén ez a jelenség meglepően befolyásolta az eredményt. A korábbi tesztek során kiderült, hogy a második erősebbnek bizonyult, mint a negyedik AI. Ezzel szemben azokban az esetekben, amikor a negyedik kezdett, körülbelül azonos volt a nyerési arányuk.
+
+
 
 
