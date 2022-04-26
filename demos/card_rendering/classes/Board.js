@@ -397,7 +397,7 @@ class Board {
     this.selectNextPlayer();
     this.selectAvailableTokens();
     this.selectNotAvailableTokens();
-    }
+  }
 
   isCardAvailable(card) {
     if (
@@ -725,7 +725,6 @@ class Board {
     }
   }
 
-
   AIChoices() {
     let usableColors = {
       "#FFFFFF": "white",
@@ -735,75 +734,106 @@ class Board {
       "#686868": "black",
     };
 
-  let wantedCard = this._gameState.board._cardsOnBoard[8];
-  for(let i = 9; i<12;i++){
-      if(countDiff(this._gameState.board._cardsOnBoard[i]).diff < countDiff(wantedCard).diff){
-          wantedCard = this._gameState.board._cardsOnBoard[i];
+    let wantedCard = this._gameState.board._cardsOnBoard[8];
+    for (let i = 9; i < 12; i++) {
+      if (
+        countDiff(this._gameState.board._cardsOnBoard[i]).diff <
+        countDiff(wantedCard).diff
+      ) {
+        wantedCard = this._gameState.board._cardsOnBoard[i];
       }
-  }
+    }
 
-  let selectableCards = [];
+    let selectableCards = [];
 
-  if(this._gameState.board._availableCards.includes(wantedCard)){
+    if (this._gameState.board._availableCards.includes(wantedCard)) {
       this.buyCard(wantedCard);
-  }else if(this._gameState.board._availableCards.length != 0){
+    } else if (this._gameState.board._availableCards.length != 0) {
       for (let i = 0; i < this._gameState.board._availableCards.length; i++) {
-          if(selectRequiredTokens(wantedCard).includes(usableColors[this._gameState.board._availableCards[i].cardData.color])){
-              selectableCards.push(this._gameState.board._availableCards[i]);
-          }
+        if (
+          selectRequiredTokens(wantedCard).includes(
+            usableColors[
+              this._gameState.board._availableCards[i].cardData.color
+            ]
+          )
+        ) {
+          selectableCards.push(this._gameState.board._availableCards[i]);
+        }
       }
-      if(selectableCards.length != 0){
-          let item = selectableCards[Math.floor(Math.random() * selectableCards.length)];
-          this.buyCard(item);
-      }else if (this._gameState.board._availableTokens.length != 0) {
+      if (selectableCards.length != 0) {
+        let item =
+          selectableCards[Math.floor(Math.random() * selectableCards.length)];
+        this.buyCard(item);
+      } else if (this._gameState.board._availableTokens.length != 0) {
         let selectableTokens = [];
-  
-        for (let i = 0; i < this._gameState.board._availableTokens.length; i++) {
-          if(selectRequiredTokens(wantedCard).includes(usableColors[this._availableTokens[i].color])){
+
+        for (
+          let i = 0;
+          i < this._gameState.board._availableTokens.length;
+          i++
+        ) {
+          if (
+            selectRequiredTokens(wantedCard).includes(
+              usableColors[this._availableTokens[i].color]
+            )
+          ) {
             selectableTokens.push(this._gameState.board._availableTokens[i]);
           }
         }
-  
-        if(selectableTokens.length != 0){
-          let item = selectableTokens[ Math.floor( Math.random() * selectableTokens.length)];
+
+        if (selectableTokens.length != 0) {
+          let item =
+            selectableTokens[
+              Math.floor(Math.random() * selectableTokens.length)
+            ];
           this.buyToken(item);
-        }else{
+        } else {
           let token =
-                this._gameState.board._availableTokens[
-                  Math.floor(
-                    Math.random() * this._gameState.board._availableTokens.length
-                  )
-                ];
-              this.buyToken(token);
-        }
-      } else {
-          let item = this._gameState.board._availableCards[Math.floor(Math.random() * this._gameState.board._availableCards.length)];
-          this.buyCard(item);
-        }
-  }else if (this._gameState.board._availableTokens.length != 0) {
-    let selectableTokens = [];
-
-    for (let i = 0; i < this._gameState.board._availableTokens.length; i++) {
-      if(selectRequiredTokens(wantedCard).includes(usableColors[this._availableTokens[i].color])){
-        selectableTokens.push(this._gameState.board._availableTokens[i]);
-      }
-    }
-
-    if(selectableTokens.length != 0){
-      let item = selectableTokens[ Math.floor( Math.random() * selectableTokens.length)];
-      board.buyToken(item);
-    }else{
-      let token =
-            board._gameState.board._availableTokens[
+            this._gameState.board._availableTokens[
               Math.floor(
-                Math.random() * board._gameState.board._availableTokens.length
+                Math.random() * this._gameState.board._availableTokens.length
               )
             ];
-          board.buyToken(token);
+          this.buyToken(token);
+        }
+      } else {
+        let item =
+          this._gameState.board._availableCards[
+            Math.floor(
+              Math.random() * this._gameState.board._availableCards.length
+            )
+          ];
+        this.buyCard(item);
+      }
+    } else if (this._gameState.board._availableTokens.length != 0) {
+      let selectableTokens = [];
+
+      for (let i = 0; i < this._gameState.board._availableTokens.length; i++) {
+        if (
+          selectRequiredTokens(wantedCard).includes(
+            usableColors[this._availableTokens[i].color]
+          )
+        ) {
+          selectableTokens.push(this._gameState.board._availableTokens[i]);
+        }
+      }
+
+      if (selectableTokens.length != 0) {
+        let item =
+          selectableTokens[Math.floor(Math.random() * selectableTokens.length)];
+        board.buyToken(item);
+      } else {
+        let token =
+          board._gameState.board._availableTokens[
+            Math.floor(
+              Math.random() * board._gameState.board._availableTokens.length
+            )
+          ];
+        board.buyToken(token);
+      }
+    } else {
+      resetGame();
     }
-  } else {
-    resetGame();
-  }
   }
 
   selectPlayerChoice() {
