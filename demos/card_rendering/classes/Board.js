@@ -540,7 +540,7 @@ class Board {
 
   writeTurnInf() {
     let content;
-    /*
+    
     
     let convertedColors = {
       "#FFFFFF": "white",
@@ -558,7 +558,7 @@ class Board {
         content += convertedColors[this._prevClick[i]] + " ";
       }
     }
-    console.log(content);*/
+    console.log(content);
   }
 
   selectNextPlayer() {

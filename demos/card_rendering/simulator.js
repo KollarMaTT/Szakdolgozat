@@ -1,6 +1,6 @@
-const ROUNDS = 10000;
+const ROUNDS = 100;
 const first_player = "AI2";
-const second_player = "AI4";
+const second_player = "AI5";
 
 function isThereWinner() {
   if (board._players[0].score.value >= WINNING_POINT) {
