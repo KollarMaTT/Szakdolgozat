@@ -58,11 +58,6 @@ function resetGame() {
 }
 
 function initialize() {
-  let scores = [];
-  let turns = [];
-  let firstPlayerPoints = [];
-  let secondPlayerPoints = [];
-
   board = new Board();
 
   board._players[0].type = first_player;
@@ -72,12 +67,8 @@ function initialize() {
   let second = 0;
 
   for (let i = 0; i < ROUNDS; i++) {
-    let turn = 0;
     while (!isThereWinner()) {
       selectAIChoices();
-      turn++;
-      firstPlayerPoints.push(board._players[0].score.value);
-      secondPlayerPoints.push(board._players[1].score.value);
     }
     if (board._winner == 0) {
       first++;
@@ -85,27 +76,9 @@ function initialize() {
       second++;
     }
 
-    turns.push(turn);
-
-    let score = board._players[0].score.value + board._players[1].score.value;
-    scores.push(score);
-
     resetGame();
   }
 
   console.log(`Az elso jatekos ${first} alaklommal nyert.`);
   console.log(`A masodik jatekos ${second} alaklommal nyert.`);
-
-  /*
-  console.log(
-    `Az elso jatekos pontszamai egy jatek soran: ${firstPlayerPoints}.`
-  );
-  console.log(
-    `A masodik jatekos pontszamai egy jatek soran: ${secondPlayerPoints}.`
-  );
-  */
-
-  //console.log(`A jatek ${turns} korokbol allt.`);
-
-  //console.log(`A jatek osszpontszamai a jatek soran: ${scores}.`);
 }

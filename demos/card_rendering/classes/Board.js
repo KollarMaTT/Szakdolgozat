@@ -540,8 +540,7 @@ class Board {
 
   writeTurnInf() {
     let content;
-    
-    
+
     let convertedColors = {
       "#FFFFFF": "white",
       "#5264FF": "blue",
@@ -832,7 +831,14 @@ class Board {
         board.buyToken(token);
       }
     } else {
-      resetGame();
+      this.openMassage();
+      this.initCards();
+      this.initPlayers();
+      this.initTokenPanels();
+      this.initTokens();
+      this._availableCards = [];
+      this._notAvailableTokens = [];
+      this._playerIndex = Math.round(Math.random());
     }
   }
 
