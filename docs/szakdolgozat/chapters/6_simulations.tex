@@ -14,7 +14,7 @@ Különböző vizsgálatokat futtattam a két AI játszmáinak kapcsán. Elősz�
 
 \begin{figure}[h]
 \centering
-\includegraphics[scale=0.6]{images/final_scores_AI1vsAI2.jpg}
+\includegraphics[scale=0.7]{images/final_scores_AI1vsAI2.jpg}
 \caption{Az első és második AI összpontszámainak eloszlása.}
 \label{fig:scores1v2}
 \end{figure}
@@ -24,16 +24,16 @@ Egy hasonló vizsgálat során, ugyanezen játékszám mellett a lejátszott mec
 
 \begin{figure}[h]
 \centering
-\includegraphics[scale=0.5]{images/round_number_hist_AI1vsAI2.jpg}
+\includegraphics[scale=0.7]{images/round_number_hist_AI1vsAI2.jpg}
 \caption{Az első és második AI köreinek eloszlása.}
 \label{fig:rounds1v2}
 \end{figure}
 
-Végezetül pedig egy játékban a pontszámaiknak növekedését elemeztem. (\ref{fig:player_scores1v2}. ábra). Az ábrán jól látható, hogy mivel az első AI teljesen random választ kártyákat, így a játék késői fázisában is csak alacsony szintű lapokat vásárol, pedig lehet, hogy elérhetőek lennének számára magasabb szintűek is. Ezen okból a második algoritmus főként a játék második felében kiemelkedően az első felé tud kerekedni.
+Végezetül pedig egy játékban a pontszámaiknak növekedését elemeztem. (\ref{fig:player_scores1v2}. ábra). Az ábrán jól látható, hogy mivel az első AI teljesen véletlenszerűen választ kártyákat, így a játék késői fázisában is csak alacsony szintű lapokat vásárol, pedig lehet, hogy elérhetőek lennének számára magasabb szintűek is. Ezen okból a második algoritmus főként a játék második felében kiemelkedően az első felé tud kerekedni.
 
 \begin{figure}[h]
 \centering
-\includegraphics[scale=0.5]{images/player_points_AI1vsAI2.jpg}
+\includegraphics[scale=0.6]{images/player_points_AI1vsAI2.jpg}
 \caption{Az első és második AI pontszámainak növekedése.}
 \label{fig:player_scores1v2}
 \end{figure}
@@ -59,17 +59,16 @@ Az elsőhöz hasonlóan megnéztem, hogy miként alakul a játékok végén a j�
 
 \begin{figure}[h]
 \centering
-\includegraphics[scale=0.55]{images/final_scores_AI2vsAI5.jpg}
+\includegraphics[scale=0.7]{images/final_scores_AI2vsAI5.jpg}
 \caption{A második és ötödik AI összpontszámainak eloszlása.}
 \label{fig:scores2v5}
 \end{figure}
 
-A következő vizsgálat során tízezer játékszám mellett a lejátszott meccsek köreinek számát tekintve vizsgáltam meg a gyakoriság hisztogramját, ahogy korábban is tettem (\ref{fig:rounds2v5}. ábra). Az eloszlás lényegesen különzöik abból az okból, mivel a két mesterséges intelligencia erőssége jelentősen eltér.
-
+A következő vizsgálat során tízezer játékszám mellett a lejátszott meccsek köreinek számát tekintve vizsgáltam meg a gyakoriság hisztogramját, ahogy korábban is tettem (\ref{fig:rounds2v5}. ábra). Az eloszlás lényegesen különbözik abból az okból, mivel a két mesterséges intelligencia erőssége jelentősen eltér.
 
 \begin{figure}[h]
 \centering
-\includegraphics[scale=0.5]{images/round_number_hist_AI2vsAI5.jpg}
+\includegraphics[scale=0.7]{images/round_number_hist_AI2vsAI5.jpg}
 \caption{A második és ötödik AI köreinek eloszlása.}
 \label{fig:rounds2v5}
 \end{figure}
@@ -78,7 +77,7 @@ Ezután pedig az egy játékban való pontjaiknak a növekedését is szintén m
 
 \begin{figure}[h]
 \centering
-\includegraphics[scale=0.5]{images/player_points_AI2vsAI5.jpg}
+\includegraphics[scale=0.6]{images/player_points_AI2vsAI5.jpg}
 \caption{A második és ötödik AI pontszámainak növekedése.}
 \label{fig:player_scores2v5}
 \end{figure}
@@ -114,32 +113,34 @@ A tesztek elvégzése után az a következtetés vonható le, hogy a körkezdés
 
 A második és a negyedik logika erősségének összemérése esetén ez a jelenség meglepően befolyásolta az eredményt. A korábbi tesztek során kiderült, hogy a második erősebbnek bizonyult, mint a negyedik AI. Ezzel szemben azokban az esetekben, amikor a negyedik kezdett, körülbelül azonos volt a nyerési arányuk.
 
-A táblázat alapján nyerési átlagukból kiszámítva felállítottam egy erősségi sorrendet a különböző AI-ok között. A \aref{tab:ai_ranking}. táblázat fentről lefelé csökkenő sorrendben mutatja a erősorrendet, a jobb oszlopban pedig az látható, hogy az aktuális logika átlagosan milyen arányban tudott nyerni a különböző algoritmusokkal szemben. A \textit{(K)} jelzés azt az esetet jelöli, amikor az adott AI kezdte a játszmákat.
+A táblázat alapján nyerési átlagukból kiszámítva felállítottam egy erősségi sorrendet a különböző AI-ok között. \Aref{tab:ai_ranking}. táblázat fentről lefelé csökkenő sorrendben mutatja a erősorrendet, a jobb oszlopban pedig az látható, hogy az aktuális logika átlagosan milyen arányban tudott nyerni a különböző algoritmusokkal szemben. A \textit{(K)} jelzés azt az esetet jelöli, amikor az adott AI kezdte a játszmákat.
 
 \begin{table}[h]
-\caption{A gépi intelligenciák erősorrendje.}
+\caption{A gépi intelligenciák erősorrendje. (A zárójelben a K jelzi, hogy az adott AI kezdi-e a játékot.)}
 \label{tab:ai_ranking}
 \medskip
 \centering
-\begin{tabular}{|c|c|} 
+\begin{tabular}{|l|c|} 
+\hline
+Név & Átlag \\
  \hline
- AI5(K) & 93\%\\ 
+ AI5 (K) & 93\%\\ 
  \hline
  AI5 & 90\%\\ 
  \hline
- AI2(K) & 61\%\\ 
+ AI2 (K) & 61\%\\ 
  \hline
- AI4(K) & 55\%\\ 
+ AI4 (K) & 55\%\\ 
  \hline
  AI2 & 53\%\\
  \hline
   AI4 & 47\%\\ 
  \hline
- AI3(K) & 35\%\\ 
+ AI3 (K) & 35\%\\ 
  \hline
  AI3 & 28\%\\ 
  \hline
- AI1(K) & 22\%\\ 
+ AI1 (K) & 22\%\\ 
  \hline
  AI1 & 16\%\\
  \hline

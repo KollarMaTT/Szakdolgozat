@@ -1,6 +1,11 @@
 \Chapter{Az alkalmazás tervei és azok megvalósítása}
 
+A fejezet részletesen bemutatja az alkalmazás megtervezését és implementációját.
+Ebben a definiált osztályok és azok kapcsolatai is kifejtésre kerülnek.
+
 \Section{Képernyő szerkezet}
+
+Mivel egy grafikus alkalmazásról van szó, ezért célszerűnek tűnt a tervezést a grafikus kialakítás alapján megközelíteni.
 
 \SubSection{Tervek}
 
@@ -27,7 +32,7 @@ E mellett a jobb felső sarokba elhelyeztem egy "\textit{Új játék}" és egy "
 
 \Section{Alapok}
 
-Az általam leszűkített szabályrendszer alapú játék megvalósításához a JavaScript-et, a megjelenítéséhez pedig főleg a HTML5 Canvas-t, a stílusok beállításához CSS-t használtam.
+Az általam leszűkített szabályrendszer alapú játék megvalósításához a JavaScript-et, a megjelenítéséhez pedig főleg a HTML5 Canvas-t \cite{fulton2013html5}, a stílusok beállításához CSS-t használtam \cite{gasston2011book}.
 
 \Section{A forráskód szervezése}
 
@@ -73,7 +78,7 @@ Ezeknek a feltételrendszereknek a megvalósítása külön függvényekben tör
 
 \Section{Körökre osztás}
 
-A játékot az aktuális játékos indexe alapján bontottam körökre. Létrehoztam a \texttt{Player} osztályt a megfelelő értékekkel és inicializáltam őket a \texttt{Board} osztályon belül a többihez hasonlóan, összekapcsolva a hozzájuk tartozó panelekkel. Bevezettem a kattintások dokumentálására egy változót, amelyben eltároltam az éppen játékban lévő játékos a köre megkezdésétől megtett, a szabályok és a játék akkori állása alapján megengedett kattintásait. A kártya vásárlásakor az indexe, a zseton megvásárlásakor pedig a színe kerül bele. Ezen információk segítségével ítéli meg a program, hogy vége van-e az adott játékos körének.
+A játékot az aktuális játékos indexe alapján bontottam körökre. Létrehoztam a \texttt{Player} osztályt a megfelelő értékekkel, és inicializáltam őket a \texttt{Board} osztályon belül a többihez hasonlóan, összekapcsolva a hozzájuk tartozó panelekkel. Bevezettem a kattintások dokumentálására egy változót, amelyben eltároltam az éppen játékban lévő játékos a köre megkezdésétől megtett, a szabályok és a játék akkori állása alapján megengedett kattintásait. A kártya vásárlásakor az indexe, a zseton megvásárlásakor pedig a színe kerül bele. Ezen információk segítségével ítéli meg a program, hogy vége van-e az adott játékos körének.
 
 Egy játék első tíz körének műveletsora az alábbi példához hasonlóan épül fel:
 \begin{verbatim}
@@ -154,7 +159,7 @@ A játék végét jelentő feltételt követően megjelenik a záró képernyő,
 
 \SubSection{Esztétika és refaktorálás}
 
-A játék fejlesztésének egészében folyamatosan zajlottak a kódrészek átszervezései, refaktorálása, egyszerűbbé, egyértelműbbé tétele, valamint az esztétikai fejlesztések, javítgatások. Ahogy viszont többek között a tábla osztályon is észrevehető, ezek a folyamatok nincsenek maradéktalanul elvégezve, ami a program szempontjából a megvalósított játékszabályok és funkciók bővítése mellett továbbfejlesztési lehetőségként adódik.
+A játék fejlesztésének egészében folyamatosan zajlottak a kódrészek átszervezései, refaktorálása, egyszerűbbé, egyértelműbbé tétele, valamint az esztétikai fejlesztések, javítgatások. Ahogy viszont többek között a \texttt{Board} osztályon is észrevehető, ezek a folyamatok nincsenek maradéktalanul elvégezve, ami a program szempontjából a megvalósított játékszabályok és funkciók bővítése mellett továbbfejlesztési lehetőségként adódik.
 
 \Section{Osztálydiagram}
 
@@ -162,27 +167,27 @@ Az elkészített osztályok felépítései és kapcsolatai \aref{fig:uml}. ábr�
 
 \begin{figure}[h]
 \centering
-\includegraphics[scale=0.35]{images/UML.png}
+\includegraphics[width=\textwidth]{images/UML.png}
 \caption{A játék megvalósításának osztálydiagramja.}
 \label{fig:uml}
 \end{figure}
 
-A program inkrementális fejleszése miatt a \texttt{Board} osztály felépítése nem a legoptimálisabb, ezért megvalósítottam a refaktorált verzióját is az osztálydiagramnak. A refaktorálás elvégzését követően a diagram \aref{fig:refactored_uml}. ábra alapján formálódna. A \texttt{Board} osztály metódusait külön szerveztem általános függvénykönyvtárakba. A \texttt{GraphicalEvents} nevű osztályba szerveztem ki a különböző grafikai megjelenésért felelős függvényeket. Például a játészabály felületnek, a játékosok jelölésének, a kezdő és záró képernyőknek a megvalósítását. E mellett létrehoztam egy \texttt{Manager} nevű osztályt is, amelybe az egérhez kapcsolódó metódusokat helyeztem (például kattintás, egér mozgatás). Ezen felül a \texttt{SetGameState} elnevezésű osztályban valósulnak meg a játékállapot beállításáért felelős függvények, mint például az elérhető és el nem érhető zsetonok és kártyák meghatározása, a következő játékosra váltás és a játék újraindítása. Végezetül pedig az \texttt{InteractionManager} nevű osztályban a zsetonokhoz és a kártyákhoz kapcsolódó metódusok szerepelnek, például a megvásárlásuk és az ennek hatására bekövetkező események.
+A program inkrementális fejleszése miatt a \texttt{Board} osztály felépítése nem a legoptimálisabb, ezért megvalósítottam a refaktorált verzióját is az osztálydiagramnak. A refaktorálás elvégzését követően a diagram \aref{fig:refactored_uml}. ábra alapján formálódna. A \texttt{Board} osztály metódusait külön szerveztem általános függvénykönyvtárakba. A \\ \texttt{GraphicalEvents} nevű osztályba szerveztem ki a különböző grafikai megjelenésért felelős függvényeket. Például a játészabály felületnek, a játékosok jelölésének, a kezdő és záró képernyőknek a megvalósítását. E mellett létrehoztam egy \texttt{Manager} nevű osztályt is, amelybe az egérhez kapcsolódó metódusokat helyeztem (például kattintás, egér mozgatás). Ezen felül a \texttt{SetGameState} elnevezésű osztályban valósulnak meg a játékállapot beállításáért felelős függvények, mint például az elérhető és el nem érhető zsetonok és kártyák meghatározása, a következő játékosra váltás és a játék újraindítása. Végezetül pedig az \texttt{InteractionManager} nevű osztályban a zsetonokhoz és a kártyákhoz kapcsolódó metódusok szerepelnek, például a megvásárlásuk és az ennek hatására bekövetkező események.
 
 \begin{figure}[h]
 \centering
-\includegraphics[scale=0.3]{images/refactored_UML.png}
+\includegraphics[width=\textwidth]{images/refactored_UML.png}
 \caption{A játék refaktorált osztálydiagramja.}
 \label{fig:refactored_uml}
 \end{figure}
 
 \Section{Telefonos verzió}
 
-Mivel HTML Canvas és CSS segítségével készült a megjenítés, így a megvalósított interakciók hasonlóan működnek a számítógépes verzióhoz képest, ezáltal az elkészített játék teljes egészében fut mobiltelefonokon is (\ref{fig:phone}. ábra). A megjelenítés viszont nincs maradéktalanul optimalizálva erre az esetre, így ez kissé körülményes.
+Mivel HTML Canvas és CSS segítségével készült a megjelenítés, így a megvalósított interakciók hasonlóan működnek az asztali számítógépes változatban, mint bármely más eszközön futó böngészőben, ezáltal az elkészített játék teljes egészében használható mobiltelefonokon is (\ref{fig:phone}. ábra). A megjelenítés viszont nincs maradéktalanul optimalizálva erre az esetre, így ez kissé körülményes.
 
 \begin{figure}[h]
 \centering
-\includegraphics[scale=0.1]{images/phone.jpg}
+\includegraphics[width=\textwidth]{images/phone.jpg}
 \caption{A játék egy telefon böngészőjében futtatva.}
 \label{fig:phone}
 \end{figure}

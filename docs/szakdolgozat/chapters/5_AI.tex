@@ -10,28 +10,28 @@ A mesterséges intelligenciák nevében sorszám szerepel. Konkrétan az AI1, AI
 
 Az első AI egy nagyon alapvető logikának a megvalósítása. A köre elején megnézi, hogy van-e számára elérhető kártyalap. Amennyiben igen, azok közül véletlenszerű módon választ egyet. Ha viszont nem, akkor a zsetonok közül választ szintén véletlenszerűen a játék szabályainak betartásával.
 
-Az AI1 folyamatábrája a függelékben megtekinthető (\ref{fig:AI1_flowchart}. ábra)
+Az AI1 folyamatábrája a függelékben megtekinthető (\ref{fig:AI1_flowchart}. ábra).
 
 
 \Section{AI2}
 
-A következő AI egy szinttel volt csak a korábbinál komplikáltabb, ami a kártyaválasztás terén lépett egy szintet. Ez esetben, amikor van számára elérhető lap, akkor azok közül megnézi, hogy melyik vagy melyek a legmagasabb szintűek, majd azok közül választ véletlenszerűen egyet. Abban az esetben, amikor nem volt elérhető lap, véletlenszerű módon választ zsetont.
+A következő AI egy fokkal volt csak a korábbinál komplikáltabb, ami a kártyaválasztás terén lépett egy szintet. Ez esetben, amikor van számára elérhető lap, akkor azok közül megnézi, hogy melyik vagy melyek a legmagasabb szintűek, majd azok közül választ véletlenszerűen egyet. Abban az esetben, amikor nem volt elérhető lap, véletlenszerű módon választ zsetont.
 
-Az AI2 folyamatábrája a függelékben megtekinthető (\ref{fig:AI2_flowchart}. ábra)
+Az AI2 folyamatábrája a függelékben megtekinthető (\ref{fig:AI2_flowchart}. ábra).
 
 
 \Section{AI3}
 
 A harmadik AI a másodiknak egy változata, amelyben azt próbáltam megvalósítani, hogy ne feltétlen a lehető legmagasabb szintű lapot vegye meg az elérhetőek közül, hanem adott esetben válasszon kisebb szintű, de kevesebb költségű lapokat is. Ezt úgy eszközöltem, hogy lapválasztás esetén először megnézi, hogy van-e olyan számára megvásárolható kártya, amelynek a pontszáma kettővel osztható. Ha van, akkor azok közül választ véletlenszerűen, ha pedig nincs, akkor a második AI logikáját követve a lehető legmagasabb szintű lapok halmazából választ véletlenszerűen egyet. A zsetonválasztást nem módosítottam.
 
-Az AI3 folyamatábrája a függelékben megtekinthető (\ref{fig:AI3_flowchart}. ábra)
+Az AI3 folyamatábrája a függelékben megtekinthető (\ref{fig:AI3_flowchart}. ábra).
 
 
 \Section{AI4}
 
 A negyedik AI egy olyan logikát foglal magába, amely a kártyaválasztás esetén a második AI logikáját követi, viszont a zsetonválasztásnál már figyelembe veszi a játékállapotot mind a lent lévő lapok, mind a rendelkezésére álló zsetonok tekintetében. Amennyiben nincs elérhető lap, az algoritmus kiválasztja a lent lévő lapok közül azt, amelyikhez a lehető legkevesebb zsetonra van szüksége. Ezután megnézi, hogy melyek a szükséges zsetonok, és ha valamelyik elérhető, akkor megvásárolja közülük az egyiket és folytatja a folyamatot a lépések szabályainak betartásával. Ezzel szemben, ha nem elérhető számára egy szükséges zseton sem, akkor a korábbiakhoz hasonlóan véletlenszerűen választ az elérhetőek közül.
 
-Az AI4 folyamatábrája a függelékben megtekinthető (\ref{fig:AI4_flowchart}. ábra)
+Az AI4 folyamatábrája a függelékben megtekinthető (\ref{fig:AI4_flowchart}. ábra).
 
 \Section{AI5}
 
@@ -43,8 +43,9 @@ Ha viszont nem, akkor megvizsgálja, hogy melyek a megvásárolható lapok. Abba
 
 Abban az esetben viszont, amikor a kör elején nincs elérhető lap, akkor az imént kifejtett zsetonválasztási lépéseket hatja végre az algoritmus.
 
-Az AI5 folyamatábrája a függelékben megtekinthető (\ref{fig:AI5_flowchart}. ábra)
+Az AI5 folyamatábrája a függelékben megtekinthető (\ref{fig:AI5_flowchart}. ábra).
 
+\Section{Mesterséges intelligenciák áttekintése}
 
 \Aref{tab:ai_features}. táblázat összegzi az elkészített mesterséges intelligenciák főbb tulajdonságait.
 
@@ -53,18 +54,19 @@ Az AI5 folyamatábrája a függelékben megtekinthető (\ref{fig:AI5_flowchart}.
 \label{tab:ai_features}
 \medskip
 \centering
-\begin{tabular}{|m{2em}|m{7em}|m{7em}|m{7em}|m{7em}|} 
- \hline& Randomizált kártyaválasztás & Randomizált zsetonválasztás & Összetett kártyaválasztás  & Összetett zsetonválasztás \\ 
+\begin{tabular}{|c|c|c|c|c|} 
+ \hline& Randomizált & Randomizált & Összetett  & Összetett  \\
+&  kártyaválasztás &  zsetonválasztás &  kártyaválasztás  &  zsetonválasztás \\
  \hline
- AI1 & \checkmark & \checkmark & X & X\\ 
+ AI1 & \checkmark & \checkmark & $\times$ & $\times$ \\ 
  \hline
- AI2 & X & \checkmark & \checkmark & X \\ 
+ AI2 & $\times$ & \checkmark & \checkmark & $\times$ \\ 
  \hline
- AI3 & X & \checkmark & \checkmark & X \\ 
+ AI3 & $\times$ & \checkmark & \checkmark & $\times$ \\ 
  \hline
- AI4 & X & X & \checkmark & \checkmark \\ 
+ AI4 & $\times$ & $\times$ & \checkmark & \checkmark \\ 
  \hline
- AI5 & X & X & \checkmark & \checkmark \\
+ AI5 & $\times$ & $\times$ & \checkmark & \checkmark \\
  \hline
 \end{tabular}
 \end{table}
