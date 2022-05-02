@@ -4,6 +4,8 @@ A számítógép által vezérelt játékosokat különböző döntési logikák
 
 A különböző AI-ok a \texttt{Board} osztály játékállapotát egy \texttt{gameState} változón keresztül kapják meg mint bemenetet. Ezen változó segítségével tud informálódni a mesterséges intelligencia a játék aktuális állásáról, és ez alapján hajtja végre a számára megfelelő lépést. A kártya és zseton kiválasztása szintén a \texttt{Board} osztálytól kapott \texttt{buyCard} és \texttt{buyToken} metódusok segítségével történik. Ezek a metódusok az AI-ok logikája által meghatározott kártya vagy zseton adatait kapják meg és elvégzik a megfelelő módosításokat a játéktéren. Ez a két metódus tekinthető a mesterséges intelligenciák által végrehajtható akcióknak.
 
+Azért, hogy az emberi játékos lépésenként nyomon tudja követni, hogy mit lép a gépi ellenfél, annak léptetéséhez tetszőleges helyre kell kattintani a programban.
+
 A mesterséges intelligenciák nevében sorszám szerepel. Konkrétan az AI1, AI2, AI3, AI4 és AI5 nevű intelligenciák részletezésére kerül sor a következő szakaszokban.
 
 \Section{AI1}
@@ -15,7 +17,7 @@ Az AI1 folyamatábrája a függelékben megtekinthető (\ref{fig:AI1_flowchart}.
 
 \Section{AI2}
 
-A következő AI egy fokkal volt csak a korábbinál komplikáltabb, ami a kártyaválasztás terén lépett egy szintet. Ez esetben, amikor van számára elérhető lap, akkor azok közül megnézi, hogy melyik vagy melyek a legmagasabb szintűek, majd azok közül választ véletlenszerűen egyet. Abban az esetben, amikor nem volt elérhető lap, véletlenszerű módon választ zsetont.
+A következő AI csak egy fokkal komplikáltabb a korábbinál, amely a kártyaválasztás terén lép egy szintet. Ez esetben, amikor van számára elérhető lap, akkor azok közül megnézi, hogy melyik vagy melyek a legmagasabb szintűek, majd azok közül választ véletlenszerűen egyet. Abban az esetben, amikor nincs elérhető lap, véletlenszerű módon választ zsetont.
 
 Az AI2 folyamatábrája a függelékben megtekinthető (\ref{fig:AI2_flowchart}. ábra).
 
@@ -35,11 +37,12 @@ Az AI4 folyamatábrája a függelékben megtekinthető (\ref{fig:AI4_flowchart}.
 
 \Section{AI5}
 
-Az utolsó AI logikája a legkomplikáltabb és egyben a legeredményesebb a korábbiakkal összevetve. A korábbiaktól eltérően mind a kártya-, mind a zsetonválasztás esetében figyelembe veszi, hogy mire lenne szüksége a hármas szintű lapok megvásárlásához, ezáltal egyfajta előre gondolkodást valósít meg.
+Az utolsó AI logikája a legkomplikáltabb és egyben a legeredményesebb a korábbiakkal összevetve. Az előző négy verziótól eltérően mind a kártya-, mind a zsetonválasztás esetében figyelembe veszi, hogy mire lenne szüksége a hármas szintű lapok megvásárlásához, ezáltal egyfajta előre gondolkodást valósít meg.
 
 A kör kezdetén kiválasztja, hogy a harmadik szintű lapokból melyik az, amelyhez a lehető legkevesebb zsetonra van szüksége és amennyiben ez elérhető számára megvásárolja.
 
-Ha viszont nem, akkor megvizsgálja, hogy melyek a megvásárolható lapok. Abban az esetben, ha a megvehető lapok között van olyan, aminek a bónusza szükséges a kinézett lap megvásárlásához hiányzó értékekből, véletlenszerűen megveszi valamelyiket. Ha nincs ilyen lap, akkor megnézi, hogy van-e elérhető zseton. Hogyha van, akkor kiválogatja azokat, amik még szükségesek a kívánt lap megvásárlásához és ezekből véletlenszerűen választ. Ha nincs ilyen zseton, akkor véletlenszerűen vesz egyet az elérhetőek közül. Ha egyáltalán nem elérhető zseton csak a korábban kiszűrt és a kívánt lap elérését nem elősegítő kártyák, akkor ezek közül vásárol szintén véletlenszerű módon.
+Ha viszont nem szerezhető meg, akkor megvizsgálja, hogy melyek a megvásárolható lapok. Abban az esetben, ha ezen lapok között van olyan, aminek a bónusza szükséges a kinézett lap megvásárlásához, véletlenszerűen megveszi valamelyiket. Ha nincs ilyen lap, akkor megnézi, hogy van-e elérhető zseton. Hogyha van, akkor kiválogatja azokat, amik még szükségesek a kívánt lap megvásárlásához és ezekből véletlenszerűen választ. Ha nincs ilyen zseton, akkor véletlenszerűen vesz egyet az elérhetőek közül. Ha egyáltalán nem elérhető zseton csak a korábban kiszűrt és a kívánt lap elérését nem elősegítő kártyák, akkor ezek közül vásárol szintén véletlenszerű módon.
+
 
 Abban az esetben viszont, amikor a kör elején nincs elérhető lap, akkor az imént kifejtett zsetonválasztási lépéseket hatja végre az algoritmus.
 
@@ -54,6 +57,7 @@ Az AI5 folyamatábrája a függelékben megtekinthető (\ref{fig:AI5_flowchart}.
 \label{tab:ai_features}
 \medskip
 \centering
+%\begin{tabular}{|m{2em}|m{7em}|m{7em}|m{7em}|m{7em}|}
 \begin{tabular}{|c|c|c|c|c|} 
  \hline& Randomizált & Randomizált & Összetett  & Összetett  \\
 &  kártyaválasztás &  zsetonválasztás &  kártyaválasztás  &  zsetonválasztás \\
