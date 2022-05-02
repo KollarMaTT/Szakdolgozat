@@ -2,27 +2,38 @@
 
 A számítógép által vezérelt játékosokat különböző döntési logikák segítségével valósítottam meg. A fejezetben ezek működésének, sajátosságainak a bemutatására kerül majd sor.
 
-% TODO: Érdemes lenne az AI interfészéről írni.
+A különböző AI-ok a \texttt{Board} osztály játékállapotát egy \texttt{gameState} változón keresztül kapják meg mint bemenetet. Ezen változó segítségével tud informálódni a mesterséges intelligencia a játék aktuális állásáról, és ez alapján hajtja végre a számára megfelelő lépést. A kártya és zseton kiválasztása szintén a \texttt{Board} osztálytól kapott \texttt{buyCard} és \texttt{buyToken} metódusok segítségével történik. Ezek a metódusok az AI-ok logikája által meghatározott kártya vagy zseton adatait kapják meg és elvégzik a megfelelő módosításokat a játéktéren. Ez a két metódus tekinthető a mesterséges intelligenciák által végrehajtható akcióknak.
 
-\Section{Első AI}
+A mesterséges intelligenciák nevében sorszám szerepel. Konkrétan az AI1, AI2, AI3, AI4 és AI5 nevű intelligenciák részletezésére kerül sor a következő szakaszokban.
+
+\Section{AI1}
 
 Az első AI egy nagyon alapvető logikának a megvalósítása. A köre elején megnézi, hogy van-e számára elérhető kártyalap. Amennyiben igen, azok közül véletlenszerű módon választ egyet. Ha viszont nem, akkor a zsetonok közül választ szintén véletlenszerűen a játék szabályainak betartásával.
 
-\Section{Második AI}
+Az AI1 folyamatábrája a függelékben megtekinthető (\ref{fig:AI1_flowchart}. ábra)
+
+
+\Section{AI2}
 
 A következő AI egy szinttel volt csak a korábbinál komplikáltabb, ami a kártyaválasztás terén lépett egy szintet. Ez esetben, amikor van számára elérhető lap, akkor azok közül megnézi, hogy melyik vagy melyek a legmagasabb szintűek, majd azok közül választ véletlenszerűen egyet. Abban az esetben, amikor nem volt elérhető lap, véletlenszerű módon választ zsetont.
 
-\Section{Harmadik AI}
+Az AI2 folyamatábrája a függelékben megtekinthető (\ref{fig:AI2_flowchart}. ábra)
+
+
+\Section{AI3}
 
 A harmadik AI a másodiknak egy változata, amelyben azt próbáltam megvalósítani, hogy ne feltétlen a lehető legmagasabb szintű lapot vegye meg az elérhetőek közül, hanem adott esetben válasszon kisebb szintű, de kevesebb költségű lapokat is. Ezt úgy eszközöltem, hogy lapválasztás esetén először megnézi, hogy van-e olyan számára megvásárolható kártya, amelynek a pontszáma kettővel osztható. Ha van, akkor azok közül választ véletlenszerűen, ha pedig nincs, akkor a második AI logikáját követve a lehető legmagasabb szintű lapok halmazából választ véletlenszerűen egyet. A zsetonválasztást nem módosítottam.
 
-\newpage
+Az AI3 folyamatábrája a függelékben megtekinthető (\ref{fig:AI3_flowchart}. ábra)
 
-\Section{Negyedik AI}
+
+\Section{AI4}
 
 A negyedik AI egy olyan logikát foglal magába, amely a kártyaválasztás esetén a második AI logikáját követi, viszont a zsetonválasztásnál már figyelembe veszi a játékállapotot mind a lent lévő lapok, mind a rendelkezésére álló zsetonok tekintetében. Amennyiben nincs elérhető lap, az algoritmus kiválasztja a lent lévő lapok közül azt, amelyikhez a lehető legkevesebb zsetonra van szüksége. Ezután megnézi, hogy melyek a szükséges zsetonok, és ha valamelyik elérhető, akkor megvásárolja közülük az egyiket és folytatja a folyamatot a lépések szabályainak betartásával. Ezzel szemben, ha nem elérhető számára egy szükséges zseton sem, akkor a korábbiakhoz hasonlóan véletlenszerűen választ az elérhetőek közül.
 
-\Section{Ötödik AI}
+Az AI4 folyamatábrája a függelékben megtekinthető (\ref{fig:AI4_flowchart}. ábra)
+
+\Section{AI5}
 
 Az utolsó AI logikája a legkomplikáltabb és egyben a legeredményesebb a korábbiakkal összevetve. A korábbiaktól eltérően mind a kártya-, mind a zsetonválasztás esetében figyelembe veszi, hogy mire lenne szüksége a hármas szintű lapok megvásárlásához, ezáltal egyfajta előre gondolkodást valósít meg.
 
@@ -32,6 +43,28 @@ Ha viszont nem, akkor megvizsgálja, hogy melyek a megvásárolható lapok. Abba
 
 Abban az esetben viszont, amikor a kör elején nincs elérhető lap, akkor az imént kifejtett zsetonválasztási lépéseket hatja végre az algoritmus.
 
-% TODO: Az egyes AI változatokhoz érdemes lenne folyamatábrát vagy valamilyen kódot írni (legyen az pszeudó vagy JavaScript kód).
+Az AI5 folyamatábrája a függelékben megtekinthető (\ref{fig:AI5_flowchart}. ábra)
 
-% TODO: Hogy ha az AI-ok táblázatba vagy fába rendezhetők valamilyen szempont alapján, az is érdekes lehet.
+
+\Aref{tab:ai_features}. táblázat összegzi az elkészített mesterséges intelligenciák főbb tulajdonságait.
+
+\begin{table}[h]
+\caption{A gépi intelligenciák működése az egymáshoz való viszonyítás során.}
+\label{tab:ai_features}
+\medskip
+\centering
+\begin{tabular}{|m{2em}|m{7em}|m{7em}|m{7em}|m{7em}|} 
+ \hline& Randomizált kártyaválasztás & Randomizált zsetonválasztás & Összetett kártyaválasztás  & Összetett zsetonválasztás \\ 
+ \hline
+ AI1 & \checkmark & \checkmark & X & X\\ 
+ \hline
+ AI2 & X & \checkmark & \checkmark & X \\ 
+ \hline
+ AI3 & X & \checkmark & \checkmark & X \\ 
+ \hline
+ AI4 & X & X & \checkmark & \checkmark \\ 
+ \hline
+ AI5 & X & X & \checkmark & \checkmark \\
+ \hline
+\end{tabular}
+\end{table}
