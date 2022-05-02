@@ -4,6 +4,8 @@ A számítógép által vezérelt játékosokat különböző döntési logikák
 
 A különböző AI-ok a \texttt{Board} osztály játékállapotát egy \texttt{gameState} változón keresztül kapják meg mint bemenetet. Ezen változó segítségével tud informálódni a mesterséges intelligencia a játék aktuális állásáról, és ez alapján hajtja végre a számára megfelelő lépést. A kártya és zseton kiválasztása szintén a \texttt{Board} osztálytól kapott \texttt{buyCard} és \texttt{buyToken} metódusok segítségével történik. Ezek a metódusok az AI-ok logikája által meghatározott kártya vagy zseton adatait kapják meg és elvégzik a megfelelő módosításokat a játéktéren. Ez a két metódus tekinthető a mesterséges intelligenciák által végrehajtható akcióknak.
 
+Azért, hogy az emberi játékos lépésenként nyomon tudja követni, hogy mit lép a gépi ellenfél, annak léptetéséhez tetszőleges helyre kell kattintani a programban.
+
 A mesterséges intelligenciák nevében sorszám szerepel. Konkrétan az AI1, AI2, AI3, AI4 és AI5 nevű intelligenciák részletezésére kerül sor a következő szakaszokban.
 
 \Section{AI1}
